@@ -1,3 +1,4 @@
 bin/
 obj/
 *.suo
+*.v12.suo
