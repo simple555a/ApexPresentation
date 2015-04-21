@@ -20,3 +20,6 @@ C:\Users\serzh\Documents\Visual Studio 2013\Projects\ApexProject\ApexPresentatio
 C:\Users\serzh\Documents\Visual Studio 2013\Projects\ApexProject\ApexPresentation\obj\Debug\ApexPresentation.Form1.resources
 C:\Users\serzh\Documents\Visual Studio 2013\Projects\ApexProject\ApexPresentation\obj\Debug\ApexPresentation.Properties.Resources.resources
 C:\Users\serzh\Documents\Visual Studio 2013\Projects\ApexProject\ApexPresentation\obj\Debug\ApexPresentation.csproj.GenerateResource.Cache
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\bin\Debug\ApexPresentation.exe.config
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.exe
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.pdb
