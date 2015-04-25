@@ -52,14 +52,14 @@
             this.label8 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -337,7 +337,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.49438F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 17F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 66F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 69F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.label8, 0, 1);
@@ -363,7 +363,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
-            this.label7.Location = new System.Drawing.Point(49, 0);
+            this.label7.Location = new System.Drawing.Point(48, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(85, 29);
             this.label7.TabIndex = 5;
@@ -375,7 +375,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
-            this.label8.Location = new System.Drawing.Point(80, 29);
+            this.label8.Location = new System.Drawing.Point(79, 29);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(54, 29);
             this.label8.TabIndex = 6;
@@ -384,54 +384,24 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.dateTimePicker1.Location = new System.Drawing.Point(140, 3);
+            this.dateTimePicker1.Location = new System.Drawing.Point(139, 3);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(159, 23);
+            this.dateTimePicker1.Size = new System.Drawing.Size(157, 23);
             this.dateTimePicker1.TabIndex = 7;
             // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.dateTimePicker2.Location = new System.Drawing.Point(140, 32);
+            this.dateTimePicker2.Location = new System.Drawing.Point(139, 32);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(159, 23);
+            this.dateTimePicker2.Size = new System.Drawing.Size(157, 23);
             this.dateTimePicker2.TabIndex = 8;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 499);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1044, 22);
-            this.statusStrip1.TabIndex = 5;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(156, 17);
-            this.toolStripStatusLabel1.Text = "serpikov.sergey@gmail.com";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label14.Location = new System.Drawing.Point(377, 0);
-            this.label14.Margin = new System.Windows.Forms.Padding(0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(17, 25);
-            this.label14.TabIndex = 11;
-            this.label14.Text = ":";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label14.Click += new System.EventHandler(this.label14_Click);
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label15.Location = new System.Drawing.Point(377, 29);
+            this.label15.Location = new System.Drawing.Point(374, 29);
             this.label15.Margin = new System.Windows.Forms.Padding(0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(17, 25);
@@ -468,7 +438,7 @@
             "21",
             "22",
             "23"});
-            this.comboBox1.Location = new System.Drawing.Point(305, 3);
+            this.comboBox1.Location = new System.Drawing.Point(302, 3);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(69, 24);
             this.comboBox1.TabIndex = 13;
@@ -503,7 +473,7 @@
             "21",
             "22",
             "23"});
-            this.comboBox2.Location = new System.Drawing.Point(305, 32);
+            this.comboBox2.Location = new System.Drawing.Point(302, 32);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(69, 24);
             this.comboBox2.TabIndex = 14;
@@ -575,7 +545,7 @@
             "58",
             "59",
             "60"});
-            this.comboBox3.Location = new System.Drawing.Point(397, 3);
+            this.comboBox3.Location = new System.Drawing.Point(394, 3);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(61, 24);
             this.comboBox3.TabIndex = 15;
@@ -647,11 +617,41 @@
             "58",
             "59",
             "60"});
-            this.comboBox4.Location = new System.Drawing.Point(397, 32);
+            this.comboBox4.Location = new System.Drawing.Point(394, 32);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(61, 24);
             this.comboBox4.TabIndex = 16;
             this.comboBox4.Text = "00";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.label14.Location = new System.Drawing.Point(374, 0);
+            this.label14.Margin = new System.Windows.Forms.Padding(0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(17, 25);
+            this.label14.TabIndex = 11;
+            this.label14.Text = ":";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label14.Click += new System.EventHandler(this.label14_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 499);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1044, 22);
+            this.statusStrip1.TabIndex = 5;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(156, 17);
+            this.toolStripStatusLabel1.Text = "serpikov.sergey@gmail.com";
             // 
             // Form1
             // 

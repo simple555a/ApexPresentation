@@ -19,3 +19,10 @@ C:\Users\serzh1\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.Ti
 C:\Users\serzh1\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.csproj.GenerateResource.Cache
 C:\Users\serzh1\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.dll
 C:\Users\serzh1\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.pdb
+C:\Users\serzh\Documents\GitHub\ApexPresentation\TimeLine\bin\Debug\TimeLine.dll
+C:\Users\serzh\Documents\GitHub\ApexPresentation\TimeLine\bin\Debug\TimeLine.pdb
+C:\Users\serzh\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.csprojResolveAssemblyReference.cache
+C:\Users\serzh\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.TimeLine.resources
+C:\Users\serzh\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.csproj.GenerateResource.Cache
+C:\Users\serzh\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.dll
+C:\Users\serzh\Documents\GitHub\ApexPresentation\TimeLine\obj\Debug\TimeLine.pdb

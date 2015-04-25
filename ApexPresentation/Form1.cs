@@ -23,16 +23,16 @@ namespace ApexPresentation
             DateTime BStartTime = new DateTime(2015, 04, 12, 8, 00, 00);
             DateTime BEndTime = new DateTime(2015, 04, 13, 20, 00, 00);
             
-            DateTime Period2Start = new DateTime(2015, 04, 12, 10, 00, 00);
-            DateTime Period3Start = new DateTime(2015, 04, 12, 10, 30, 00);
-            DateTime Period4Start = new DateTime(2015, 04, 12, 15, 00, 00);
-            DateTime Period5Start = new DateTime(2015, 04, 12, 19, 00, 00);
+            DateTime Period2Start = new DateTime(2015, 04, 12, 9, 00, 00);
+            DateTime Period3Start = new DateTime(2015, 04, 12, 9, 30, 00);
+            DateTime Period4Start = new DateTime(2015, 04, 12, 10, 00, 00);
+            DateTime Period5Start = new DateTime(2015, 04, 12, 10, 48, 00);
 
-            timeLine1.AddBasePeriod(255, 40, 40, BStartTime, BEndTime);
+            timeLine1.AddBasePeriod(255, 200, 255, BStartTime, BEndTime);
             timeLine1.AddPeriod(222, 255, 0, Period2Start);
             timeLine1.AddPeriod(255, 0, 255, Period3Start);
             timeLine1.AddPeriod(25, 100,70, Period4Start);
-            timeLine1.AddPeriod(25, 255, 200, Period5Start);
+            timeLine1.AddPeriod(255, 255, 255, Period5Start);
 
             
             //timeLine1.toolTip1.SetToolTip(timeLine1, "123");

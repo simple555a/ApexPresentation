@@ -34,3 +34,11 @@ C:\Users\serzh1\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\Ape
 C:\Users\serzh1\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.Form1.resources
 C:\Users\serzh1\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.Properties.Resources.resources
 C:\Users\serzh1\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.csproj.GenerateResource.Cache
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\bin\Debug\ApexPresentation.exe
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\bin\Debug\ApexPresentation.pdb
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\bin\Debug\TimeLine.dll
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\bin\Debug\TimeLine.pdb
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.csprojResolveAssemblyReference.cache
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.Form1.resources
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.Properties.Resources.resources
+C:\Users\serzh\Documents\GitHub\ApexPresentation\ApexPresentation\obj\Debug\ApexPresentation.csproj.GenerateResource.Cache
