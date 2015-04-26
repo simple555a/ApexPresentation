@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace ApexPresentation
 {
-    class OPC
+    public class Settings
     {
+        public string SQLServerName;
+        public string SQLExemplarName;
+
+
     }
 }

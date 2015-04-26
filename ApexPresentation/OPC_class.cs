@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Sql;
 
 namespace ApexPresentation
 {
-    class Sql
+    class OPC_class
     {
-
     }
 }

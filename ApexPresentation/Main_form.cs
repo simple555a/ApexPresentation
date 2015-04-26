@@ -11,9 +11,9 @@ using TimeLine;
 
 namespace ApexPresentation
 {
-    public partial class Form1 : Form
+    public partial class Main_form : Form
     {
-        public Form1()
+        public Main_form()
         {
             InitializeComponent();
         }
@@ -49,6 +49,23 @@ namespace ApexPresentation
         private void label14_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Sql_class sql_obj = new Sql_class();
+            sql_obj.SetConnection();
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void connectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConnectionsForm ConnectionsForm1 = new ConnectionsForm();
+            ConnectionsForm1.Show();
         }
 
     }
