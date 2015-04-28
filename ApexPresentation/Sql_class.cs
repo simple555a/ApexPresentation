@@ -20,9 +20,9 @@ namespace ApexPresentation
 
         public bool SetConnection()
         {
-            SqlConnection con = new SqlConnection("Data Source=SERZH\\SQLEXPRESS;Initial Catalog=SFI_local_PC_SQL");
+            SqlConnection con = new SqlConnection("Data Source=SERZH\\SQLEXPRESS;Initial Catalog=SFI_local_PC_SQL;Integrated Security=True");
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = @"SELECT" + 
+            cmd.CommandText = @"SELECT " + 
             "OPL.[user_name]" + 
             ",AU.[first_name]" + 
             ",AU.[last_name]" + 
@@ -33,9 +33,9 @@ namespace ApexPresentation
             ",OPL.[logout_time]" + 
             ",OPL.[message_type]" + 
             "FROM " + 
-            "[SFI_local_PC_SQL].[dbo].[sfi_SLCOperatorLogin] AS OPL" + 
+            "[SFI_local_PC_SQL].[dbo].[sfi_SLCOperatorLogin] AS OPL " + 
             "INNER JOIN " + 
-            "[SLC_rsActive].[dbo].[APP_USER] AS AU" + 
+            "[SLC_rsActive].[dbo].[APP_USER] AS AU " + 
             "ON OPL.[user_name] = AU.[user_name]" + 
             "WHERE OPL.login_time > (GETDATE() - '08:00:00.000') and OPL.wc_name = 'BAA21'";
             cmd.Connection = con;

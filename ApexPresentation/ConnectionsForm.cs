@@ -24,9 +24,9 @@ namespace ApexPresentation
         {
             if (File.Exists("settings.xml"))
             {
-                XmlSerializer ser2 = new XmlSerializer(typeof(Settings));
+                XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
                 TextReader reader = new StreamReader("settings.xml");
-                Settings Settings1 = (Settings)ser2.Deserialize(reader);
+                Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader);
                 reader.Dispose();
 
                 this.textBox1.Text = Settings1.SQLServerName;
@@ -35,6 +35,7 @@ namespace ApexPresentation
             }
         }
 
+        //save and close
         private void button1_Click(object sender, EventArgs e)
         {
             Settings Settings1 = new Settings();
@@ -48,9 +49,11 @@ namespace ApexPresentation
             this.Dispose();
         }
 
+        //test connection
         private void button2_Click(object sender, EventArgs e)
         {
             Sql_class sql_obj = new Sql_class();
+            sql_obj.SetConnection();
 
         }
     }

@@ -25,8 +25,8 @@ namespace ApexPresentation
             
             DateTime Period2Start = new DateTime(2015, 04, 12, 9, 00, 00);
             DateTime Period3Start = new DateTime(2015, 04, 12, 9, 30, 00);
-            DateTime Period4Start = new DateTime(2015, 04, 12, 10, 00, 00);
-            DateTime Period5Start = new DateTime(2015, 04, 12, 10, 48, 00);
+            DateTime Period4Start = new DateTime(2015, 04, 12, 18, 00, 00);
+            DateTime Period5Start = new DateTime(2015, 04, 12, 19, 48, 00);
 
             timeLine1.AddBasePeriod(255, 200, 255, BStartTime, BEndTime);
             timeLine1.AddPeriod(222, 255, 0, Period2Start);
