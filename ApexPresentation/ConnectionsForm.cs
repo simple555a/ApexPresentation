@@ -25,9 +25,9 @@ namespace ApexPresentation
             if (File.Exists("settings.xml"))
             {
                 XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
-                TextReader reader = new StreamReader("settings.xml");
-                Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader);
-                reader.Dispose();
+                TextReader reader1 = new StreamReader("settings.xml");
+                Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
+                reader1.Dispose();
 
                 this.textBox1.Text = Settings1.SQLServerName;
                 this.textBox2.Text = Settings1.SQLExemplarName;

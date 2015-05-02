@@ -10,7 +10,5 @@ namespace ApexPresentation
     {
         public string SQLServerName;
         public string SQLExemplarName;
-
-
     }
 }
