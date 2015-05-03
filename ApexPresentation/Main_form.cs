@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeLine;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace ApexPresentation
 {
@@ -16,7 +19,10 @@ namespace ApexPresentation
         public Main_form()
         {
             InitializeComponent();
+
+            //load connection string
         }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -34,9 +40,8 @@ namespace ApexPresentation
             timeLine1.AddPeriod(25, 100,70, Period4Start);
             timeLine1.AddPeriod(255, 255, 255, Period5Start);
 
-            
-            //timeLine1.toolTip1.SetToolTip(timeLine1, "123");
-            //toolTip1.AutomaticDelay = 1000;
+            Sql_class sql_obj = new Sql_class();
+            label1.Text = sql_obj.GetOperatorName();
 
         }
 
@@ -53,8 +58,7 @@ namespace ApexPresentation
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Sql_class sql_obj = new Sql_class();
-            sql_obj.SetConnection();
+
         }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,6 +70,11 @@ namespace ApexPresentation
         {
             ConnectionsForm ConnectionsForm1 = new ConnectionsForm();
             ConnectionsForm1.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

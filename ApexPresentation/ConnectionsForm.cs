@@ -31,7 +31,7 @@ namespace ApexPresentation
 
                 this.textBox1.Text = Settings1.SQLServerName;
                 this.textBox2.Text = Settings1.SQLExemplarName;
-
+                 
             }
         }
 
@@ -52,8 +52,12 @@ namespace ApexPresentation
         //test connection
         private void button2_Click(object sender, EventArgs e)
         {
+            this.button2.Enabled = false;
+            this.button2.Text = "Testing...";
             Sql_class sql_obj = new Sql_class();
-            sql_obj.SetConnection();
+            this.button2.Enabled = true;
+            this.button2.Text = "Test connection";
+            //sql_obj.GetOperatorName();
 
         }
     }

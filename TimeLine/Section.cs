@@ -24,5 +24,7 @@ namespace TimeLine
             this.StartTime = in_StartTime;
 
         }
+
+        public Section() { }
     }
 }
