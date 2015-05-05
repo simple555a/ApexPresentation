@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -20,13 +18,15 @@ namespace ApexPresentation
             InitializeComponent();
         }
 
+        private static Settings Settings1 = new Settings();
+
         private void Connections_form_Load(object sender, EventArgs e)
         {
             if (File.Exists("settings.xml"))
             {
                 XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
                 TextReader reader1 = new StreamReader("settings.xml");
-                Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
+                Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
                 reader1.Dispose();
 
                 this.textBox1.Text = Settings1.SQLServerName;
@@ -38,7 +38,6 @@ namespace ApexPresentation
         //save and close
         private void button1_Click(object sender, EventArgs e)
         {
-            Settings Settings1 = new Settings();
             Settings1.SQLServerName = this.textBox1.Text;
             Settings1.SQLExemplarName = this.textBox2.Text;
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
@@ -54,7 +53,8 @@ namespace ApexPresentation
         {
             this.button2.Enabled = false;
             this.button2.Text = "Testing...";
-            Sql_class sql_obj = new Sql_class();
+            Sql_class sql_obj = new Sql_class(this.textBox1.Text, this.textBox2.Text);
+            Settings1.SQLInitialized = sql_obj.Initialized;
             this.button2.Enabled = true;
             this.button2.Text = "Test connection";
             //sql_obj.GetOperatorName();

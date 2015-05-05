@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ApexPresentation
 {
     public class Settings
     {
-        public string SQLServerName;
-        public string SQLExemplarName;
+        public string   SQLServerName;
+        public string   SQLExemplarName;
+        public bool     SQLInitialized;
+
     }
 }

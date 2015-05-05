@@ -74,6 +74,29 @@ namespace TimeLine
             return true;
         }
 
+        public void SetEmpty()
+        {
+            this.StartTime = DateTime.MinValue;
+            this.EndTime = DateTime.MinValue;
+            this.BaseColor_R=0;
+            this.BaseColor_G=0;
+            this.BaseColor_B = 0;
+            this.TimeDimension = 0;
+            this.LeftMargin=0;
+            this.RightMargin=0;
+            this.TimeLineHeight=0;
+            this.TimeLineX1=0;
+            this.TimeLineY1=0;
+            this.TimeLineX2=0;
+            this.TimeLineY2=0;
+            this.TimeLineWidth=0;
+            
+            
+
+            //e.Graphics.Graphics.Clear(Color.White);
+
+        }
+
         private DateTime StartTime;
         private DateTime EndTime;
 
@@ -87,7 +110,7 @@ namespace TimeLine
         public int TimeDimension;
 
         private System.Windows.Forms.ToolTip toolTip1;
-        private int LeftMargin=5;
+        private int LeftMargin;
         private int RightMargin;
         private int TimeLineHeight;
         private int TimeLineX1;

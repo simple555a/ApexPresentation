@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TimeLine
@@ -16,6 +14,8 @@ namespace TimeLine
         {
             InitializeComponent();
         }
+
+        
 
         private void TimeLine_Paint(object sender, PaintEventArgs e)
         {
@@ -35,13 +35,14 @@ namespace TimeLine
             this.TimeLineY2 = this.TimeLineHeight;
             this.TimeLineWidth = this.TimeLineX2 - this.TimeLineX1;
 
+            
 
             //drawing base
             color1 = Color.FromArgb(this.BaseColor_R, this.BaseColor_G, this.BaseColor_B);
             pen = new Pen(color1);
             pen.Width = this.TimeLineHeight;
             e.Graphics.DrawLine(pen, this.LeftMargin, this.TimeLineHeight / 2, this.Width - this.RightMargin,  this.TimeLineHeight / 2);
-
+            
             //000. calculating sum of Times
             double SumOfTimesInData=System.Convert.ToDouble(this.EndTime.Subtract(this.StartTime).TotalSeconds);
 
@@ -133,7 +134,7 @@ namespace TimeLine
             e.Graphics.DrawLine(pen, this.TimeLineX1, this.TimeLineY2, this.TimeLineX1, this.TimeLineY2 + 20);
             e.Graphics.DrawLine(pen, this.TimeLineX2, this.TimeLineY2, this.TimeLineX2, this.TimeLineY2 + 20);
 
-            e.Graphics.DrawRectangle(pen, this.TimeLineX1, this.TimeLineY2 + 20, 110, 14);
+            e.Graphics.DrawRectangle(pen, this.TimeLineX1, this.TimeLineY2 + 20, 117, 14);
             e.Graphics.DrawRectangle(pen, this.TimeLineX2-117, this.TimeLineY2 + 20, 117, 14);
 
 
