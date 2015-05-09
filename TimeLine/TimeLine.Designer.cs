@@ -53,12 +53,13 @@ namespace TimeLine
 
         #endregion
 
-        public List<Section> Data = new List<Section> { };
 
         public bool AddPeriod(byte in_colorRed, byte in_colorGreen, byte in_colorBlue, DateTime in_PeriodStartTime)
         {
             Section temp = new Section(in_colorRed, in_colorGreen, in_colorBlue, in_PeriodStartTime);
-            this.Data.Add(temp);    
+            this.Data.Add(temp);
+
+            this.SetEmpty_property = false;
             return true;
         }
 
@@ -71,6 +72,8 @@ namespace TimeLine
             this.StartTime = in_PeriodStartTime;
             this.EndTime = in_PeriodEndTime;
 
+            this.SetEmpty_property = false;
+
             return true;
         }
 
@@ -78,24 +81,27 @@ namespace TimeLine
         {
             this.StartTime = DateTime.MinValue;
             this.EndTime = DateTime.MinValue;
-            this.BaseColor_R=0;
-            this.BaseColor_G=0;
+            this.BaseColor_R = 0;
+            this.BaseColor_G = 0;
             this.BaseColor_B = 0;
             this.TimeDimension = 0;
-            this.LeftMargin=0;
-            this.RightMargin=0;
-            this.TimeLineHeight=0;
-            this.TimeLineX1=0;
-            this.TimeLineY1=0;
-            this.TimeLineX2=0;
-            this.TimeLineY2=0;
-            this.TimeLineWidth=0;
-            
-            
+            this.LeftMargin = 0;
+            this.RightMargin = 0;
+            this.TimeLineHeight = 0;
+            this.TimeLineX1 = 0;
+            this.TimeLineY1 = 0;
+            this.TimeLineX2 = 0;
+            this.TimeLineY2 = 0;
+            this.TimeLineWidth = 0;
 
-            //e.Graphics.Graphics.Clear(Color.White);
+            this.Data.Clear();
+
+            this.SetEmpty_property = true;
+
 
         }
+
+        public List<Section> Data = new List<Section> { };
 
         private DateTime StartTime;
         private DateTime EndTime;
@@ -118,6 +124,7 @@ namespace TimeLine
         private int TimeLineX2;
         private int TimeLineY2;
         private int TimeLineWidth;
+        private bool SetEmpty_property;
         
         
     }

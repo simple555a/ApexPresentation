@@ -24,31 +24,29 @@ namespace ApexPresentation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            DateTime BStartTime = new DateTime(2015, 04, 23, 20, 00, 00);
-            DateTime BEndTime = new DateTime(2015, 04, 24, 20, 00, 00);
+            DateTime BStartTime = new DateTime(2015, 04, 23, 0, 00, 00);
+            DateTime BEndTime = new DateTime(2015, 04, 23, 8, 00, 00);
             
             DateTime Period2Start = new DateTime(2015, 04, 12, 9, 00, 00);
             DateTime Period3Start = new DateTime(2015, 04, 12, 9, 30, 00);
             DateTime Period4Start = new DateTime(2015, 04, 12, 18, 00, 00);
             DateTime Period5Start = new DateTime(2015, 04, 12, 19, 48, 00);
 
-            //timeLine1.AddPeriod(222, 255, 0, Period2Start);
-            //timeLine1.AddPeriod(255, 0, 255, Period3Start);
-            //timeLine1.AddPeriod(25, 100,70, Period4Start);
-            //timeLine1.AddPeriod(255, 255, 255, Period5Start);
 
             label1.Text = sql_obj.GetOperatorName();
 
-            Section[] a1=sql_obj.GetTimeLineData(BStartTime, BEndTime);
-            if (a1.Length!=0)
-            { 
-                timeLine1.AddBasePeriod(a1[a1.Length-1].colorRed, a1[a1.Length-1].colorGreen, a1[a1.Length-1].colorBlue, BStartTime, BEndTime);
-                for (int i = a1.Length-2; i >= 0; i--)
-                {
-                    timeLine1.AddPeriod(a1[i].colorRed,a1[i].colorGreen,a1[i].colorBlue,a1[i].StartTime);
-                }
-            }
+            //Section[] a1 = sql_obj.GetTimeLineData(BStartTime, BEndTime);
+            //if (a1.Length != 0)
+            //{
+            //    timeLine1.AddBasePeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, BStartTime, BEndTime);
+            //    for (int i = a1.Length - 2; i >= 0; i--)
+            //    {
+            //        timeLine1.AddPeriod(a1[i].colorRed, a1[i].colorGreen, a1[i].colorBlue, a1[i].StartTime);
+            //    }
+            //}
             //timeLine1.SetEmpty();
+
+            
 
         }
 
@@ -81,8 +79,34 @@ namespace ApexPresentation
 
         private void button1_Click(object sender, EventArgs e)
         {
+            TimeSpan t1 = new TimeSpan(8, 0, 0);
+            TimeSpan t2 = new TimeSpan(12, 0, 0);
+            DateTime T1, T2;
+            Section[] a1;
 
-        }
+            if (radioButton1.Checked)
+            {
+                T1 = dateTimePicker1.Value + t1;
+                T2 = dateTimePicker1.Value + t1 + t2;
+            }
+            else
+            {
+                T1 = dateTimePicker1.Value + t1 + t2;
+                T2 = dateTimePicker1.Value + t1 + t2 + t2;
+            }
+
+            a1 = sql_obj.GetTimeLineData(T1, T2);
+            timeLine1.SetEmpty();
+            if (a1.Length != 0)
+            {
+                timeLine1.AddBasePeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, T2);
+                for (int i = a1.Length - 2; i >= 0; i--)
+                {
+                    timeLine1.AddPeriod(a1[i].colorRed, a1[i].colorGreen, a1[i].colorBlue, a1[i].StartTime);
+                }
+            }
+            timeLine1.Refresh();
+        } 
 
     }
 }

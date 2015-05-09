@@ -189,9 +189,9 @@ namespace ApexPresentation
                             reader.Read();
                             a1[i] =new Section();
                             a1[i].StartTime = reader.GetDateTime(2);
-                            a1[i].colorRed = Convert.ToByte(reader.GetInt64(1) >> 16);
+                            a1[i].colorBlue = Convert.ToByte(reader.GetInt64(1) >> 16);
                             a1[i].colorGreen = Convert.ToByte((reader.GetInt64(1) >> 8) & 255);
-                            a1[i].colorBlue = Convert.ToByte((reader.GetInt64(1)  & 255));
+                            a1[i].colorRed = Convert.ToByte((reader.GetInt64(1)  & 255));
                             
                         }
                     }
