@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.timeLine1 = new TimeLine.TimeLine();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -61,6 +60,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timeLine1 = new TimeLine.TimeLine();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -74,18 +74,6 @@
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // timeLine1
-            // 
-            this.timeLine1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.timeLine1.BackColor = System.Drawing.Color.Transparent;
-            this.timeLine1.Location = new System.Drawing.Point(3, 303);
-            this.timeLine1.MinimumSize = new System.Drawing.Size(250, 0);
-            this.timeLine1.Name = "timeLine1";
-            this.timeLine1.Size = new System.Drawing.Size(1051, 92);
-            this.timeLine1.TabIndex = 0;
             // 
             // label1
             // 
@@ -343,7 +331,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.31915F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 151F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 12F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 17F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.dateTimePicker1, 1, 0);
@@ -362,7 +350,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
-            this.label7.Location = new System.Drawing.Point(37, 0);
+            this.label7.Location = new System.Drawing.Point(29, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(85, 29);
             this.label7.TabIndex = 5;
@@ -371,9 +359,9 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.dateTimePicker1.Location = new System.Drawing.Point(128, 3);
+            this.dateTimePicker1.Location = new System.Drawing.Point(120, 3);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(149, 23);
+            this.dateTimePicker1.Size = new System.Drawing.Size(138, 23);
             this.dateTimePicker1.TabIndex = 7;
             this.dateTimePicker1.Value = new System.DateTime(2015, 4, 23, 0, 0, 0, 0);
             // 
@@ -381,7 +369,7 @@
             // 
             this.panel2.Controls.Add(this.radioButton2);
             this.panel2.Controls.Add(this.radioButton1);
-            this.panel2.Location = new System.Drawing.Point(283, 3);
+            this.panel2.Location = new System.Drawing.Point(264, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(145, 23);
             this.panel2.TabIndex = 8;
@@ -458,8 +446,9 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click_1);
             // 
             // settingsToolStripMenuItem
             // 
@@ -476,6 +465,18 @@
             this.connectionToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.connectionToolStripMenuItem.Text = "Connection...";
             this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
+            // 
+            // timeLine1
+            // 
+            this.timeLine1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.timeLine1.BackColor = System.Drawing.Color.Transparent;
+            this.timeLine1.Location = new System.Drawing.Point(3, 303);
+            this.timeLine1.MinimumSize = new System.Drawing.Size(250, 0);
+            this.timeLine1.Name = "timeLine1";
+            this.timeLine1.Size = new System.Drawing.Size(1051, 92);
+            this.timeLine1.TabIndex = 0;
             // 
             // Main_form
             // 

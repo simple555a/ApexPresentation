@@ -54,20 +54,17 @@ namespace TimeLine
         #endregion
 
 
-        public bool AddPeriod(byte in_colorRed, byte in_colorGreen, byte in_colorBlue, DateTime in_PeriodStartTime)
+        public bool AddPeriod(byte in_colorRed, byte in_colorGreen, byte in_colorBlue, DateTime in_PeriodStartTime, DateTime in_PeriodEndTime, bool is_last)
         {
-            Section temp = new Section(in_colorRed, in_colorGreen, in_colorBlue, in_PeriodStartTime);
+            Section temp = new Section(in_colorRed, in_colorGreen, in_colorBlue, in_PeriodStartTime, in_PeriodEndTime, is_last);
             this.Data.Add(temp);
 
             this.SetEmpty_property = false;
             return true;
         }
 
-        public bool AddBasePeriod(byte in_colorRed, byte in_colorGreen, byte in_colorBlue, DateTime in_PeriodStartTime, DateTime in_PeriodEndTime)
+        public bool AddBasePeriod(DateTime in_PeriodStartTime, DateTime in_PeriodEndTime)
         {
-            this.BaseColor_R = in_colorRed;
-            this.BaseColor_G = in_colorGreen;
-            this.BaseColor_B = in_colorBlue;
 
             this.StartTime = in_PeriodStartTime;
             this.EndTime = in_PeriodEndTime;
@@ -81,9 +78,6 @@ namespace TimeLine
         {
             this.StartTime = DateTime.MinValue;
             this.EndTime = DateTime.MinValue;
-            this.BaseColor_R = 0;
-            this.BaseColor_G = 0;
-            this.BaseColor_B = 0;
             this.TimeDimension = 0;
             this.LeftMargin = 0;
             this.RightMargin = 0;

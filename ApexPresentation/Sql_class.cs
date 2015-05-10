@@ -173,8 +173,7 @@ namespace ApexPresentation
                     }
                 }
             }
-
-            //RecordsCount = 11;
+             
             using (SqlConnection con = new SqlConnection(this.ConnectionString))
             {
                 con.Open();
@@ -187,8 +186,16 @@ namespace ApexPresentation
                         for (int i = 0; i < RecordsCount; i++)
                         {
                             reader.Read();
-                            a1[i] =new Section();
+                            a1[i] = new Section();
                             a1[i].StartTime = reader.GetDateTime(2);
+                            try
+                            {
+                                a1[i].EndTime = reader.GetDateTime(3);
+                            }
+                            catch
+                            {
+                                a1[i].EndTime = DateTime.MinValue;
+                            }
                             a1[i].colorBlue = Convert.ToByte(reader.GetInt64(1) >> 16);
                             a1[i].colorGreen = Convert.ToByte((reader.GetInt64(1) >> 8) & 255);
                             a1[i].colorRed = Convert.ToByte((reader.GetInt64(1)  & 255));
