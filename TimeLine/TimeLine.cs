@@ -123,6 +123,23 @@ namespace TimeLine
                         }
                         #endregion
 
+                        #region drawing triangle
+                        if (i == this.Data.Count-1 && this.Data[i].is_last == true)
+                        {
+                            color1 = Color.FromArgb(0, 0, 0);
+                            pen1 = new Pen(color1);
+                            pen1.Width = 1;
+                            Point[] points = new Point[3];
+                            points[0].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 0;
+                            points[0].Y = this.TimeLineY2 + 1;
+                            points[1].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 3;
+                            points[1].Y = this.TimeLineY2 + 4;
+                            points[2].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 3;
+                            points[2].Y = this.TimeLineY2 + 4;
+                            e.Graphics.DrawPolygon(pen1, points);
+                        }
+
+                        #endregion
 
 
                         #region drawing times

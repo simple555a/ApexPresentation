@@ -106,7 +106,7 @@ namespace ApexPresentation
                 }
                 bool temp_is_last = false;
                 if (in_sections[0].EndTime == DateTime.MinValue) temp_is_last = true;
-                timeLine1.AddPeriod(in_sections[0].colorRed, in_sections[0].colorGreen, in_sections[0].colorBlue, in_sections[0].StartTime, /*in_sections[0].StartTime.AddHours(1)*/in_EndTime, temp_is_last);
+                timeLine1.AddPeriod(in_sections[0].colorRed, in_sections[0].colorGreen, in_sections[0].colorBlue, in_sections[0].StartTime, /**/in_sections[0].StartTime.AddHours(1)/**//*in_EndTime*/, temp_is_last);
             }
             in_control.Refresh();
         }
