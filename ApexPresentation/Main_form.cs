@@ -30,8 +30,8 @@ namespace ApexPresentation
             //DateTime BStartTime = new DateTime(2015, 04, 28, 18, 00, 00);
             //DateTime BEndTime = new DateTime(2015, 04, 28, 00, 00, 00);
 
-            DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
-            DateTime BEndTime = new DateTime(2015, 04, 25, 00, 00, 00);
+            DateTime BStartTime = new DateTime(2015, 04, 28, 00, 00, 00);
+            //DateTime BEndTime = new DateTime(2015, 04, 25, 00, 00, 00);
             
             DateTime Period2Start = new DateTime(2015, 04, 12, 9, 00, 00);
             DateTime Period3Start = new DateTime(2015, 04, 12, 9, 30, 00);
@@ -40,11 +40,9 @@ namespace ApexPresentation
 
 
             label1.Text = sql_obj.GetOperatorName();
-
-            //Section[] a1 = sql_obj.GetTimeLineData(BStartTime, BEndTime);
-
-            TimeLineShow(timeLine1, BStartTime);
+            TimeLineShow(timeLine1, /*BStartTime*/System.DateTime.Now.Date);
             label5.Text = sql_obj.GetCurrentStatus();
+            label5.BackColor = sql_obj.GetCurrentStatusColor();
 
             this.Text += " (serpikov.sergey@gmail.com)";
         }
@@ -89,17 +87,18 @@ namespace ApexPresentation
             DateTime T1, T2, CURR;
             Section[] a1;
 
-            CURR = new DateTime(2015, 04, 29, 23, 00, 00);
+            //CURR = new DateTime(2015, 04, 29, 23, 00, 00);
+            CURR = DateTime.Now;
 
             if (radioButton1.Checked)
             {
-                T1 = in_StartTime + t1;
-                T2 = in_StartTime + t1 + t2;
+                T1 = in_StartTime.Date + t1;
+                T2 = in_StartTime.Date + t1 + t2;
             }
             else
-            { 
-                T1 = in_StartTime + t1 + t2;
-                T2 = in_StartTime + t1 + t2 + t2;
+            {
+                T1 = in_StartTime.Date + t1 + t2;
+                T2 = in_StartTime.Date + t1 + t2 + t2;
             }
 
 
@@ -122,10 +121,12 @@ namespace ApexPresentation
                 bool temp_is_last = false;
                 //for last time
                 if (a1[0].EndTime == DateTime.MinValue) temp_is_last = true;
-                
-                if (temp_is_last && T2 < CURR)
+
+                if (temp_is_last && T2 < CURR && a1[0].StartTime>T1)
                     in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, T2, temp_is_last);
-                if (temp_is_last && T2 > CURR && CURR>T1 && a1[0].StartTime<T1)
+                if (temp_is_last && T2 < CURR && a1[0].StartTime<=T1)
+                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, T2, temp_is_last);
+                if (temp_is_last && T1<CURR && CURR<T2)
                     in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, CURR, temp_is_last);
             }
 

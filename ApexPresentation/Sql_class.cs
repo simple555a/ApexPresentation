@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Xml.Serialization;
 using System.Windows.Forms;
+using System.Drawing;
 using TimeLine;
 
 namespace ApexPresentation
@@ -210,6 +211,8 @@ namespace ApexPresentation
         }
         public string GetCurrentStatus()
         {
+            if (!this.Initialized) return "***************";
+
             string return_string="";
 
             String SQLQuery = @"SELECT DISTINCT
@@ -245,7 +248,45 @@ namespace ApexPresentation
 
             return return_string;
         }
+        public Color GetCurrentStatusColor()
+        {
+            if (!this.Initialized) return Color.White;
 
+            Byte colorBlue,
+                colorGreen,
+                colorRed;
+
+            String SQLQuery = @"SELECT DISTINCT
+                                [ColorValue]
+                                FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStateHistory]
+                                INNER JOIN
+                                [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates] AS COLORS
+                                ON [MachineState]=COLORS.StatusCode
+                                WHERE 
+                                [EndTime] IS NULL 
+                                AND ([Language]='ru-RU' OR [Language]='en-US')";
+
+            using (SqlConnection con = new SqlConnection(this.ConnectionString))
+            {
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        colorBlue = Convert.ToByte(reader.GetInt64(0) >> 16);
+                        colorGreen = Convert.ToByte((reader.GetInt64(0) >> 8) & 255);
+                        colorRed = Convert.ToByte((reader.GetInt64(0) & 255));
+
+
+                    }
+                }
+            }
+
+
+            return Color.FromArgb(colorRed,colorGreen,colorBlue);
+        }
 
         #endregion
 

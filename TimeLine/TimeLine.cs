@@ -38,48 +38,66 @@ namespace TimeLine
             this.TimeLineY2 = this.TimeLineHeight;
             this.TimeLineWidth = this.TimeLineX2 - this.TimeLineX1;
 
+            #region print start and end time
+            tempString = this.StartTime.ToString();
+            e.Graphics.DrawString(tempString, font_004, brush_004, this.TimeLineX1, this.TimeLineY2 + 20);
+
+            tempString = this.EndTime.ToString();
+            e.Graphics.DrawString(tempString, font_004, brush_004, this.TimeLineX2 - 117, this.TimeLineY2 + 20);
+
+            //draw title time rectangle and lines
+            color1 = Color.FromArgb(0, 0, 0);
+            pen1 = new Pen(color1);
+            pen1.Width = 1;
+            e.Graphics.DrawLine(pen1, this.TimeLineX1, this.TimeLineY2, this.TimeLineX1, this.TimeLineY2 + 20);
+            e.Graphics.DrawLine(pen1, this.TimeLineX2, this.TimeLineY2, this.TimeLineX2, this.TimeLineY2 + 20);
+
+            e.Graphics.DrawRectangle(pen1, this.TimeLineX1, this.TimeLineY2 + 20, 117, 14);
+            e.Graphics.DrawRectangle(pen1, this.TimeLineX2 - 117, this.TimeLineY2 + 20, 117, 14);
+            #endregion
+
+            #region drawing chess field
+
+            pen2 = new Pen(brush_001);
+            pen2.Width = this.TimeLineHeight;
+            e.Graphics.DrawLine(pen2, this.TimeLineX1, (this.TimeLineY1 + this.TimeLineHeight) / 2, this.TimeLineX2, (this.TimeLineY1 + this.TimeLineHeight) / 2);
+
+            #endregion
+
+            #region drawing black border rectangle
+            color1 = Color.FromArgb(0, 0, 0);
+            pen1 = new Pen(color1);
+            pen1.Width = 1;
+            e.Graphics.DrawRectangle(pen1, this.LeftMargin, 0, this.Width - (this.RightMargin + this.LeftMargin), this.TimeLineHeight);
+            #endregion
+
+            #region drawing per hour metric (for each hour, undepend Data list)
+            int total_hours = (this.EndTime - this.StartTime).Hours;
+            for (int i = 1; i < total_hours; i++)
+            {
+                color1 = Color.FromArgb(0, 0, 0);
+                pen1 = new Pen(color1);
+                pen1.Width = 1;
+                e.Graphics.DrawLine(pen1,
+                    this.TimeLineX1 + System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours),
+                    this.TimeLineY2 + 1,
+                    this.TimeLineX1 + System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours),
+                    this.TimeLineY2 + 7);
+
+                tempString = (((this.StartTime.Hour + i) % 24) < 10) ? "0" + ((this.StartTime.Hour + i) % 24).ToString() : ((this.StartTime.Hour + i) % 24).ToString();
+                tempString += ":00";
+
+                e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours) - 12, 55);
+            }
+            #endregion
+
             #region  if (!this.SetEmpty_property)
 
             if (!this.SetEmpty_property)
             {
-                #region drawing chess field
-
-                pen2 = new Pen(brush_001);
-                pen2.Width = this.TimeLineHeight;
-                e.Graphics.DrawLine(pen2, this.TimeLineX1, (this.TimeLineY1 + this.TimeLineHeight) / 2, this.TimeLineX2, (this.TimeLineY1 + this.TimeLineHeight) / 2);
-
-                #endregion
-
-                //drawing base
-                //color1 = Color.FromArgb(this.BaseColor_R, this.BaseColor_G, this.BaseColor_B);
-                //pen1 = new Pen(color1);
-                //pen1.Width = this.TimeLineHeight;
-                //e.Graphics.DrawLine(pen1, this.TimeLineX1, (this.TimeLineY1 + this.TimeLineHeight) / 2, this.TimeLineX2, (this.TimeLineY1 + this.TimeLineHeight) / 2);
-
+                
                 //000. calculating sum of Times
                 double SumOfTimesInData = System.Convert.ToDouble(this.EndTime.Subtract(this.StartTime).TotalSeconds);
-
-                #region drawing per hour metric (for each hour, undepend Data list)
-                int total_hours = (this.EndTime - this.StartTime).Hours;
-                for (int i = 1; i < total_hours;i++)
-                {
-                    color1 = Color.FromArgb(0, 0, 0);
-                    pen1 = new Pen(color1);
-                    pen1.Width = 1;
-                    e.Graphics.DrawLine(pen1,
-                        this.TimeLineX1 + System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours),
-                        this.TimeLineY2 + 1,
-                        this.TimeLineX1 + System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours),
-                        this.TimeLineY2 + 7);
-
-                    tempString = (((this.StartTime.Hour + i) % 24) < 10) ? "0" + ((this.StartTime.Hour + i) % 24).ToString() : ((this.StartTime.Hour + i) % 24).ToString();
-                    tempString += ":00";
-
-                    e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours) - 12, 55);
-                }
-                #endregion
-
-
 
                     // drawing periods and metrics from Data
                     for (int i = 0; i < this.Data.Count; i++)
@@ -126,25 +144,6 @@ namespace TimeLine
                         }
                         #endregion
 
-                        #region drawing triangle
-                        if (i == this.Data.Count-1 && this.Data[i].is_last == true/* && this.Data[i].EndTime<this.EndTime*/)
-                        {
-                            color1 = Color.FromArgb(0, 0, 0);
-                            pen1 = new Pen(color1);
-                            pen1.Width = 1;
-                            Point[] points = new Point[3];
-                            points[0].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 0;
-                            points[0].Y = this.TimeLineY2 + 1;
-                            points[1].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 3;
-                            points[1].Y = this.TimeLineY2 + 4;
-                            points[2].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 3;
-                            points[2].Y = this.TimeLineY2 + 4;
-                            e.Graphics.DrawPolygon(pen1, points);
-                        }
-
-                        #endregion
-
-
                         #region drawing times
 
                         //tempString = (this.Data[i].StartTime.Hour < 10) ? "0" + this.Data[i].StartTime.Hour.ToString() : this.Data[i].StartTime.Hour.ToString();
@@ -181,23 +180,23 @@ namespace TimeLine
                         #endregion
                     }
 
-                // print start and end time
-                tempString = this.StartTime.ToString();
-                e.Graphics.DrawString(tempString, font_004, brush_004, this.TimeLineX1, this.TimeLineY2 + 20);
+                    #region drawing triangle
+                    if (this.Data.Count!=0 && this.Data[0].is_last == true && this.Data[0].EndTime < this.EndTime)
+                    {
+                        color1 = Color.FromArgb(0, 0, 0);
+                        pen1 = new Pen(color1);
+                        pen1.Width = 1;
+                        Point[] points = new Point[3];
+                        points[0].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 0;
+                        points[0].Y = this.TimeLineY2 + 1;
+                        points[1].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 3;
+                        points[1].Y = this.TimeLineY2 + 4;
+                        points[2].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 3;
+                        points[2].Y = this.TimeLineY2 + 4;
+                        e.Graphics.DrawPolygon(pen1, points);
+                    }
 
-                tempString = this.EndTime.ToString();
-                e.Graphics.DrawString(tempString, font_004, brush_004, this.TimeLineX2 - 117, this.TimeLineY2 + 20);
-
-                //draw title time rectangle and lines
-                color1 = Color.FromArgb(0, 0, 0);
-                pen1 = new Pen(color1);
-                pen1.Width = 1;
-                e.Graphics.DrawLine(pen1, this.TimeLineX1, this.TimeLineY2, this.TimeLineX1, this.TimeLineY2 + 20);
-                e.Graphics.DrawLine(pen1, this.TimeLineX2, this.TimeLineY2, this.TimeLineX2, this.TimeLineY2 + 20);
-
-                e.Graphics.DrawRectangle(pen1, this.TimeLineX1, this.TimeLineY2 + 20, 117, 14);
-                e.Graphics.DrawRectangle(pen1, this.TimeLineX2 - 117, this.TimeLineY2 + 20, 117, 14);
-
+                    #endregion
 
                 //drawing black border rectangle
                 color1 = Color.FromArgb(0, 0, 0);
@@ -210,23 +209,10 @@ namespace TimeLine
             #region  if (this.SetEmpty_property)
             if (this.SetEmpty_property)
             {
-                #region drawing chess field
+                
 
-                pen2 = new Pen(brush_001);
-                pen2.Width = this.TimeLineHeight;
-                e.Graphics.DrawLine(pen2, this.TimeLineX1, (this.TimeLineY1 + this.TimeLineHeight) / 2, this.TimeLineX2, (this.TimeLineY1 + this.TimeLineHeight) / 2);
-
-                #endregion
-
-                #region drawing black border rectangle
-                color1 = Color.FromArgb(0, 0, 0);
-                pen1 = new Pen(color1);
-                pen1.Width = 1;
-                e.Graphics.DrawRectangle(pen1, this.LeftMargin, 0, this.Width - (this.RightMargin + this.LeftMargin), this.TimeLineHeight);
-                #endregion
-
-                tempString = "There is no data";
-                e.Graphics.DrawString(tempString, font_005, brush_004, this.TimeLineX1 + 10, this.TimeLineY1 + 5);
+                tempString = "There is no data :(";
+                e.Graphics.DrawString(tempString, font_005, brush_004, this.TimeLineX1 + 10, this.TimeLineY1+3);
             }
             #endregion
 
