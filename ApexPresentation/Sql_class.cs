@@ -122,7 +122,7 @@ namespace ApexPresentation
                     }
                 }
         }
-        public Section[] GetTimeLineData(DateTime in_StartTime, DateTime in_EndTime)
+        public Section[] GetTimeLineData(DateTime in_StartTime, DateTime in_EndTime, DateTime in_CURR)
         {
             Section[] NULL_return = new Section[0];
             if (!this.Initialized) return NULL_return;
@@ -141,6 +141,7 @@ namespace ApexPresentation
                                 WHERE 
                                 [StartTime]>=CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND [StartTime]<CONVERT(DATETIME,'" + in_EndTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)" +
                                 "OR [EndTime]>=CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND [StartTime]<CONVERT(DATETIME,'" + in_EndTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)" +
+                                "OR [StartTime]<CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)<CONVERT(DATETIME,'" + in_CURR.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND [EndTime] IS NULL " +
                                 "ORDER BY [StartTime] desc";
 
 
@@ -207,9 +208,48 @@ namespace ApexPresentation
 
             return a1;
         }
+        public string GetCurrentStatus()
+        {
+            string return_string="";
+
+            String SQLQuery = @"SELECT DISTINCT
+                                [StatusDescription],
+                                [Language],
+                                [EndTime] 
+                                FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStateHistory]
+                                INNER JOIN
+                                [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates] AS COLORS
+                                ON [MachineState]=COLORS.StatusCode
+                                WHERE 
+                                [EndTime] IS NULL 
+                                AND ([Language]='ru-RU' OR [Language]='en-US')";
+
+            using (SqlConnection con = new SqlConnection(this.ConnectionString))
+            {
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                            reader.Read();
+                            return_string += reader.GetString(0);
+                            reader.Read();
+                            return_string += " - "+reader.GetString(0);
+                            
+
+                    }
+                }
+            }
+            
+
+            return return_string;
+        }
+
 
         #endregion
 
 
     }   
+
 }

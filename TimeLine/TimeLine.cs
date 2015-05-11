@@ -24,6 +24,7 @@ namespace TimeLine
             Color color2 = new Color();
             Pen pen1, pen2;
             System.Drawing.Font font_004 = new System.Drawing.Font("Arial", 9);
+            System.Drawing.Font font_005 = new System.Drawing.Font("Arial", 30);
             SolidBrush brush_004 = new SolidBrush(Color.Black);
             TextureBrush brush_001 = new TextureBrush(Properties.Resources.chess_texture);
             String tempString = "";
@@ -36,6 +37,8 @@ namespace TimeLine
             this.TimeLineX2 = this.Width - this.RightMargin;
             this.TimeLineY2 = this.TimeLineHeight;
             this.TimeLineWidth = this.TimeLineX2 - this.TimeLineX1;
+
+            #region  if (!this.SetEmpty_property)
 
             if (!this.SetEmpty_property)
             {
@@ -69,7 +72,7 @@ namespace TimeLine
                         this.TimeLineX1 + System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours),
                         this.TimeLineY2 + 7);
 
-                    tempString = ((this.StartTime.Hour + i) < 10) ? "0" + (this.StartTime.Hour + i).ToString() : (this.StartTime.Hour + i).ToString();
+                    tempString = (((this.StartTime.Hour + i) % 24) < 10) ? "0" + ((this.StartTime.Hour + i) % 24).ToString() : ((this.StartTime.Hour + i) % 24).ToString();
                     tempString += ":00";
 
                     e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours) - 12, 55);
@@ -124,7 +127,7 @@ namespace TimeLine
                         #endregion
 
                         #region drawing triangle
-                        if (i == this.Data.Count-1 && this.Data[i].is_last == true)
+                        if (i == this.Data.Count-1 && this.Data[i].is_last == true/* && this.Data[i].EndTime<this.EndTime*/)
                         {
                             color1 = Color.FromArgb(0, 0, 0);
                             pen1 = new Pen(color1);
@@ -202,8 +205,31 @@ namespace TimeLine
                 pen1.Width = 1;
                 e.Graphics.DrawRectangle(pen1, this.LeftMargin, 0, this.Width - (this.RightMargin + this.LeftMargin), this.TimeLineHeight);
             }
+            #endregion
 
-            
+            #region  if (this.SetEmpty_property)
+            if (this.SetEmpty_property)
+            {
+                #region drawing chess field
+
+                pen2 = new Pen(brush_001);
+                pen2.Width = this.TimeLineHeight;
+                e.Graphics.DrawLine(pen2, this.TimeLineX1, (this.TimeLineY1 + this.TimeLineHeight) / 2, this.TimeLineX2, (this.TimeLineY1 + this.TimeLineHeight) / 2);
+
+                #endregion
+
+                #region drawing black border rectangle
+                color1 = Color.FromArgb(0, 0, 0);
+                pen1 = new Pen(color1);
+                pen1.Width = 1;
+                e.Graphics.DrawRectangle(pen1, this.LeftMargin, 0, this.Width - (this.RightMargin + this.LeftMargin), this.TimeLineHeight);
+                #endregion
+
+                tempString = "There is no data";
+                e.Graphics.DrawString(tempString, font_005, brush_004, this.TimeLineX1 + 10, this.TimeLineY1 + 5);
+            }
+            #endregion
+
         }
 
         private void TimeLine_Resize(object sender, EventArgs e)

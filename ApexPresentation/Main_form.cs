@@ -24,7 +24,13 @@ namespace ApexPresentation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            DateTime BStartTime = new DateTime(2015, 04, 24, 18, 00, 00);
+            //DateTime BStartTime = new DateTime(2015, 04, 24, 18, 00, 00);
+            //DateTime BEndTime = new DateTime(2015, 04, 25, 00, 00, 00);
+
+            //DateTime BStartTime = new DateTime(2015, 04, 28, 18, 00, 00);
+            //DateTime BEndTime = new DateTime(2015, 04, 28, 00, 00, 00);
+
+            DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             DateTime BEndTime = new DateTime(2015, 04, 25, 00, 00, 00);
             
             DateTime Period2Start = new DateTime(2015, 04, 12, 9, 00, 00);
@@ -35,12 +41,12 @@ namespace ApexPresentation
 
             label1.Text = sql_obj.GetOperatorName();
 
-            Section[] a1 = sql_obj.GetTimeLineData(BStartTime, BEndTime);
+            //Section[] a1 = sql_obj.GetTimeLineData(BStartTime, BEndTime);
 
-            TimeLineShow(timeLine1, BStartTime, BEndTime, a1);
+            TimeLineShow(timeLine1, BStartTime);
+            label5.Text = sql_obj.GetCurrentStatus();
 
-            
-
+            this.Text += " (serpikov.sergey@gmail.com)";
         }
 
 
@@ -72,42 +78,62 @@ namespace ApexPresentation
 
         private void button1_Click(object sender, EventArgs e)
         {
+            TimeLineShow(timeLine1,dateTimePicker1.Value);
+        }
+ 
+        private void TimeLineShow(TimeLine.TimeLine in_control,DateTime in_StartTime)
+        {
             TimeSpan t1 = new TimeSpan(8, 0, 0);
             TimeSpan t2 = new TimeSpan(12, 0, 0);
-            DateTime T1, T2;
+
+            DateTime T1, T2, CURR;
             Section[] a1;
+
+            CURR = new DateTime(2015, 04, 29, 23, 00, 00);
 
             if (radioButton1.Checked)
             {
-                T1 = dateTimePicker1.Value + t1;
-                T2 = dateTimePicker1.Value + t1 + t2;
+                T1 = in_StartTime + t1;
+                T2 = in_StartTime + t1 + t2;
             }
             else
-            {
-                T1 = dateTimePicker1.Value + t1 + t2;
-                T2 = dateTimePicker1.Value + t1 + t2 + t2;
+            { 
+                T1 = in_StartTime + t1 + t2;
+                T2 = in_StartTime + t1 + t2 + t2;
             }
 
-            a1 = sql_obj.GetTimeLineData(T1, T2);
 
-            TimeLineShow(timeLine1, T1, T2, a1);
-        }
- 
-        private void TimeLineShow(TimeLine.TimeLine in_control, DateTime in_StartTime, DateTime in_EndTime, Section[] in_sections)
-        {
+            a1 = sql_obj.GetTimeLineData(T1, T2, CURR);
+
             in_control.SetEmpty();
-            if (in_sections.Length != 0)
+            if (a1.Length != 0)
             {
-                timeLine1.AddBasePeriod(in_StartTime, in_EndTime);
-                timeLine1.AddPeriod(in_sections[in_sections.Length - 1].colorRed, in_sections[in_sections.Length - 1].colorGreen, in_sections[in_sections.Length - 1].colorBlue, in_StartTime, in_sections[in_sections.Length - 1].StartTime, false);
-                for (int i = in_sections.Length - 2; i > 0; i--)
+                in_control.AddBasePeriod(T1, T2, false);
+                //not empty left
+                if (a1[a1.Length - 1].StartTime < T1 && a1[a1.Length - 1].EndTime!=DateTime.MinValue)
+                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, a1[a1.Length - 1].EndTime, false);
+                //empty left
+                if (a1[a1.Length - 1].StartTime >= T1)
+                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, a1[a1.Length - 1].EndTime, false);
+                for (int i = a1.Length - 2; i > 0; i--)
                 {
-                    timeLine1.AddPeriod(in_sections[i].colorRed, in_sections[i].colorGreen, in_sections[i].colorBlue, in_sections[i].StartTime, in_sections[i].EndTime, false);
+                    in_control.AddPeriod(a1[i].colorRed, a1[i].colorGreen, a1[i].colorBlue, a1[i].StartTime, a1[i].EndTime, false);
                 }
                 bool temp_is_last = false;
-                if (in_sections[0].EndTime == DateTime.MinValue) temp_is_last = true;
-                timeLine1.AddPeriod(in_sections[0].colorRed, in_sections[0].colorGreen, in_sections[0].colorBlue, in_sections[0].StartTime, /**/in_sections[0].StartTime.AddHours(1)/**//*in_EndTime*/, temp_is_last);
+                //for last time
+                if (a1[0].EndTime == DateTime.MinValue) temp_is_last = true;
+                
+                if (temp_is_last && T2 < CURR)
+                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, T2, temp_is_last);
+                if (temp_is_last && T2 > CURR && CURR>T1 && a1[0].StartTime<T1)
+                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, CURR, temp_is_last);
             }
+
+            if (a1.Length == 0)
+            {
+                in_control.AddBasePeriod(T1, T2, true);
+            }
+
             in_control.Refresh();
         }
 
@@ -116,5 +142,31 @@ namespace ApexPresentation
             Application.Exit();
         }
 
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            TimeLineShow(timeLine1, dateTimePicker1.Value);
+        }
+
+        private void radioButton1_MouseClick(object sender, MouseEventArgs e)
+        {
+            TimeLineShow(timeLine1, dateTimePicker1.Value);
+        }
+
+        private void radioButton2_MouseClick(object sender, MouseEventArgs e)
+        {
+            TimeLineShow(timeLine1, dateTimePicker1.Value);
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }

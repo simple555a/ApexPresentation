@@ -63,13 +63,13 @@ namespace TimeLine
             return true;
         }
 
-        public bool AddBasePeriod(DateTime in_PeriodStartTime, DateTime in_PeriodEndTime)
+        public bool AddBasePeriod(DateTime in_PeriodStartTime, DateTime in_PeriodEndTime, bool forsed_SetEmptyProperty)
         {
 
             this.StartTime = in_PeriodStartTime;
             this.EndTime = in_PeriodEndTime;
 
-            this.SetEmpty_property = false;
+            this.SetEmpty_property = forsed_SetEmptyProperty;
 
             return true;
         }
