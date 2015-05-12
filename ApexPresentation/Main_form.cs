@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define real_time
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +11,8 @@ using TimeLine;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+
+
 
 namespace ApexPresentation
 {
@@ -30,7 +34,7 @@ namespace ApexPresentation
             //DateTime BStartTime = new DateTime(2015, 04, 28, 18, 00, 00);
             //DateTime BEndTime = new DateTime(2015, 04, 28, 00, 00, 00);
 
-            DateTime BStartTime = new DateTime(2015, 04, 28, 00, 00, 00);
+            DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             //DateTime BEndTime = new DateTime(2015, 04, 25, 00, 00, 00);
             
             DateTime Period2Start = new DateTime(2015, 04, 12, 9, 00, 00);
@@ -40,7 +44,12 @@ namespace ApexPresentation
 
 
             label1.Text = sql_obj.GetOperatorName();
-            TimeLineShow(timeLine1, /*BStartTime*/System.DateTime.Now.Date);
+
+            DateTime temp_000 = BStartTime;
+#if real_time
+            temp_000 = System.DateTime.Now.Date;
+#endif
+            TimeLineShow(timeLine1, temp_000);
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 
@@ -87,8 +96,10 @@ namespace ApexPresentation
             DateTime T1, T2, CURR;
             Section[] a1;
 
-            //CURR = new DateTime(2015, 04, 29, 23, 00, 00);
+            CURR = new DateTime(2015, 04, 24, 19, 39, 00);
+#if real_time
             CURR = DateTime.Now;
+#endif
 
             if (radioButton1.Checked)
             {
@@ -109,7 +120,7 @@ namespace ApexPresentation
             {
                 in_control.AddBasePeriod(T1, T2, false);
                 //not empty left
-                if (a1[a1.Length - 1].StartTime < T1 && a1[a1.Length - 1].EndTime!=DateTime.MinValue)
+                if (a1[a1.Length - 1].StartTime < T1 && a1[a1.Length - 1].EndTime != DateTime.MinValue)
                     in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, a1[a1.Length - 1].EndTime, false);
                 //empty left
                 if (a1[a1.Length - 1].StartTime >= T1)
@@ -126,8 +137,8 @@ namespace ApexPresentation
                     in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, T2, temp_is_last);
                 if (temp_is_last && T2 < CURR && a1[0].StartTime<=T1)
                     in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, T2, temp_is_last);
-                if (temp_is_last && T1<CURR && CURR<T2)
-                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, CURR, temp_is_last);
+                if (temp_is_last && T1 < CURR && CURR < T2)
+                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, CURR, temp_is_last);
             }
 
             if (a1.Length == 0)

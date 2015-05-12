@@ -189,7 +189,11 @@ namespace ApexPresentation
                         {
                             reader.Read();
                             a1[i] = new Section();
-                            a1[i].StartTime = reader.GetDateTime(2);
+                            if (reader.GetDateTime(2) < in_StartTime)
+                                a1[i].StartTime = in_StartTime;
+                            else
+                                a1[i].StartTime = reader.GetDateTime(2);
+
                             try
                             {
                                 a1[i].EndTime = reader.GetDateTime(3);

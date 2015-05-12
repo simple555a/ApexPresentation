@@ -6,6 +6,8 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
+
+
 namespace TimeLine
 {
     public partial class TimeLine : UserControl
@@ -99,102 +101,120 @@ namespace TimeLine
                 //000. calculating sum of Times
                 double SumOfTimesInData = System.Convert.ToDouble(this.EndTime.Subtract(this.StartTime).TotalSeconds);
 
-                    // drawing periods and metrics from Data
-                    for (int i = 0; i < this.Data.Count; i++)
-                    {
-
-
-                        #region drawing color periods
-                        color1 = Color.FromArgb(this.Data[i].colorRed, this.Data[i].colorGreen, this.Data[i].colorBlue);
-                        pen1 = new Pen(color1);
-                        pen1.Width = this.TimeLineHeight;
-                        
-                        if (i<this.Data.Count-1)
-                            e.Graphics.DrawLine(pen1,
-                                this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
-                                System.Convert.ToInt16(this.TimeLineHeight / 2),
-                                this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i + 1].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
-                                System.Convert.ToInt16(this.TimeLineHeight / 2));
-                        if (i == this.Data.Count - 1 && this.Data[i].is_last != true)
-                            e.Graphics.DrawLine(pen1,
-                            this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
-                            System.Convert.ToInt16(this.TimeLineHeight / 2),
-                            this.TimeLineX1 + System.Convert.ToInt16((((this.EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
-                            System.Convert.ToInt16(this.TimeLineHeight / 2)); 
-                        if (i == this.Data.Count - 1 && this.Data[i].is_last == true)
-                            e.Graphics.DrawLine(pen1,
-                            this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
-                            System.Convert.ToInt16(this.TimeLineHeight / 2),
-                            this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
-                            System.Convert.ToInt16(this.TimeLineHeight / 2));
-                        
-                        #endregion
-
-                        #region drawing metrics
-                        if (i < this.Data.Count )
+                #region drawing triangle
+                if (this.Data[this.Data.Count - 1].is_last == true && this.Data[this.Data.Count - 1].EndTime < this.EndTime)
                         {
                             color1 = Color.FromArgb(0, 0, 0);
                             pen1 = new Pen(color1);
                             pen1.Width = 1;
-                            e.Graphics.DrawLine(pen1,
-                                this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
-                                this.TimeLineY2 + 0,
-                                this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
-                                this.TimeLineY2 + 1);
+                            Point[] points = new Point[3];
+                            points[0].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[this.Data.Count - 1].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 0;
+                            points[0].Y = this.TimeLineY2 + 1;
+                            points[1].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[this.Data.Count - 1].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 3;
+                            points[1].Y = this.TimeLineY2 + 4;
+                            points[2].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[this.Data.Count - 1].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 3;
+                            points[2].Y = this.TimeLineY2 + 4;
+                            e.Graphics.DrawPolygon(pen1, points);
                         }
-                        #endregion
-
-                        #region drawing times
-
-                        //tempString = (this.Data[i].StartTime.Hour < 10) ? "0" + this.Data[i].StartTime.Hour.ToString() : this.Data[i].StartTime.Hour.ToString();
-                        //tempString += ":";
-                        //tempString += (this.Data[i].StartTime.Minute < 10) ? "0" + this.Data[i].StartTime.Minute.ToString() : this.Data[i].StartTime.Minute.ToString();
-
-
-
-                        ////print first time from Data
-                        //if (i == 0)
-                        //{
-                        //    if (System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) > 20 && i < this.Data.Count)
-                        //    {
-                        //        e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 13, 55);
-                        //    }
-                        //}
-                        ////print last time from Data
-                        //if (i == this.Data.Count - 1)
-                        //{
-                        //    if (System.Convert.ToInt16((((this.EndTime - this.Data[i].StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) > 15 && i < this.Data.Count)
-                        //    {
-                        //        e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 13, 55);
-                        //    }
-                        //}
-                        ////print intermediate times from Data
-                        //if (i > 0 && i < this.Data.Count - 1)
-                        //{
-                        //    if (System.Convert.ToInt16((((this.Data[i].StartTime - this.Data[i - 1].StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) > 36 && i < this.Data.Count)
-                        //    {
-                        //        e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 12, 55);
-                        //    }
-                        //}
 
                         #endregion
-                    }
 
-                    #region drawing triangle
-                    if (this.Data.Count!=0 && this.Data[0].is_last == true && this.Data[0].EndTime < this.EndTime)
+                // drawing periods and metrics from Data
+                for (int i = 0; i < this.Data.Count; i++)
+                {
+
+
+                    #region drawing color periods
+                    color1 = Color.FromArgb(this.Data[i].colorRed, this.Data[i].colorGreen, this.Data[i].colorBlue);
+                    pen1 = new Pen(color1);
+                    pen1.Width = this.TimeLineHeight;
+                        
+                    if (i<this.Data.Count-1)
+                        e.Graphics.DrawLine(pen1,
+                            this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
+                            System.Convert.ToInt16(this.TimeLineHeight / 2),
+                            this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i + 1].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
+                            System.Convert.ToInt16(this.TimeLineHeight / 2));
+                    if (i == this.Data.Count - 1 && this.Data[i].is_last != true)
+                        e.Graphics.DrawLine(pen1,
+                        this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
+                        System.Convert.ToInt16(this.TimeLineHeight / 2),
+                        this.TimeLineX1 + System.Convert.ToInt16((((this.EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
+                        System.Convert.ToInt16(this.TimeLineHeight / 2)); 
+                    if (i == this.Data.Count - 1 && this.Data[i].is_last == true)
+                        e.Graphics.DrawLine(pen1,
+                        this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
+                        System.Convert.ToInt16(this.TimeLineHeight / 2),
+                        this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
+                        System.Convert.ToInt16(this.TimeLineHeight / 2));
+                        
+                    #endregion
+
+                    #region drawing metrics
+                    if (i < this.Data.Count )
                     {
                         color1 = Color.FromArgb(0, 0, 0);
                         pen1 = new Pen(color1);
                         pen1.Width = 1;
-                        Point[] points = new Point[3];
-                        points[0].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 0;
-                        points[0].Y = this.TimeLineY2 + 1;
-                        points[1].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 3;
-                        points[1].Y = this.TimeLineY2 + 4;
-                        points[2].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 3;
-                        points[2].Y = this.TimeLineY2 + 4;
-                        e.Graphics.DrawPolygon(pen1, points);
+                        e.Graphics.DrawLine(pen1,
+                            this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
+                            this.TimeLineY2 + 0,
+                            this.TimeLineX1 + System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData),
+                            this.TimeLineY2 + 1);
                     }
+                    #endregion
+
+                    #region drawing times
+
+                    //tempString = (this.Data[i].StartTime.Hour < 10) ? "0" + this.Data[i].StartTime.Hour.ToString() : this.Data[i].StartTime.Hour.ToString();
+                    //tempString += ":";
+                    //tempString += (this.Data[i].StartTime.Minute < 10) ? "0" + this.Data[i].StartTime.Minute.ToString() : this.Data[i].StartTime.Minute.ToString();
+
+
+
+                    ////print first time from Data
+                    //if (i == 0)
+                    //{
+                    //    if (System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) > 20 && i < this.Data.Count)
+                    //    {
+                    //        e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 13, 55);
+                    //    }
+                    //}
+                    ////print last time from Data
+                    //if (i == this.Data.Count - 1)
+                    //{
+                    //    if (System.Convert.ToInt16((((this.EndTime - this.Data[i].StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) > 15 && i < this.Data.Count)
+                    //    {
+                    //        e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 13, 55);
+                    //    }
+                    //}
+                    ////print intermediate times from Data
+                    //if (i > 0 && i < this.Data.Count - 1)
+                    //{
+                    //    if (System.Convert.ToInt16((((this.Data[i].StartTime - this.Data[i - 1].StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) > 36 && i < this.Data.Count)
+                    //    {
+                    //        e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16((((this.Data[i].StartTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 12, 55);
+                    //    }
+                    //}
+
+                    #endregion
+                }
+
+                #region drawing triangle
+                if (this.Data.Count!=0 && this.Data[0].is_last == true && this.Data[0].EndTime < this.EndTime)
+                {
+                    color1 = Color.FromArgb(0, 0, 0);
+                    pen1 = new Pen(color1);
+                    pen1.Width = 1;
+                    Point[] points = new Point[3];
+                    points[0].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 0;
+                    points[0].Y = this.TimeLineY2 + 1;
+                    points[1].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) + 3;
+                    points[1].Y = this.TimeLineY2 + 4;
+                    points[2].X = this.TimeLineX1 + System.Convert.ToInt16((((this.Data[0].EndTime - this.StartTime).TotalSeconds) * this.TimeLineWidth) / SumOfTimesInData) - 3;
+                    points[2].Y = this.TimeLineY2 + 4;
+                    e.Graphics.DrawPolygon(pen1, points);
+                }
 
                     #endregion
 
