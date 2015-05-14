@@ -189,9 +189,6 @@ namespace ApexPresentation
                         {
                             reader.Read();
                             a1[i] = new Section();
-                            if (reader.GetDateTime(2) < in_StartTime)
-                                a1[i].StartTime = in_StartTime;
-                            else
                                 a1[i].StartTime = reader.GetDateTime(2);
 
                             try

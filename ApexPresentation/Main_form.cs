@@ -1,4 +1,4 @@
-﻿#define real_time
+﻿//#define real_time
 
 using System;
 using System.Collections.Generic;
@@ -28,28 +28,18 @@ namespace ApexPresentation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //DateTime BStartTime = new DateTime(2015, 04, 24, 18, 00, 00);
-            //DateTime BEndTime = new DateTime(2015, 04, 25, 00, 00, 00);
-
-            //DateTime BStartTime = new DateTime(2015, 04, 28, 18, 00, 00);
-            //DateTime BEndTime = new DateTime(2015, 04, 28, 00, 00, 00);
 
             DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
-            //DateTime BEndTime = new DateTime(2015, 04, 25, 00, 00, 00);
             
-            DateTime Period2Start = new DateTime(2015, 04, 12, 9, 00, 00);
-            DateTime Period3Start = new DateTime(2015, 04, 12, 9, 30, 00);
-            DateTime Period4Start = new DateTime(2015, 04, 12, 18, 00, 00);
-            DateTime Period5Start = new DateTime(2015, 04, 12, 19, 48, 00);
-
-
             label1.Text = sql_obj.GetOperatorName();
 
-            DateTime temp_000 = BStartTime;
+            dateTimePicker1.Value = BStartTime;
 #if real_time
-            temp_000 = System.DateTime.Now.Date;
+            dateTimePicker1.Value = System.DateTime.Now.Date;
 #endif
-            TimeLineShow(timeLine1, temp_000);
+            
+
+            TimeLineShow(timeLine1, dateTimePicker1.Value);
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 
@@ -96,7 +86,7 @@ namespace ApexPresentation
             DateTime T1, T2, CURR;
             Section[] a1;
 
-            CURR = new DateTime(2015, 04, 24, 19, 39, 00);
+            CURR = new DateTime(2015, 04, 25, 19, 39, 00);
 #if real_time
             CURR = DateTime.Now;
 #endif
@@ -137,7 +127,9 @@ namespace ApexPresentation
                     in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, T2, temp_is_last);
                 if (temp_is_last && T2 < CURR && a1[0].StartTime<=T1)
                     in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, T2, temp_is_last);
-                if (temp_is_last && T1 < CURR && CURR < T2)
+                if (temp_is_last && T1 < CURR && CURR < T2 && a1[0].StartTime < T1)
+                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, CURR, temp_is_last);
+                if (temp_is_last && T1 < CURR && CURR < T2 && a1[0].StartTime >= T1)
                     in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, CURR, temp_is_last);
             }
 
@@ -147,6 +139,11 @@ namespace ApexPresentation
             }
 
             in_control.Refresh();
+        }
+
+        private void DataGridShow()
+        {
+
         }
 
         private void exitToolStripMenuItem_Click_1(object sender, EventArgs e)

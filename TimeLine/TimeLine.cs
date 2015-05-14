@@ -102,7 +102,9 @@ namespace TimeLine
                 double SumOfTimesInData = System.Convert.ToDouble(this.EndTime.Subtract(this.StartTime).TotalSeconds);
 
                 #region drawing triangle
-                if (this.Data[this.Data.Count - 1].is_last == true && this.Data[this.Data.Count - 1].EndTime < this.EndTime)
+                if (this.Data.Count!=0                                         
+                    && this.Data[this.Data.Count - 1].is_last == true 
+                    && this.Data[this.Data.Count - 1].EndTime < this.EndTime)
                         {
                             color1 = Color.FromArgb(0, 0, 0);
                             pen1 = new Pen(color1);
