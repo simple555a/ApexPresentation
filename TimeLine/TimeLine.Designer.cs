@@ -77,7 +77,7 @@ namespace TimeLine
         public void SetEmpty()
         {
             this.StartTime = DateTime.MinValue;
-            this.EndTime = DateTime.MinValue;
+            this.EndTime = DateTime.MaxValue;
             this.TimeDimension = 0;
             this.LeftMargin = 0;
             this.RightMargin = 0;

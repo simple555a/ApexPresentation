@@ -197,7 +197,7 @@ namespace ApexPresentation
                             }
                             catch
                             {
-                                a1[i].EndTime = DateTime.MinValue;
+                                a1[i].EndTime = DateTime.MaxValue;
                             }
                             a1[i].colorBlue = Convert.ToByte(reader.GetInt64(1) >> 16);
                             a1[i].colorGreen = Convert.ToByte((reader.GetInt64(1) >> 8) & 255);

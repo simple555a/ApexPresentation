@@ -39,9 +39,10 @@ namespace ApexPresentation
 #endif
             
 
-            TimeLineShow(timeLine1, dateTimePicker1.Value);
+            TimeLinePresenter(timeLine1, dateTimePicker1.Value);
+            DataGridShow(dataGridView1);
             label5.Text = sql_obj.GetCurrentStatus();
-            label5.BackColor = sql_obj.GetCurrentStatusColor();
+            //label5.BackColor = sql_obj.GetCurrentStatusColor();
 
             this.Text += " (serpikov.sergey@gmail.com)";
         }
@@ -75,10 +76,10 @@ namespace ApexPresentation
 
         private void button1_Click(object sender, EventArgs e)
         {
-            TimeLineShow(timeLine1,dateTimePicker1.Value);
+            TimeLinePresenter(timeLine1,dateTimePicker1.Value);
         }
  
-        private void TimeLineShow(TimeLine.TimeLine in_control,DateTime in_StartTime)
+        private void TimeLinePresenter(TimeLine.TimeLine in_control,DateTime in_StartTime)
         {
             TimeSpan t1 = new TimeSpan(8, 0, 0);
             TimeSpan t2 = new TimeSpan(12, 0, 0);
@@ -86,7 +87,7 @@ namespace ApexPresentation
             DateTime T1, T2, CURR;
             Section[] a1;
 
-            CURR = new DateTime(2015, 04, 25, 19, 39, 00);
+            CURR = new DateTime(2015, 04, 24, 19, 39, 00);
 #if real_time
             CURR = DateTime.Now;
 #endif
@@ -110,7 +111,7 @@ namespace ApexPresentation
             {
                 in_control.AddBasePeriod(T1, T2, false);
                 //not empty left
-                if (a1[a1.Length - 1].StartTime < T1 && a1[a1.Length - 1].EndTime != DateTime.MinValue)
+                if (a1[a1.Length - 1].StartTime < T1 && a1[a1.Length - 1].EndTime != DateTime.MaxValue)
                     in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, a1[a1.Length - 1].EndTime, false);
                 //empty left
                 if (a1[a1.Length - 1].StartTime >= T1)
@@ -121,7 +122,7 @@ namespace ApexPresentation
                 }
                 bool temp_is_last = false;
                 //for last time
-                if (a1[0].EndTime == DateTime.MinValue) temp_is_last = true;
+                if (a1[0].EndTime == DateTime.MaxValue) temp_is_last = true;
 
                 if (temp_is_last && T2 < CURR && a1[0].StartTime>T1)
                     in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, T2, temp_is_last);
@@ -141,7 +142,12 @@ namespace ApexPresentation
             in_control.Refresh();
         }
 
-        private void DataGridShow()
+        private void DataGridShow(DataGridView in_control)
+        {
+            in_control.Rows[0].Cells[0].Value="1";
+        }
+
+        private void DataGridPresenter()
         {
 
         }
@@ -153,17 +159,17 @@ namespace ApexPresentation
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            TimeLineShow(timeLine1, dateTimePicker1.Value);
+            TimeLinePresenter(timeLine1, dateTimePicker1.Value);
         }
 
         private void radioButton1_MouseClick(object sender, MouseEventArgs e)
         {
-            TimeLineShow(timeLine1, dateTimePicker1.Value);
+            TimeLinePresenter(timeLine1, dateTimePicker1.Value);
         }
 
         private void radioButton2_MouseClick(object sender, MouseEventArgs e)
         {
-            TimeLineShow(timeLine1, dateTimePicker1.Value);
+            TimeLinePresenter(timeLine1, dateTimePicker1.Value);
         }
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
