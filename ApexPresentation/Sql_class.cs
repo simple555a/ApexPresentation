@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using System.Windows.Forms;
 using System.Drawing;
 using TimeLine;
+using ApexPresentation.TYPES;
 
 namespace ApexPresentation
 {
@@ -90,6 +91,7 @@ namespace ApexPresentation
         {
             if (!this.Initialized) return "***************";
 
+            //TODO: OPL.wc_name = 'BAA21' - need changed
             String SQLQuery = @"SELECT 
                             OPL.[user_name]
                             ,AU.[first_name]
@@ -143,7 +145,7 @@ namespace ApexPresentation
                                 [StartTime]>=CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND [StartTime]<CONVERT(DATETIME,'" + in_EndTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)" +
                                 "OR [EndTime]>=CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND [StartTime]<CONVERT(DATETIME,'" + in_EndTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)" +
                                 "OR [StartTime]<CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)<CONVERT(DATETIME,'" + in_CURR.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND [EndTime] IS NULL " +
-                                "ORDER BY [StartTime] desc";
+                                "ORDER BY [StartTime] asc";
 
 
             String SQLQuery_getCount = @"SELECT DISTINCT
@@ -156,7 +158,7 @@ namespace ApexPresentation
                                     ON [MachineState]=COLORS.StatusCode
                                     WHERE 
                                     [StartTime] BETWEEN CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND CONVERT(DATETIME,'" + in_EndTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)" +
-                                    "ORDER BY [StartTime] desc";
+                                    "ORDER BY [StartTime] asc";
 
             //get count
             Int32 RecordsCount=0;
@@ -287,6 +289,69 @@ namespace ApexPresentation
 
 
             return Color.FromArgb(colorRed,colorGreen,colorBlue);
+        }
+        public DataGridRow[] GetTableStatistic()
+        {
+            DataGridRow[] return_value;
+            return_value = new DataGridRow[1];
+            
+
+            String SQLQuery = @"DECLARE @TB1 table(MachineState int, ColorValue int, StartTime datetime, EndTime Datetime);
+
+INSERT INTO @TB1 
+SELECT DISTINCT
+                                [MachineState]
+                                ,COLORS.[ColorValue] 
+                                ,[StartTime]
+                                ,[EndTime]
+                              
+                                FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStateHistory]
+                                INNER JOIN
+                                [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates] AS COLORS
+                                ON [MachineState]=COLORS.StatusCode 
+                                WHERE 
+                                [StartTime]>=CONVERT(DATETIME,'2015-04-24 08:00:00',120) AND [StartTime]<CONVERT(DATETIME,'2015-04-24 20:00:00',120)
+                                OR [EndTime]>=CONVERT(DATETIME,'2015-04-24 08:00:00',120) AND [StartTime]<CONVERT(DATETIME,'2015-04-24 20:00:00',120)
+                                OR [StartTime]<CONVERT(DATETIME,'2015-04-24 08:00:00',120) AND CONVERT(DATETIME,'2015-04-24 08:00:00',120)<CONVERT(DATETIME,'2015-04-24 19:39:00',120) AND [EndTime] IS NULL
+                                ORDER BY [StartTime] asc
+                                
+DECLARE @TB2 table(MachineState int, DateDifference int);
+
+INSERT INTO @TB2  
+SELECT 
+					[MachineState]
+					 ,SUM(DATEDIFF(MINUTE,[StartTime],ISNULL([EndTime],CONVERT(DATETIME,'2015-04-24 19:39:00',120)))) AS DateDifference
+					FROM @TB1
+					GROUP BY  [MachineState]
+					
+SELECT DISTINCT
+		[MachineState]
+		,COLORS.ColorValue
+		,[DateDifference]
+		FROM @TB2 
+		LEFT JOIN
+                                [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates] AS COLORS
+                                ON [MachineState]=COLORS.StatusCode                        
+
+";
+
+            using (SqlConnection con = new SqlConnection(this.ConnectionString))
+            {
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+
+                        }
+                    }
+                }
+            }
+
+            return return_value;
         }
 
         #endregion

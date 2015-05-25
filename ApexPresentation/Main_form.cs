@@ -42,7 +42,7 @@ namespace ApexPresentation
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridShow(dataGridView1);
             label5.Text = sql_obj.GetCurrentStatus();
-            //label5.BackColor = sql_obj.GetCurrentStatusColor();
+            label5.BackColor = sql_obj.GetCurrentStatusColor();
 
             this.Text += " (serpikov.sergey@gmail.com)";
         }
@@ -107,33 +107,62 @@ namespace ApexPresentation
             a1 = sql_obj.GetTimeLineData(T1, T2, CURR);
 
             in_control.SetEmpty();
+
+            //for DESC sql order
+            //if (a1.Length != 0)
+            //{
+            //    in_control.AddBasePeriod(T1, T2, false);
+            //    //not empty left
+            //    if (a1[a1.Length - 1].StartTime < T1 && a1[a1.Length - 1].EndTime != DateTime.MaxValue)
+            //        in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, a1[a1.Length - 1].EndTime, false);
+            //    //empty left
+            //    if (a1[a1.Length - 1].StartTime >= T1)
+            //        in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, a1[a1.Length - 1].EndTime, false);
+            //    for (int i = a1.Length - 2; i > 0; i--)
+            //    {
+            //        in_control.AddPeriod(a1[i].colorRed, a1[i].colorGreen, a1[i].colorBlue, a1[i].StartTime, a1[i].EndTime, false);
+            //    }
+            //    bool temp_is_last = false;
+            //    //for last time
+            //    if (a1[0].EndTime == DateTime.MaxValue) temp_is_last = true;
+
+            //    if (temp_is_last && T2 < CURR && a1[0].StartTime>T1)
+            //        in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, T2, temp_is_last);
+            //    if (temp_is_last && T2 < CURR && a1[0].StartTime<=T1)
+            //        in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, T2, temp_is_last);
+            //    if (temp_is_last && T1 < CURR && CURR < T2 && a1[0].StartTime < T1)
+            //        in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, CURR, temp_is_last);
+            //    if (temp_is_last && T1 < CURR && CURR < T2 && a1[0].StartTime >= T1)
+            //        in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, CURR, temp_is_last);
+            //}
+
+            //for ASC sql order
             if (a1.Length != 0)
             {
                 in_control.AddBasePeriod(T1, T2, false);
                 //not empty left
-                if (a1[a1.Length - 1].StartTime < T1 && a1[a1.Length - 1].EndTime != DateTime.MaxValue)
-                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, a1[a1.Length - 1].EndTime, false);
+                if (a1[0].StartTime < T1 && a1[0].EndTime != DateTime.MaxValue)
+                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, a1[0].EndTime, false);
                 //empty left
-                if (a1[a1.Length - 1].StartTime >= T1)
-                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, a1[a1.Length - 1].EndTime, false);
-                for (int i = a1.Length - 2; i > 0; i--)
+                if (a1[0].StartTime >= T1)
+                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, a1[0].EndTime, false);
+                for (int i = 1; i < a1.Length-1; i++)
                 {
                     in_control.AddPeriod(a1[i].colorRed, a1[i].colorGreen, a1[i].colorBlue, a1[i].StartTime, a1[i].EndTime, false);
                 }
                 bool temp_is_last = false;
                 //for last time
-                if (a1[0].EndTime == DateTime.MaxValue) temp_is_last = true;
+                if (a1[a1.Length - 1].EndTime == DateTime.MaxValue) temp_is_last = true;
 
-                if (temp_is_last && T2 < CURR && a1[0].StartTime>T1)
-                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, T2, temp_is_last);
-                if (temp_is_last && T2 < CURR && a1[0].StartTime<=T1)
-                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, T2, temp_is_last);
-                if (temp_is_last && T1 < CURR && CURR < T2 && a1[0].StartTime < T1)
-                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, T1, CURR, temp_is_last);
-                if (temp_is_last && T1 < CURR && CURR < T2 && a1[0].StartTime >= T1)
-                    in_control.AddPeriod(a1[0].colorRed, a1[0].colorGreen, a1[0].colorBlue, a1[0].StartTime, CURR, temp_is_last);
+                if (temp_is_last && T2 < CURR && a1[a1.Length - 1].StartTime > T1)
+                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, T2, temp_is_last);
+                if (temp_is_last && T2 < CURR && a1[a1.Length - 1].StartTime <= T1)
+                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, T2, temp_is_last);
+                if (temp_is_last && T1 < CURR && CURR < T2 && a1[a1.Length - 1].StartTime < T1)
+                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, CURR, temp_is_last);
+                if (temp_is_last && T1 < CURR && CURR < T2 && a1[a1.Length - 1].StartTime >= T1)
+                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, CURR, temp_is_last);
             }
-
             if (a1.Length == 0)
             {
                 in_control.AddBasePeriod(T1, T2, true);
@@ -144,7 +173,11 @@ namespace ApexPresentation
 
         private void DataGridShow(DataGridView in_control)
         {
-            in_control.Rows[0].Cells[0].Value="1";
+            //in_control.Rows[0].Cells[0].Value="1";
+            DataGridViewRow r0 = new DataGridViewRow();
+            DataGridViewCell c0;
+            
+            
         }
 
         private void DataGridPresenter()
