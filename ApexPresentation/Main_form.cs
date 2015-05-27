@@ -176,6 +176,7 @@ namespace ApexPresentation
             //in_control.Rows[0].Cells[0].Value="1";
             DataGridViewRow r0 = new DataGridViewRow();
             DataGridViewCell c0;
+            //TimeSpan a1 = new TimeSpan()
             
             
         }
