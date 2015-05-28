@@ -11,6 +11,7 @@ using TimeLine;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using ApexPresentation.TYPES;
 
 
 
@@ -37,10 +38,9 @@ namespace ApexPresentation
 #if real_time
             dateTimePicker1.Value = System.DateTime.Now.Date;
 #endif
-            
 
-            TimeLinePresenter(timeLine1, dateTimePicker1.Value);
-            DataGridShow(dataGridView1);
+
+            GlobalPresenter();
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 
@@ -53,20 +53,7 @@ namespace ApexPresentation
             this.Close();
         }
 
-        private void label14_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
+       
 
         private void connectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -76,7 +63,7 @@ namespace ApexPresentation
 
         private void button1_Click(object sender, EventArgs e)
         {
-            TimeLinePresenter(timeLine1,dateTimePicker1.Value);
+            GlobalPresenter();
         }
  
         private void TimeLinePresenter(TimeLine.TimeLine in_control,DateTime in_StartTime)
@@ -103,7 +90,7 @@ namespace ApexPresentation
                 T2 = in_StartTime.Date + t1 + t2 + t2;
             }
 
-
+            //DateTime debugg_001 = new DateTime(2015, 04, 23, 20, 1, 10);
             a1 = sql_obj.GetTimeLineData(T1, T2, CURR);
 
             in_control.SetEmpty();
@@ -162,6 +149,9 @@ namespace ApexPresentation
                     in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, CURR, temp_is_last);
                 if (temp_is_last && T1 < CURR && CURR < T2 && a1[a1.Length - 1].StartTime >= T1)
                     in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, CURR, temp_is_last);
+
+                if (!temp_is_last)
+                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, T2, temp_is_last);
             }
             if (a1.Length == 0)
             {
@@ -171,19 +161,46 @@ namespace ApexPresentation
             in_control.Refresh();
         }
 
-        private void DataGridShow(DataGridView in_control)
-        {
-            //in_control.Rows[0].Cells[0].Value="1";
-            DataGridViewRow r0 = new DataGridViewRow();
-            DataGridViewCell c0;
-            //TimeSpan a1 = new TimeSpan()
-            
-            
-        }
 
-        private void DataGridPresenter()
+        private void DataGridPresenter(DataGridView in_control, DateTime in_StartTime)
         {
+            //TimeSpan a1 = new TimeSpan(0, 0, 6666666);
 
+            TimeSpan t1 = new TimeSpan(8, 0, 0);
+            TimeSpan t2 = new TimeSpan(12, 0, 0);
+
+            DateTime T1, T2, CURR;
+
+            CURR = new DateTime(2015, 04, 26, 19, 39, 00);
+#if real_time
+            CURR = DateTime.Now;
+#endif
+
+            if (radioButton1.Checked)
+            {
+                T1 = in_StartTime.Date + t1;
+                T2 = in_StartTime.Date + t1 + t2;
+            }
+            else
+            {
+                T1 = in_StartTime.Date + t1 + t2;
+                T2 = in_StartTime.Date + t1 + t2 + t2;
+            }
+
+            List<DataGridRow> a1 = sql_obj.GetTableStatistic(T1, T2, CURR);
+            in_control.AllowUserToAddRows = false;
+            in_control.Rows.Clear();
+            for (int i = 0; i < a1.Count; i++)
+            {
+                in_control.Rows.Add();
+                in_control.Rows[i].Cells[0].Value = a1[i].MachineCode;
+                in_control.Rows[i].Cells[1].Style.BackColor = a1[i].Color;
+                in_control.Rows[i].Cells[2].Value = TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).ToString();
+                in_control.Rows[i].Cells[3].Value = a1[i].Status;
+                in_control.Rows[i].Cells[4].Value = "--:--";
+            }
+
+            
         }
 
         private void exitToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -193,28 +210,25 @@ namespace ApexPresentation
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            TimeLinePresenter(timeLine1, dateTimePicker1.Value);
+            GlobalPresenter();
         }
 
         private void radioButton1_MouseClick(object sender, MouseEventArgs e)
         {
-            TimeLinePresenter(timeLine1, dateTimePicker1.Value);
+            GlobalPresenter();
         }
 
         private void radioButton2_MouseClick(object sender, MouseEventArgs e)
         {
+            GlobalPresenter();
+        }
+
+        private void GlobalPresenter()
+        {
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
+            DataGridPresenter(dataGridView1, dateTimePicker1.Value);
         }
-
-        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
+       
 
         
     }

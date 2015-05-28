@@ -245,10 +245,7 @@ namespace TimeLine
             this.Invalidate();
         }
 
-        private void TimeLine_MouseMove(object sender, MouseEventArgs e)
-        {
 
-        }
 
         private void TimeLine_Load(object sender, EventArgs e)
         {

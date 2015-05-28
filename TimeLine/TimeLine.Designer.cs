@@ -45,7 +45,6 @@ namespace TimeLine
             this.Size = new System.Drawing.Size(347, 58);
             this.Load += new System.EventHandler(this.TimeLine_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TimeLine_Paint);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TimeLine_MouseMove);
             this.Resize += new System.EventHandler(this.TimeLine_Resize);
             this.ResumeLayout(false);
 
