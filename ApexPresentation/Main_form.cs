@@ -90,7 +90,8 @@ namespace ApexPresentation
                 T2 = in_StartTime.Date + t1 + t2 + t2;
             }
 
-            //DateTime debugg_001 = new DateTime(2015, 04, 23, 20, 1, 10);
+            //DateTime debugg_001 = new DateTime(2015, 04, 23, 21, 10, 10);
+            //T2 = debugg_001;
             a1 = sql_obj.GetTimeLineData(T1, T2, CURR);
 
             in_control.SetEmpty();
