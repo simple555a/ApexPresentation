@@ -11,13 +11,17 @@ namespace ApexPresentation.TYPES
         public Color Color;
         public String SummaryTime;
         public String Status;
+        public String Count;
+        public String ExceededTime;
 
-        public DataGridRow(String MachineCode, Color Color, String SummaryTime, String Status)
+        public DataGridRow(String in_MachineCode, Color in_Color, String in_SummaryTime, String in_Status, String in_Count, String in_ExceededTime)
         {
-            this.MachineCode = MachineCode;
-            this.Color = Color;
-            this.SummaryTime = SummaryTime;
-            this.Status = Status;
+            this.MachineCode = in_MachineCode;
+            this.Color = in_Color;
+            this.SummaryTime = in_SummaryTime;
+            this.Status = in_Status;
+            this.Count = in_Count;
+            this.ExceededTime = in_ExceededTime;
         }
 
         public DataGridRow() { }

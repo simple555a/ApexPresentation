@@ -57,7 +57,7 @@ namespace ApexPresentation
             Settings1.SQLInitialized = sql_obj.Initialized;
             this.button2.Enabled = true;
             this.button2.Text = "Test connection";
-            //sql_obj.GetOperatorName();
+            
 
         }
     }

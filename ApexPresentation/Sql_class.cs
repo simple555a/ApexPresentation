@@ -300,70 +300,156 @@ namespace ApexPresentation
             #region public List<DataGridRow> GetTableStatistic(DateTime in_StartTime, DateTime in_EndTime, DateTime in_CURR)
             public List<DataGridRow> GetTableStatistic(DateTime in_StartTime, DateTime in_EndTime, DateTime in_CURR)
             {
+                
+
                 List<DataGridRow> return_value = new List<DataGridRow>();
-                //return_value.Add(a1);
-            
-                String SQLQuery = @"DECLARE @TB1 table(MachineState int, ColorValue int, StartTime datetime, EndTime Datetime);
-                                    INSERT INTO @TB1 
-                                    SELECT DISTINCT
-                                        [MachineState]
-                                        ,COLORS.[ColorValue] 
-                                        ,[StartTime]
-                                        ,[EndTime]
-                                    FROM 
-                                        [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStateHistory]
-                                    INNER JOIN
-                                        [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates] AS COLORS
-                                    ON 
-                                        [MachineState]=COLORS.StatusCode 
-                                    WHERE 
-                                        [StartTime]>=CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND [StartTime]<CONVERT(DATETIME,'" + in_EndTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)" +
-                                        "OR [EndTime]>=CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND [StartTime]<CONVERT(DATETIME,'" + in_EndTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)" +
-                                        "OR [StartTime]<CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120)<CONVERT(DATETIME,'" + in_CURR.ToString("yyyy-MM-dd HH:mm:ss") + "',120) AND ISNULL([EndTime],CONVERT(DATETIME,'" + in_CURR.ToString("yyyy-MM-dd HH:mm:ss") + "',120))>CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + "',120) " +
-                                    @"ORDER BY [StartTime] asc
+                if (!this.Initialized) return return_value;
+
+                String SQLQuery = @"DECLARE @gStartTime DATETIME;
+DECLARE @gEndTime DATETIME;
+DECLARE @gCURR DATETIME;
+
+SET @gStartTime=CONVERT(DATETIME,'" + in_StartTime.ToString("yyyy-MM-dd HH:mm:ss") + @"',120)
+SET @gEndTime=CONVERT(DATETIME,'" + in_EndTime.ToString("yyyy-MM-dd HH:mm:ss") + @"',120)
+SET @gCURR=CONVERT(DATETIME,'" + in_CURR.ToString("yyyy-MM-dd HH:mm:ss") + @"',120)
+
+DECLARE @TB1 table(MachineState int, ColorValue int, StartTime datetime, EndTime Datetime);
+INSERT INTO @TB1 
+SELECT DISTINCT
+    [MachineState]
+    ,COLORS.[ColorValue] 
+    ,[StartTime]
+    ,[EndTime]
+FROM 
+    [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStateHistory]
+INNER JOIN
+    [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates] AS COLORS
+ON 
+    [MachineState]=COLORS.StatusCode 
+WHERE 
+    [StartTime]>=@gStartTime AND [StartTime]<@gEndTime
+    OR [EndTime]>=@gStartTime AND [StartTime]<@gEndTime
+    OR [StartTime]<@gStartTime AND @gStartTime<@gCURR AND ISNULL([EndTime],@gCURR)>@gStartTime
+ORDER BY [StartTime] asc
 
 
-                                    DECLARE @TB2 table(MachineState int, DateDifference int);
-                                    INSERT INTO @TB2  
-                                    SELECT 
-					                    [MachineState]
-					                    ,SUM(DATEDIFF(SECOND,[StartTime],ISNULL([EndTime],CONVERT(DATETIME,'" + in_CURR.ToString("yyyy-MM-dd HH:mm:ss") + "',120)))) AS DateDifference "+
-                                    @"FROM @TB1
-					                GROUP BY  [MachineState]
+DECLARE @TB2 table(MachineState int, DateDifference int);
+INSERT INTO @TB2  
+SELECT 
+	[MachineState]
+	,SUM(DATEDIFF(
+                SECOND
+                ,CAST(CASE
+                            WHEN [StartTime]<@gStartTime
+                            THEN @gStartTime
+                            ELSE [StartTime]
+                        END as DATETIME)
+                ,CAST(CASE
+                            WHEN ISNULL([EndTime],@gCURR)>@gEndTime
+                            THEN @gEndTime
+                            ELSE ISNULL([EndTime],@gCURR)
+                        END as DATETIME)
+                )) AS DateDifference 
+FROM @TB1
+GROUP BY  [MachineState]
 
 
-                                    DECLARE @TB3 table(MachineState int, StartTime datetime);
-                                    INSERT INTO @TB3
-                                    SELECT 
-                                        [MachineState]
-                                        ,[StartTime]
-                                    FROM @TB1
+DECLARE @TB3 table(MachineState int, StartTime datetime);
+INSERT INTO @TB3
+SELECT 
+    [MachineState]
+    ,[StartTime]
+FROM @TB1
  
 
-                                     DECLARE @TB4 table(MachineState int, StartTime datetime);
-                                    INSERT INTO @TB4
-                                    SELECT 
-                                        [MachineState]
-                                        ,min([StartTime]) 
-                                    FROM @TB3
-                                    GROUP BY [MachineState]
+DECLARE @TB4 table(MachineState int, StartTime datetime);
+INSERT INTO @TB4
+SELECT 
+    [MachineState]
+    ,min([StartTime]) 
+FROM @TB3
+GROUP BY [MachineState]
+
+DECLARE @excessed_times_table table (MachineState int, ApprovedTime int)
+INSERT INTO 
+	@excessed_times_table
+VALUES      
+	(213,15)
+	,(511,30)
+	,(531,30)  
+	,(540,10)  
+	,(711,5)  
+	,(721,10)  
+	,(823,15)    
+									 
 
 
-                                    select distinct
-                                        [@TB4].MachineState
-                                        ,[SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates].ColorValue
-                                        ,[SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates].StatusDescription
-                                        ,[@TB2].DateDifference
-                                        ,[StartTime]
-                                    FROM @TB4
-                                INNER JOIN
-                                    @TB2
-                                    ON [@TB4].[MachineState]=[@TB2].MachineState
-                                INNER JOIN
-								    [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates]
-								    ON [@TB4].[MachineState]=[SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates].StatusCode
-                                WHERE [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates].[Language]='en-US'
-                                ORDER BY [StartTime]";
+DECLARE @correct_tb1 table (MachineState int, StartTime datetime, EndTime Datetime)
+INSERT INTO @correct_tb1
+SELECT 
+	[@TB1].[MachineState]
+	,CAST(
+		CASE
+			WHEN [StartTime]<@gStartTime 
+			THEN @gStartTime 
+			ELSE [StartTime]
+		END AS DATETIME
+		)
+	,CAST(CASE
+                            WHEN ISNULL([EndTime],@gCURR)>@gEndTime
+                            THEN @gEndTime
+                            ELSE ISNULL([EndTime],@gCURR)
+                        END as DATETIME
+            )											
+FROM @TB1
+									    
+DECLARE @excessed_times table (MachineState int, ExceededTimeSumValue int)
+INSERT INTO @excessed_times            
+select 
+	[@correct_tb1].[MachineState]
+	,SUM(CAST(
+		CASE
+			WHEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@excessed_times_table].[ApprovedTime],DATEDIFF(SECOND,[StartTime],[EndTime]))*60)>0
+			THEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@excessed_times_table].[ApprovedTime],DATEDIFF(SECOND,[StartTime],[EndTime]))*60)
+			ELSE 0
+		END AS INT))
+from @correct_tb1
+LEFT JOIN 
+	@excessed_times_table
+	ON [@correct_tb1].[MachineState]=[@excessed_times_table].[MachineState]
+group by  [@correct_tb1].[MachineState]
+
+DECLARE @status_count table(MachineState int, _count int)
+INSERT INTO @status_count            
+select 
+	[MachineState]
+	,COUNT([MachineState])
+from @TB1
+GROUP BY [MachineState]
+
+select distinct
+    [@TB4].MachineState
+    ,[SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates].ColorValue
+    ,[SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates].StatusDescription
+    ,[@TB2].DateDifference
+    ,[StartTime]
+    ,[@status_count].[_count]
+    ,[@excessed_times].[ExceededTimeSumValue]
+FROM @TB4
+INNER JOIN
+    @TB2
+    ON [@TB4].[MachineState]=[@TB2].MachineState
+INNER JOIN
+	[SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates]
+	ON [@TB4].[MachineState]=[SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates].StatusCode
+INNER JOIN
+	@excessed_times
+	ON [@TB4].[MachineState]=[@excessed_times].[MachineState]
+INNER JOIN
+	@status_count
+	ON [@TB4].[MachineState]=[@status_count].[MachineState]
+WHERE [SFI_local_PC_SQL].[dbo].[tbl_slc_MachineStates].[Language]='en-US'
+ORDER BY [StartTime]";
 
                 using (SqlConnection con = new SqlConnection(this.ConnectionString))
                 {
@@ -380,8 +466,9 @@ namespace ApexPresentation
                                     a1.MachineCode = reader.GetInt32(0).ToString();
                                     a1.Color = Color.FromArgb(Convert.ToByte((reader.GetInt64(1) & 255)), Convert.ToByte((reader.GetInt64(1) >> 8) & 255), Convert.ToByte(reader.GetInt64(1) >> 16));
                                     a1.Status = reader.GetString(2);
-                                    a1.SummaryTime = reader.GetInt32(3).ToString(); ;
-                                    
+                                    a1.SummaryTime = reader.GetInt32(3).ToString();
+                                    a1.Count = reader.GetInt32(5).ToString();
+                                    a1.ExceededTime = reader.GetInt32(6).ToString();
                                     return_value.Add(a1);
                                 }
                             }
