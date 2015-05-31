@@ -71,10 +71,10 @@ namespace ApexPresentation
             TimeSpan t1 = new TimeSpan(8, 0, 0);
             TimeSpan t2 = new TimeSpan(12, 0, 0);
 
-            DateTime T1, T2, CURR;
+            DateTime T1, T2;
             Section[] a1;
 
-            CURR = new DateTime(2015, 04, 24, 19, 39, 00);
+            //CURR = new DateTime(2015, 04, 24, 19, 39, 00);
 #if real_time
             CURR = DateTime.Now;
 #endif
@@ -162,6 +162,7 @@ namespace ApexPresentation
             in_control.Refresh();
         }
 
+        private static DateTime CURR = new DateTime(2015, 04, 24, 19, 39, 00);
 
         private void DataGridPresenter(DataGridView in_control, DateTime in_StartTime)
         {
@@ -170,9 +171,9 @@ namespace ApexPresentation
             TimeSpan t1 = new TimeSpan(8, 0, 0);
             TimeSpan t2 = new TimeSpan(12, 0, 0);
 
-            DateTime T1, T2, CURR;
+            DateTime T1, T2;
 
-            CURR = new DateTime(2015, 04, 26, 19, 39, 00);
+            //CURR
 #if real_time
             CURR = DateTime.Now;
 #endif
