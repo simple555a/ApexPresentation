@@ -374,13 +374,37 @@ DECLARE @excessed_times_table table (MachineState int, ApprovedTime int)
 INSERT INTO 
 	@excessed_times_table
 VALUES      
-	(213,15)
-	,(511,30)
-	,(531,30)  
-	,(540,10)  
-	,(711,5)  
-	,(721,10)  
-	,(823,15)    
+	(213,15);
+
+INSERT INTO 
+	@excessed_times_table
+VALUES   
+	(511,30);
+
+INSERT INTO 
+	@excessed_times_table
+VALUES   
+	(531,30);
+
+INSERT INTO 
+	@excessed_times_table
+VALUES    
+	(540,10);
+
+INSERT INTO 
+	@excessed_times_table
+VALUES     
+	(711,5);
+
+INSERT INTO 
+	@excessed_times_table
+VALUES     
+	(721,10);
+
+INSERT INTO 
+	@excessed_times_table
+VALUES    
+	(823,15);   
 									 
 
 

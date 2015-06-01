@@ -1,4 +1,4 @@
-﻿#define real_time
+﻿//#define real_time
 
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace ApexPresentation
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            DateTime BStartTime = new DateTime(2015, 04, 23, 00, 00, 00);
+            DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             
             label1.Text = sql_obj.GetOperatorName();
 
