@@ -1,4 +1,4 @@
-﻿//#define real_time
+﻿#define real_time
 
 using System;
 using System.Collections.Generic;
