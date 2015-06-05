@@ -6,9 +6,11 @@ namespace ApexPresentation
 {
     public class Settings
     {
-        public string   SQLServerName;
-        public string   SQLExemplarName;
+        public String   SQLConnectionString;
         public bool     SQLInitialized;
+
+        public String OPCConnectionString;
+        public bool OPCInitialized;
 
     }
 }

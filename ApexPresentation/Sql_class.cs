@@ -21,22 +21,22 @@ namespace ApexPresentation
             this.Initialized = false;
             InitializeSQL();
         }
-        public  Sql_class(String ServerName, String ExemplarName)
+        public  Sql_class(String in_ConnectionString)
         {
             this.Initialized = false;
 
             try
             {
-                SqlConnection con = new SqlConnection("Data Source=" + ServerName + "\\" + ExemplarName + ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True");
+                SqlConnection con = new SqlConnection("Data Source=" + in_ConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True");
                 con.Open();
                 //if ok - fill connection string field
-                this.ConnectionString = "Data Source=" + ServerName + "\\" + ExemplarName + ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
+                this.ConnectionString = "Data Source=" + in_ConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
 
                 this.Initialized = true;
             }
             catch
             {
-                MessageBox.Show("Bad connection. Review server name or exemplar name or sql server");
+                MessageBox.Show("Bad SQL connection. Review connection string");
                 this.Initialized = false;
             }
         }
@@ -53,7 +53,7 @@ namespace ApexPresentation
         #region 3. Metods
 
             #region public void InitializeSQL()
-            public void InitializeSQL()
+            private void InitializeSQL()
             {
                 try
                 {
@@ -64,16 +64,16 @@ namespace ApexPresentation
                         Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
                         reader1.Dispose();
 
-                        SqlConnection con = new SqlConnection("Data Source=" + Settings1.SQLServerName + "\\" + Settings1.SQLExemplarName + ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True");
+                        SqlConnection con = new SqlConnection("Data Source=" + Settings1.SQLConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True");
                         con.Open();
                         //if ok - fill connection string field
-                        this.ConnectionString = "Data Source=" + Settings1.SQLServerName + "\\" + Settings1.SQLExemplarName + ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
+                        this.ConnectionString = "Data Source=" + Settings1.SQLConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
 
                         this.Initialized = true;
                     }
                     else
                     {
-                        MessageBox.Show("Settings is empty. See Settings - > Connection...");
+                        MessageBox.Show("SQL settings is empty. See Settings - > Connection...");
                         this.Initialized = false;
                     }
 
@@ -81,7 +81,7 @@ namespace ApexPresentation
                 }
                 catch
                 {
-                    MessageBox.Show("Bad connection. Review server name or exemplar name or sql server");
+                    MessageBox.Show("Bad SQL connection. Review connection string");
                     this.Initialized = false;
                 }
             }

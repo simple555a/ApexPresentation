@@ -29,8 +29,8 @@ namespace ApexPresentation
                 Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
                 reader1.Dispose();
 
-                this.textBox1.Text = Settings1.SQLServerName;
-                this.textBox2.Text = Settings1.SQLExemplarName;
+                this.textBox1.Text = Settings1.SQLConnectionString;
+                this.textBox3.Text = Settings1.OPCConnectionString;
                  
             }
         }
@@ -38,8 +38,8 @@ namespace ApexPresentation
         //save and close
         private void button1_Click(object sender, EventArgs e)
         {
-            Settings1.SQLServerName = this.textBox1.Text;
-            Settings1.SQLExemplarName = this.textBox2.Text;
+            Settings1.SQLConnectionString = this.textBox1.Text;
+            Settings1.OPCConnectionString = this.textBox3.Text;
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
             TextWriter writer = new StreamWriter("settings.xml");
             serializer.Serialize(writer, Settings1);
@@ -48,17 +48,27 @@ namespace ApexPresentation
             this.Dispose();
         }
 
-        //test connection
+        //test SQL connection
         private void button2_Click(object sender, EventArgs e)
         {
             this.button2.Enabled = false;
             this.button2.Text = "Testing...";
-            Sql_class sql_obj = new Sql_class(this.textBox1.Text, this.textBox2.Text);
+            Sql_class sql_obj = new Sql_class(this.textBox1.Text);
             Settings1.SQLInitialized = sql_obj.Initialized;
             this.button2.Enabled = true;
             this.button2.Text = "Test connection";
             
+        }
 
+        //test OPC connection
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.button2.Enabled = false;
+            this.button2.Text = "Testing...";
+            OPC_class opc_obj = new OPC_class(textBox3.Text);
+            Settings1.OPCInitialized = opc_obj.Initialized;
+            this.button2.Enabled = true;
+            this.button2.Text = "Test connection";
         }
     }
 }

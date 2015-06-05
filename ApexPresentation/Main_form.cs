@@ -13,8 +13,6 @@ using System.Xml;
 using System.Xml.Serialization;
 using ApexPresentation.TYPES;
 
-
-
 namespace ApexPresentation
 {
     public partial class Main_form : Form
@@ -22,10 +20,10 @@ namespace ApexPresentation
         public Main_form()
         {
             InitializeComponent();
-
         }
 
         static Sql_class sql_obj = new Sql_class();
+        static OPC_class opc_obj = new OPC_class();
         static Timer global_clock = new Timer();
         static Timer refresh_form_timer = new Timer(); 
 
@@ -35,11 +33,18 @@ namespace ApexPresentation
             DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             
             label1.Text = sql_obj.GetOperatorName();
-
+#if !real_time
             dateTimePicker1.Value = BStartTime;
+#endif
 #if real_time
             dateTimePicker1.Value = System.DateTime.Now.Date;
 #endif
+            //check shift
+            if (get_CURR().Hour >= 8 && get_CURR().Hour <20) 
+                radioButton1.Checked = true; 
+            else
+                radioButton2.Checked = true;
+
             global_clock.Interval = 1000;
             global_clock.Tick += global_clock_Tick;
             global_clock.Start();
@@ -52,6 +57,9 @@ namespace ApexPresentation
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 
             this.Text += " (serpikov.sergey@gmail.com)";
+
+            //OPC
+            //opc_obj.
         }
 
         void refresh_form_timer_Tick(object sender, EventArgs e)
@@ -128,7 +136,10 @@ namespace ApexPresentation
 
         private DateTime get_CURR()
         {
-            DateTime CURR = new DateTime(2015, 04, 24, 19, 39, 00);
+            DateTime CURR;
+#if !real_time
+            CURR = new DateTime(2015, 04, 24, 19, 39, 00);
+#endif
 #if real_time
             CURR = DateTime.Now;
 #endif
@@ -239,8 +250,13 @@ namespace ApexPresentation
 
         private void GlobalPresenter()
         {
+            label1.Text = sql_obj.GetOperatorName();
+
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);
+
+            label5.Text = sql_obj.GetCurrentStatus();
+            label5.BackColor = sql_obj.GetCurrentStatusColor();
         }
        
 
