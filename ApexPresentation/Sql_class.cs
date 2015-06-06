@@ -49,7 +49,7 @@ namespace ApexPresentation
         public bool Initialized;
 
         #endregion
-
+        
         #region 3. Metods
 
             #region public void InitializeSQL()
@@ -85,6 +85,32 @@ namespace ApexPresentation
                     this.Initialized = false;
                 }
             }
+            #endregion
+            #region public String GetWCName()
+            public String GetWCName()
+                {
+                    if (!this.Initialized) return "*****";
+
+                    String SQLQuery = @"SELECT
+		                                   [WCName]
+                                        FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_Workcenter]";
+
+                    using (SqlConnection con = new SqlConnection(this.ConnectionString))
+                    {
+                        con.Open();
+
+                        using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
+                        {
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+
+                                while (reader.Read())
+                                {
+                                    return reader.GetString(0);
+                                }
+                            return "Nothing";
+                        }
+                    }
+                }
             #endregion
             #region public String GetOperatorName()
             public String GetOperatorName()

@@ -1,4 +1,4 @@
-﻿#define real_time
+﻿//#define real_time
 
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace ApexPresentation
 
             DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             
-            label1.Text = sql_obj.GetOperatorName();
+            label9.Text += sql_obj.GetWCName();
 #if !real_time
             dateTimePicker1.Value = BStartTime;
 #endif
@@ -59,7 +59,7 @@ namespace ApexPresentation
             this.Text += " (serpikov.sergey@gmail.com)";
 
             //OPC
-            //opc_obj.
+            opc_obj.RefreshLabelControl(label4, 5);
         }
 
         void refresh_form_timer_Tick(object sender, EventArgs e)
@@ -69,12 +69,15 @@ namespace ApexPresentation
 
         void global_clock_Tick(object sender, EventArgs e)
         {
+            String year = System.DateTime.Now.Year.ToString();
+            String month = System.DateTime.Now.ToString("MMMM");
+            String day = System.DateTime.Now.Day.ToString();
             String hours = (System.DateTime.Now.TimeOfDay.Hours < 10) ? "0" + System.DateTime.Now.TimeOfDay.Hours.ToString() : System.DateTime.Now.TimeOfDay.Hours.ToString();
             String minutes = (System.DateTime.Now.TimeOfDay.Minutes < 10) ? "0" + System.DateTime.Now.TimeOfDay.Minutes.ToString() : System.DateTime.Now.TimeOfDay.Minutes.ToString();
             String seconds = (System.DateTime.Now.TimeOfDay.Seconds < 10) ? "0" + System.DateTime.Now.TimeOfDay.Seconds.ToString() : System.DateTime.Now.TimeOfDay.Seconds.ToString();
 
 
-            label2.Text = hours + ":" + minutes + ":" + seconds;
+            label2.Text = year + " " + month + " " +day + "  " + hours + ":" + minutes + ":" + seconds;
         }
 
 
@@ -93,8 +96,6 @@ namespace ApexPresentation
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            //for (int i = 0; i < 1000; i++)
             GlobalPresenter();
         }
 
@@ -214,9 +215,17 @@ namespace ApexPresentation
                 in_control.Rows.Add();
                 in_control.Rows[i].Cells[0].Value = a1[i].MachineCode;
                 in_control.Rows[i].Cells[1].Style.BackColor = a1[i].Color;
-                in_control.Rows[i].Cells[2].Value = TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Hours.ToString() +"h " 
-                    + TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Minutes.ToString() + "min " 
-                    + TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Seconds.ToString() + "sec ";
+
+                String hours = (TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Hours < 10) 
+                    ? "0" + TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Hours.ToString() + "h " 
+                    : TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Hours.ToString() + "h ";
+                String minutes = (TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Minutes < 10)
+                    ? "0" + TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Minutes.ToString() + "min "
+                    : TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Minutes.ToString() + "min ";
+                String seconds = (TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Seconds < 10)
+                    ? "0" + TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Seconds.ToString() + "sec"
+                    : TimeSpan.FromSeconds(Convert.ToDouble(a1[i].SummaryTime)).Seconds.ToString() + "sec";
+                in_control.Rows[i].Cells[2].Value = hours+minutes+seconds;
                 in_control.Rows[i].Cells[3].Value = a1[i].Status;
                 in_control.Rows[i].Cells[4].Value = a1[i].Count;
                 in_control.Rows[i].Cells[5].Value = TimeSpan.FromSeconds(Convert.ToDouble(a1[i].ExceededTime)).Hours.ToString() + 
@@ -250,7 +259,7 @@ namespace ApexPresentation
 
         private void GlobalPresenter()
         {
-            label1.Text = sql_obj.GetOperatorName();
+            label1.Text = "Operator: " + sql_obj.GetOperatorName() ;
 
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);

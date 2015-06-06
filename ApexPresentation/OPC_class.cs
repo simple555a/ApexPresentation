@@ -41,8 +41,8 @@ namespace ApexPresentation
         #endregion
 
         #region Properties
-        public bool Initialized;
-        private String URL;
+            public bool Initialized;
+            private String URL;
 
             #region Variables for OPC client
 
@@ -51,6 +51,7 @@ namespace ApexPresentation
             private OpcCom.Factory fact = new OpcCom.Factory();
 
             #endregion
+
         #endregion
 
         #region Metods
@@ -87,6 +88,13 @@ namespace ApexPresentation
                         this.Initialized = false;
                     }
                 }
+            #endregion
+            #region public void 
+            public void RefreshLabelControl(Label in_control,int in_value)
+                {
+                    in_control.Text = in_value.ToString();
+                }
+
             #endregion
 
         #endregion
