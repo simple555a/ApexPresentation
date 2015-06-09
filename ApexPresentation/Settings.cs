@@ -9,8 +9,10 @@ namespace ApexPresentation
         public String   SQLConnectionString;
         public bool     SQLInitialized;
 
-        public String OPCConnectionString;
         public bool OPCInitialized;
+        public String OPCConnectionString;
+        public String OPCGroupName;
+        public String OPCRingsCounterName;
 
     }
 }

@@ -1,4 +1,4 @@
-﻿//#define real_time
+﻿#define real_time
 
 using System;
 using System.Collections.Generic;
@@ -37,11 +37,14 @@ namespace ApexPresentation
             dateTimePicker1.Value = BStartTime;
 #endif
 #if real_time
-            dateTimePicker1.Value = System.DateTime.Now.Date;
+            if (System.DateTime.Now.Hour<9)
+                dateTimePicker1.Value = System.DateTime.Now.Date-TimeSpan.FromDays(1);
+            if (System.DateTime.Now.Hour >=8)
+                dateTimePicker1.Value = System.DateTime.Now.Date;
 #endif
             //check shift
             if (get_CURR().Hour >= 8 && get_CURR().Hour <20) 
-                radioButton1.Checked = true; 
+                radioButton1.Checked = true;
             else
                 radioButton2.Checked = true;
 
@@ -59,11 +62,29 @@ namespace ApexPresentation
             this.Text += " (serpikov.sergey@gmail.com)";
 
             //OPC
-            opc_obj.RefreshLabelControl(label4, 5);
+            opc_obj.CounterOfRings = sql_obj.GetRingsCounter();
+            opc_obj.SetActiveLabel(label4);
         }
 
         void refresh_form_timer_Tick(object sender, EventArgs e)
         {
+            //set current data in controls
+            if (System.DateTime.Now.Hour < 9)
+                dateTimePicker1.Value = System.DateTime.Now.Date - TimeSpan.FromDays(1);
+            if (System.DateTime.Now.Hour >= 8)
+                dateTimePicker1.Value = System.DateTime.Now.Date;
+            if (get_CURR().Hour >= 8 && get_CURR().Hour < 20)
+            {
+                //MessageBox.Show("Day");
+                radioButton1.Checked = true;
+            }
+            if (get_CURR().Hour >= 20 && get_CURR().Hour < 24 || get_CURR().Hour >= 0 && get_CURR().Hour < 8)
+            {
+                //MessageBox.Show("Night");
+                radioButton2.Checked = true;
+            }
+            //set average cycle time
+            label6.Text = GetAverageCycleTime(opc_obj.CounterOfRings).ToString();
             GlobalPresenter();
         }
 
@@ -237,6 +258,24 @@ namespace ApexPresentation
             
         }
 
+        public int GetAverageCycleTime(int in_DoneRingsCount)
+        {
+            if (in_DoneRingsCount == 0) return 0;
+            if (get_CURR().Hour >= 8 && get_CURR().Hour < 20)
+            {
+                return Convert.ToInt32(((TimeSpan.FromHours(get_CURR().Hour) + TimeSpan.FromMinutes(get_CURR().Minute) + TimeSpan.FromSeconds(get_CURR().Second) - TimeSpan.FromHours(8))).TotalSeconds / in_DoneRingsCount);
+            }
+            if (get_CURR().Hour >= 20 && get_CURR().Hour < 24)
+            {
+                return Convert.ToInt32(((TimeSpan.FromHours(get_CURR().Hour) + TimeSpan.FromMinutes(get_CURR().Minute) + TimeSpan.FromSeconds(get_CURR().Second) - TimeSpan.FromHours(20))).TotalSeconds / in_DoneRingsCount);
+            }
+            if (get_CURR().Hour >= 0 && get_CURR().Hour < 8)
+            {
+                return Convert.ToInt32(((TimeSpan.FromHours(get_CURR().Hour) + TimeSpan.FromMinutes(get_CURR().Minute) + TimeSpan.FromSeconds(get_CURR().Second) + TimeSpan.FromHours(4))).TotalSeconds / in_DoneRingsCount);
+            }
+            return 0;
+        }
+
         private void exitToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             Application.Exit();
@@ -266,6 +305,16 @@ namespace ApexPresentation
 
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
+
+            
+            
+
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
        
 

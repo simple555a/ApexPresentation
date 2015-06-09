@@ -110,13 +110,13 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Enabled = false;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F);
-            this.label4.Location = new System.Drawing.Point(86, 33);
+            this.label4.Location = new System.Drawing.Point(117, 33);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 39);
             this.label4.TabIndex = 0;
             this.label4.Text = "--";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -154,9 +154,8 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Enabled = false;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F);
-            this.label6.Location = new System.Drawing.Point(85, 33);
+            this.label6.Location = new System.Drawing.Point(122, 33);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(39, 39);
             this.label6.TabIndex = 0;
@@ -260,7 +259,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 46.98795F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 53.01205F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 199F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 201F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.Controls.Add(this.dateTimePicker1, 1, 0);
@@ -277,9 +276,9 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.dateTimePicker1.Location = new System.Drawing.Point(141, 3);
+            this.dateTimePicker1.Location = new System.Drawing.Point(140, 3);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(149, 23);
+            this.dateTimePicker1.Size = new System.Drawing.Size(148, 23);
             this.dateTimePicker1.TabIndex = 7;
             this.dateTimePicker1.Value = new System.DateTime(2015, 5, 11, 12, 25, 35, 0);
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
@@ -288,7 +287,7 @@
             // 
             this.panel2.Controls.Add(this.radioButton2);
             this.panel2.Controls.Add(this.radioButton1);
-            this.panel2.Location = new System.Drawing.Point(296, 3);
+            this.panel2.Location = new System.Drawing.Point(294, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(145, 21);
             this.panel2.TabIndex = 8;
@@ -323,7 +322,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label7.Location = new System.Drawing.Point(102, 0);
+            this.label7.Location = new System.Drawing.Point(101, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(33, 27);
             this.label7.TabIndex = 5;

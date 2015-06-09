@@ -15,7 +15,7 @@ namespace ApexPresentation
             this.Initialized = false;
             InitializeOPC();
         }
-        public OPC_class(String in_URL)
+        public OPC_class(String in_URL, String in_GroupName, String in_RingsCounterName)
         {
             try
             {
@@ -28,13 +28,27 @@ namespace ApexPresentation
                 //2nd: Connect to the created server
                 server.Connect(url, new Opc.ConnectData(new System.Net.NetworkCredential()));
 
+                //3rd Create a group if items            
+                groupState = new Opc.Da.SubscriptionState();
+                groupState.Name = in_GroupName;
+                groupState.UpdateRate = 1000;// this isthe time between every reads from OPC server
+                groupState.Active = true;//this must be true if you the group has to read value
+                groupRead = (Opc.Da.Subscription)server.CreateSubscription(groupState);
+                //groupRead.DataChanged += groupRead_DataChanged;
+
+                items[0] = new Opc.Da.Item();
+                items[0].ItemName = in_RingsCounterName;
+                items = groupRead.AddItems(items);
+
+                Opc.Da.ItemValueResult[] values = groupRead.Read(items);
+                MessageBox.Show("Readed value is " + values[0].Value.ToString());
+
                 //if no exeption
                 this.URL = in_URL;
                 this.Initialized = true;
             }
             catch
             {
-                MessageBox.Show("Bad OPC connection. Review connection string");
                 this.Initialized = false;
             }
         }
@@ -42,13 +56,18 @@ namespace ApexPresentation
 
         #region Properties
             public bool Initialized;
+            public Int32 CounterOfRings;
             private String URL;
+            private Label ActiveLabel;
 
             #region Variables for OPC client
 
             private Opc.URL url;
             private Opc.Da.Server server;
             private OpcCom.Factory fact = new OpcCom.Factory();
+            private Opc.Da.Subscription groupRead;
+            private Opc.Da.SubscriptionState groupState;
+            private Opc.Da.Item[] items = new Opc.Da.Item[1];
 
             #endregion
 
@@ -63,6 +82,8 @@ namespace ApexPresentation
                     {
                         if (File.Exists("settings.xml"))
                         {
+                            this.CounterOfRings = 0;
+
                             XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
                             TextReader reader1 = new StreamReader("settings.xml");
                             Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
@@ -73,7 +94,20 @@ namespace ApexPresentation
                             server = new Opc.Da.Server(fact, null);
                             //2nd: Connect to the created server
                             server.Connect(url, new Opc.ConnectData(new System.Net.NetworkCredential()));
+                            //3rd Create a group if items            
+                            groupState = new Opc.Da.SubscriptionState();
+                            groupState.Name = Settings1.OPCGroupName;
+                            groupState.UpdateRate = 1000;// this isthe time between every reads from OPC server
+                            groupState.Active = true;//this must be true if you the group has to read value
+                            groupRead = (Opc.Da.Subscription)server.CreateSubscription(groupState);
+                            groupRead.DataChanged += groupRead_DataChanged;
 
+                            items[0] = new Opc.Da.Item();
+                            items[0].ItemName = Settings1.OPCRingsCounterName;
+                            items = groupRead.AddItems(items);
+
+                            Opc.Da.ItemValueResult[] values = groupRead.Read(items);
+                            //MessageBox.Show("Readed value is " + values[0].Value.ToString());
                             this.Initialized = true;
                         }
                         else
@@ -88,11 +122,19 @@ namespace ApexPresentation
                         this.Initialized = false;
                     }
                 }
+
+                void groupRead_DataChanged(object subscriptionHandle, object requestHandle, Opc.Da.ItemValueResult[] values)
+                {
+                    //Convert.ToInt32(values[0].Value);
+                    this.ActiveLabel.Text = (this.CounterOfRings != Convert.ToInt32(values[0].Value)) ? (this.CounterOfRings + 1).ToString() : this.CounterOfRings.ToString();
+                    this.CounterOfRings++;
+                    //this.CounterOfRings = Convert.ToInt32(values[0].Value);
+                }
             #endregion
             #region public void 
-            public void RefreshLabelControl(Label in_control,int in_value)
+            public void SetActiveLabel(Label in_control)
                 {
-                    in_control.Text = in_value.ToString();
+                    this.ActiveLabel = in_control;
                 }
 
             #endregion

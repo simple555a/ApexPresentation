@@ -36,7 +36,7 @@ namespace ApexPresentation
             }
             catch
             {
-                MessageBox.Show("Bad SQL connection. Review connection string");
+                //MessageBox.Show("Bad SQL connection. Review connection string");
                 this.Initialized = false;
             }
         }
@@ -52,39 +52,39 @@ namespace ApexPresentation
         
         #region 3. Metods
 
-            #region public void InitializeSQL()
+            #region private void InitializeSQL()
             private void InitializeSQL()
-            {
-                try
                 {
-                    if (File.Exists("settings.xml"))
+                    try
                     {
-                        XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
-                        TextReader reader1 = new StreamReader("settings.xml");
-                        Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
-                        reader1.Dispose();
+                        if (File.Exists("settings.xml"))
+                        {
+                            XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
+                            TextReader reader1 = new StreamReader("settings.xml");
+                            Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
+                            reader1.Dispose();
 
-                        SqlConnection con = new SqlConnection("Data Source=" + Settings1.SQLConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True");
-                        con.Open();
-                        //if ok - fill connection string field
-                        this.ConnectionString = "Data Source=" + Settings1.SQLConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
+                            SqlConnection con = new SqlConnection("Data Source=" + Settings1.SQLConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True");
+                            con.Open();
+                            //if ok - fill connection string field
+                            this.ConnectionString = "Data Source=" + Settings1.SQLConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
 
-                        this.Initialized = true;
+                            this.Initialized = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("SQL settings is empty. See Settings - > Connection...");
+                            this.Initialized = false;
+                        }
+
+
                     }
-                    else
+                    catch
                     {
-                        MessageBox.Show("SQL settings is empty. See Settings - > Connection...");
+                        MessageBox.Show("Bad SQL connection. Review connection string");
                         this.Initialized = false;
                     }
-
-
                 }
-                catch
-                {
-                    MessageBox.Show("Bad SQL connection. Review connection string");
-                    this.Initialized = false;
-                }
-            }
             #endregion
             #region public String GetWCName()
             public String GetWCName()
@@ -117,23 +117,36 @@ namespace ApexPresentation
             {
                 if (!this.Initialized) return "***************";
 
-                //TODO: OPL.wc_name = 'BAA21' - need changed
-                String SQLQuery = @"SELECT 
-                                OPL.[user_name]
-                                ,AU.[first_name]
-                                ,AU.[last_name]
-                                ,OPL.[wc_name]
-                                ,OPL.[station_name]
-                                ,OPL.[login_type]
-                                ,OPL.[login_time]
-                                ,OPL.[logout_time]
-                                ,OPL.[message_type]
-                                FROM 
-                                [SFI_local_PC_SQL].[dbo].[sfi_SLCOperatorLogin] AS OPL 
-                                INNER JOIN 
-                                [SLC_rsActive].[dbo].[APP_USER] AS AU 
-                                ON OPL.[user_name] = AU.[user_name]
-                                WHERE OPL.login_time > (GETDATE() - '08:00:00.000') and OPL.wc_name = 'BAA21'";
+                
+//                String SQLQuery = @"SELECT 
+//                                OPL.[user_name]
+//                                ,AU.[first_name]
+//                                ,AU.[last_name]
+//                                ,OPL.[wc_name]
+//                                ,OPL.[station_name]
+//                                ,OPL.[login_type]
+//                                ,OPL.[login_time]
+//                                ,OPL.[logout_time]
+//                                ,OPL.[message_type]
+//                                FROM 
+//                                [SFI_local_PC_SQL].[dbo].[sfi_SLCOperatorLogin] AS OPL 
+//                                INNER JOIN 
+//                                [SLC_rsActive].[dbo].[APP_USER] AS AU 
+//                                ON OPL.[user_name] = AU.[user_name]
+//                                WHERE OPL.login_time > (GETDATE() - '08:00:00.000') and OPL.wc_name = 'BAA21'";
+
+                String SQLQuery = @"SELECT  
+    [SFI_local_PC_SQL].[dbo].[tbl_slc_Station].[SLCName]
+    ,[SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser].[CurrentUserName]
+    ,[SLC_rsActive].[dbo].[APP_USER].[first_name]
+    ,[SLC_rsActive].[dbo].[APP_USER].[last_name]
+FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_Station]
+INNER JOIN 
+    [SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser]
+    ON [SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser].[ClientPC]=[SFI_local_PC_SQL].[dbo].[tbl_slc_Station].[SLCName]
+INNER JOIN
+    [SLC_rsActive].[dbo].[APP_USER]
+    ON [SLC_rsActive].[dbo].[APP_USER].[user_name]=[SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser].[CurrentUserName]";
 
                     using (SqlConnection con = new SqlConnection(this.ConnectionString))
                     {
@@ -145,7 +158,7 @@ namespace ApexPresentation
                             
                             while (reader.Read())
                             {
-                                return reader.GetString(1) + " " + reader.GetString(2);
+                                return reader.GetString(2) + " " + reader.GetString(3);
                             }
                             return "Nobody";
                         }
@@ -241,8 +254,8 @@ namespace ApexPresentation
                 return a1;
             }
             #endregion
-            #region public string GetCurrentStatus()
-            public string GetCurrentStatus()
+            #region public String GetCurrentStatus()
+            public String GetCurrentStatus()
             {
                 if (!this.Initialized) return "***************";
 
@@ -400,7 +413,12 @@ DECLARE @excessed_times_table table (MachineState int, ApprovedTime int)
 INSERT INTO 
 	@excessed_times_table
 VALUES      
-	(213,15);
+	(210,40);
+
+INSERT INTO 
+	@excessed_times_table
+VALUES      
+	(213,20);
 
 INSERT INTO 
 	@excessed_times_table
@@ -528,6 +546,65 @@ ORDER BY [StartTime]";
 
                 return return_value;
             }
+            #endregion
+            #region !!!GetRingsCounter()
+            public Int32 GetRingsCounter()
+            {
+                if (!this.Initialized) return 0;
+
+                String SQLQuery = @"DECLARE @ShiftID nvarchar(2),
+@StartShiftDate datetime,
+@ActualDateTime datetime,
+@Year int,
+@Month int,
+@Day int,
+@Hour int;
+
+SET @ActualDateTime = GETDATE();
+SET @Year = DATEPART(year, @ActualDateTime);
+SET @Month = DATEPART(month, @ActualDateTime);
+SET @Day = DATEPART(day, @ActualDateTime);
+SET @Hour = DATEPART(hour, @ActualDateTime);
+
+IF (@Hour >= 8) and (@Hour < 20)
+    BEGIN
+        SET @ShiftID = '01'
+        SELECT @StartShiftDate = CAST(CONVERT(VARCHAR, @Year) + '-' + CONVERT(VARCHAR, @Month) + '-' + CONVERT(VARCHAR, @Day) AS DATETIME);
+    END
+ELSE
+BEGIN
+    SET @ShiftID = '02'
+    IF (@Hour < 8)
+        BEGIN
+            SET @Day = @Day - 1;
+            SELECT @StartShiftDate = CAST(CONVERT(VARCHAR, @Year) + '-' + CONVERT(VARCHAR, @Month) + '-' + CONVERT(VARCHAR, @Day) AS DATETIME);
+        END
+    ELSE 
+        SELECT @StartShiftDate = CAST(CONVERT(VARCHAR, @Year) + '-' + CONVERT(VARCHAR, @Month) + '-' + CONVERT(VARCHAR, @Day) AS DATETIME);
+END
+
+SELECT 
+	ISNULL(SUM (CountsGood),0) as CommCounter
+FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_Counter]
+WHERE [ShiftDate] = @StartShiftDate AND [ShiftID] = @ShiftID AND [ClientPC] is not NULL";
+
+                using (SqlConnection con = new SqlConnection(this.ConnectionString))
+                {
+                    con.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+
+                            while (reader.Read())
+                            {
+                                return Convert.ToInt32(reader.GetDecimal(0));
+                            }
+                        return 0;
+                    }
+                }
+            }
+            
             #endregion
 
         #endregion
