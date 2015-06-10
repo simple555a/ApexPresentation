@@ -25,7 +25,8 @@ namespace ApexPresentation
         static Sql_class sql_obj = new Sql_class();
         static OPC_class opc_obj = new OPC_class();
         static Timer global_clock = new Timer();
-        static Timer refresh_form_timer = new Timer(); 
+        static Timer refresh_form_timer = new Timer();
+        static DateTime previous_time = new DateTime();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -63,7 +64,10 @@ namespace ApexPresentation
 
             //OPC
             opc_obj.CounterOfRings = sql_obj.GetRingsCounter();
+            label4.Text = opc_obj.CounterOfRings.ToString();
             opc_obj.SetActiveLabel(label4);
+
+            previous_time = get_CURR();
         }
 
         void refresh_form_timer_Tick(object sender, EventArgs e)
@@ -85,6 +89,12 @@ namespace ApexPresentation
             }
             //set average cycle time
             label6.Text = GetAverageCycleTime(opc_obj.CounterOfRings).ToString();
+            //reset "rings counter" and "average cycle time" each shift change
+            if (previous_time.Hour == 7 && get_CURR().Hour == 8 || previous_time.Hour == 19 && get_CURR().Hour == 20)
+                opc_obj.CounterOfRings = 0;
+            previous_time = get_CURR();
+
+
             GlobalPresenter();
         }
 
