@@ -126,18 +126,18 @@ namespace ApexPresentation
                 void groupRead_DataChanged(object subscriptionHandle, object requestHandle, Opc.Da.ItemValueResult[] values)
                 {
                     //Convert.ToInt32(values[0].Value);
-                    this.ActiveLabel.Text = (this.CounterOfRings != Convert.ToInt32(values[0].Value)) ? (this.CounterOfRings + 1).ToString() : this.CounterOfRings.ToString();
-                    this.CounterOfRings++;
+                    this.ActiveLabel.Text = (this.CounterOfRings != Convert.ToInt32(values[0].Value)) ? (this.CounterOfRings + 2).ToString() : this.CounterOfRings.ToString();
+                    this.CounterOfRings+=2;
                     //this.CounterOfRings = Convert.ToInt32(values[0].Value);
                 }
             #endregion
-            #region public void 
+            #region void SetActiveLabel(Label in_control)
             public void SetActiveLabel(Label in_control)
-                {
-                    this.ActiveLabel = in_control;
-                }
+            {
+                this.ActiveLabel = in_control;
+            }
 
-            #endregion
+        #endregion
 
         #endregion
 

@@ -70,13 +70,13 @@ namespace ApexPresentation
         //test OPC connection
         private void button3_Click(object sender, EventArgs e)
         {
-            this.button2.Enabled = false;
-            this.button2.Text = "Testing...";
+            this.button3.Enabled = false;
+            this.button3.Text = "Testing...";
             OPC_class opc_obj = new OPC_class(textBox3.Text,textBox2.Text,textBox4.Text);
             Settings1.OPCInitialized = opc_obj.Initialized;
             label6.Text = (Settings1.OPCInitialized) ? "Ok" : "Not OK";
-            this.button2.Enabled = true;
-            this.button2.Text = "Test connection";
+            this.button3.Enabled = true;
+            this.button3.Text = "Test connection";
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
