@@ -554,34 +554,30 @@ ORDER BY [StartTime]";
 
                 String SQLQuery = @"DECLARE @ShiftID nvarchar(2),
 @StartShiftDate datetime,
-@ActualDateTime datetime,
-@Year int,
-@Month int,
-@Day int,
 @Hour int;
 
-SET @ActualDateTime = GETDATE();
-SET @Year = DATEPART(year, @ActualDateTime);
-SET @Month = DATEPART(month, @ActualDateTime);
-SET @Day = DATEPART(day, @ActualDateTime);
-SET @Hour = DATEPART(hour, @ActualDateTime);
+--SET @StartShiftDate = CAST(FLOOR(CAST(CAST('2015-04-23T00:00:00.000' AS DATETIME) AS FLOAT)) AS DATETIME)
+SET @StartShiftDate = CAST(FLOOR(CAST(GETDATE() AS FLOAT)) AS DATETIME)
+SET @Hour = DATEPART(hour, @StartShiftDate)
 
+--day shift
 IF (@Hour >= 8) and (@Hour < 20)
     BEGIN
         SET @ShiftID = '01'
-        SELECT @StartShiftDate = CAST(CONVERT(VARCHAR, @Year) + '-' + CONVERT(VARCHAR, @Month) + '-' + CONVERT(VARCHAR, @Day) AS DATETIME);
     END
-ELSE
-BEGIN
-    SET @ShiftID = '02'
-    IF (@Hour < 8)
-        BEGIN
-            SET @Day = @Day - 1;
-            SELECT @StartShiftDate = CAST(CONVERT(VARCHAR, @Year) + '-' + CONVERT(VARCHAR, @Month) + '-' + CONVERT(VARCHAR, @Day) AS DATETIME);
-        END
-    ELSE 
-        SELECT @StartShiftDate = CAST(CONVERT(VARCHAR, @Year) + '-' + CONVERT(VARCHAR, @Month) + '-' + CONVERT(VARCHAR, @Day) AS DATETIME);
-END
+
+--night shift. first part
+IF (@Hour < 8)
+	BEGIN
+		SET @ShiftID = '02'
+		SET @StartShiftDate = DATEADD(day,-1,@StartShiftDate);
+	END
+
+--night shift. last part
+IF (@Hour >= 20)
+	BEGIN
+		SET @ShiftID = '02'
+	END
 
 SELECT 
 	ISNULL(SUM (CountsGood),0) as CommCounter
