@@ -1,4 +1,4 @@
-﻿#define real_time
+﻿//#define real_time
 
 using System;
 using System.Collections.Generic;
@@ -68,6 +68,12 @@ namespace ApexPresentation
             label4.Text = opc_obj.CounterOfRings.ToString();
             opc_obj.SetActiveLabel(label4);
 
+            //crypto
+            //String a1 = Crypto.EncryptString("fogfdsfgdssffffffffffffffffffffo");
+            //MessageBox.Show(Crypto.DecryptString(a1));
+            //System.Security.Cryptography.TripleDESCryptoServiceProvider a1 = new System.Security.Cryptography.TripleDESCryptoServiceProvider();
+            //MessageBox.Show(a1.Key.Length.ToString());
+
             previous_time = get_CURR();
         }
 
@@ -95,7 +101,7 @@ namespace ApexPresentation
                 opc_obj.CounterOfRings = 0;
             previous_time = get_CURR();
 
-
+            
             GlobalPresenter();
         }
 
@@ -315,7 +321,11 @@ namespace ApexPresentation
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);
 
 
-            label8.Text = ((1-Math.Round((sql_obj.GetBalastedTimes(get_T1(dateTimePicker1.Value), get_T2(dateTimePicker1.Value), get_CURR()).TotalSeconds / 43200), 2))*100).ToString()+"%";
+            label8.Text = (
+                            Math.Round(
+                                        (1-(sql_obj.GetBalastedTimes(get_T1(dateTimePicker1.Value), get_T2(dateTimePicker1.Value), get_CURR()).TotalSeconds / 43200))*100,2
+                                    )
+                        ).ToString()+"%";
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 

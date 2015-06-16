@@ -23,6 +23,7 @@ namespace ApexPresentation
         }
         public  Sql_class(String in_ConnectionString)
         {
+            MessageBox.Show("windows");
             this.Initialized = false;
             try
             {
@@ -30,7 +31,25 @@ namespace ApexPresentation
                 con.Open();
                 //if ok - fill connection string field
                 this.ConnectionString = "Data Source=" + in_ConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
+                this.Initialized = true;
+            }
+            catch
+            {
+                this.Initialized = false;
+            }
+        }
+        public Sql_class(String in_ConnectionString,String in_login, String in_password)
+        {
 
+            //MessageBox.Show("Data Source=" + in_ConnectionString + ";User ID=" + in_login + ";Password=" + in_password);
+            this.Initialized = false;
+            //Data Source=SERZH\SQLEXPRESS;User ID=qwe;Password=***********
+            try
+            {
+                SqlConnection con = new SqlConnection("Data Source=" + in_ConnectionString + ";User ID=" + in_login + ";Password="+in_password);
+                con.Open();
+                //if ok - fill connection string field
+                this.ConnectionString = "Data Source=" + in_ConnectionString + ";User ID=" + in_login + ";Password=" + in_password;
                 this.Initialized = true;
             }
             catch
@@ -62,11 +81,22 @@ namespace ApexPresentation
                         Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
                         reader1.Dispose();
 
-                        SqlConnection con = new SqlConnection("Data Source=" + Settings1.SQLConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True");
-                        con.Open();
+                        String con_string="";
+                        if (Settings1.SQLWindowsAuthorization == true)
+                        {
+                            con_string = "Data Source=" + Settings1.SQLConnectionString + ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
+                            SqlConnection con = new SqlConnection(con_string);
+                            con.Open();
+                        }
+                        if (Settings1.SQLWindowsAuthorization == false)
+                        {
+                            con_string = "Data Source=" + Settings1.SQLConnectionString + ";User ID=" + Settings1.SQLLogin + ";Password=" + Settings1.SQLPassword;
+                            SqlConnection con = new SqlConnection(con_string);
+                            con.Open();
+                        }
 
                         //if ok - fill connection string field
-                        this.ConnectionString = "Data Source=" + Settings1.SQLConnectionString +  ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
+                        this.ConnectionString = con_string;
 
                         this.Initialized = true;
                     }
@@ -80,7 +110,7 @@ namespace ApexPresentation
                 }
                 catch
                 {
-                    MessageBox.Show("Bad SQL connection. Review connection string");
+                    MessageBox.Show("Bad SQL connection. Review connection settings");
                     this.Initialized = false;
                 }
             }
@@ -546,7 +576,7 @@ ORDER BY [StartTime]";
             return return_value;
         }
         #endregion
-        #region !!!GetRingsCounter()
+        #region public Int32 GetRingsCounter()
         public Int32 GetRingsCounter()
         {
             if (!this.Initialized) return 0;
@@ -601,7 +631,7 @@ WHERE [ShiftDate] = @StartShiftDate AND [ShiftID] = @ShiftID AND [ClientPC] is n
         }
             
         #endregion
-        #region GetBalastedTimes
+        #region public TimeSpan GetBalastedTimes(DateTime in_StartTime, DateTime in_EndTime, DateTime in_CURR)
         public TimeSpan GetBalastedTimes(DateTime in_StartTime, DateTime in_EndTime, DateTime in_CURR)
         {
             TimeSpan return_value = new TimeSpan();

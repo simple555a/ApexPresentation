@@ -59,6 +59,7 @@
     <Compile Include="ConnectionsForm.Designer.cs">
       <DependentUpon>ConnectionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Crypto.cs" />
     <Compile Include="Main_form.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -35,6 +35,10 @@ namespace ApexPresentation
                 this.textBox3.Text = Settings1.OPCConnectionString;
                 this.textBox2.Text = Settings1.OPCGroupName;
                 this.textBox4.Text = Settings1.OPCRingsCounterName;
+                radioButton1.Checked = (Settings1.SQLWindowsAuthorization == true) ? true : false;
+                radioButton2.Checked = (Settings1.SQLWindowsAuthorization == true) ? false : true;
+                textBox5.Text = Settings1.SQLLogin;
+                textBox6.Text = Settings1.SQLPassword;
                  
             }
         }
@@ -43,6 +47,10 @@ namespace ApexPresentation
         private void button1_Click(object sender, EventArgs e)
         {
             Settings1.SQLConnectionString = this.textBox1.Text;
+            Settings1.SQLWindowsAuthorization = (radioButton1.Checked == true && radioButton2.Checked == false) ? true : false;
+            Settings1.SQLLogin = textBox5.Text;
+            Settings1.SQLPassword = textBox6.Text;
+
             Settings1.OPCConnectionString = this.textBox3.Text;
             Settings1.OPCGroupName = this.textBox2.Text;
             Settings1.OPCRingsCounterName = this.textBox4.Text;
@@ -59,7 +67,7 @@ namespace ApexPresentation
         {
             this.button2.Enabled = false;
             this.button2.Text = "Testing...";
-            Sql_class sql_obj = new Sql_class(this.textBox1.Text);
+            Sql_class sql_obj = (radioButton1.Checked == true) ? new Sql_class(this.textBox1.Text) : new Sql_class(this.textBox1.Text,this.textBox5.Text,this.textBox6.Text);
             Settings1.SQLInitialized = sql_obj.Initialized;
             label5.Text = (Settings1.SQLInitialized) ? "Ok" : "Not OK";
             this.button2.Enabled = true;
@@ -82,6 +90,25 @@ namespace ApexPresentation
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton2.Checked == true)
+            {
+                label8.Enabled = true;
+                label9.Enabled = true;
+                textBox5.Enabled = true;
+                textBox6.Enabled = true;
+            }
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            label8.Enabled = false;
+            label9.Enabled = false;
+            textBox5.Enabled = false;
+            textBox6.Enabled = false;
         }
     }
 }

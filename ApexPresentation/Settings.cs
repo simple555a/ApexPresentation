@@ -6,8 +6,12 @@ namespace ApexPresentation
 {
     public class Settings
     {
-        public String   SQLConnectionString;
-        public bool     SQLInitialized;
+        public String SQLConnectionString;
+        public bool SQLInitialized;
+        public bool SQLWindowsAuthorization;
+        public String SQLLogin;
+        public String SQLPassword;
+
 
         public bool OPCInitialized;
         public String OPCConnectionString;
