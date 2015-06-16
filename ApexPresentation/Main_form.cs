@@ -60,6 +60,7 @@ namespace ApexPresentation
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 
+
             this.Text += " (serpikov.sergey@gmail.com)";
 
             //OPC
@@ -313,6 +314,8 @@ namespace ApexPresentation
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);
 
+
+            label8.Text = ((1-Math.Round((sql_obj.GetBalastedTimes(get_T1(dateTimePicker1.Value), get_T2(dateTimePicker1.Value), get_CURR()).TotalSeconds / 43200), 2))*100).ToString()+"%";
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 
