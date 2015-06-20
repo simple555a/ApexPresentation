@@ -1,4 +1,4 @@
-﻿//#define real_time
+﻿#define real_time
 
 using System;
 using System.Collections.Generic;
@@ -26,10 +26,14 @@ namespace ApexPresentation
         static OPC_class opc_obj = new OPC_class();
         static Timer global_clock = new Timer();
         static Timer refresh_form_timer = new Timer();
+        /// <summary>
+        /// for zeroing rings counter
+        /// </summary>
         static DateTime previous_time = new DateTime();
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
 
             DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             
@@ -48,7 +52,7 @@ namespace ApexPresentation
                 radioButton1.Checked = true;
             else
                 radioButton2.Checked = true;
-
+            
             global_clock.Interval = 1000;
             global_clock.Tick += global_clock_Tick;
             global_clock.Start();
@@ -75,6 +79,25 @@ namespace ApexPresentation
             //MessageBox.Show(a1.Key.Length.ToString());
 
             previous_time = get_CURR();
+
+            //history browser
+            //tableLayoutPanel2.RowStyles[2].Height = 0;
+            try
+            {
+                if (File.Exists("settings.xml"))
+                {
+                    XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
+                    TextReader reader1 = new StreamReader("settings.xml");
+                    Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
+                    reader1.Dispose();
+
+                    tableLayoutPanel2.RowStyles[2].Height = (Settings1.GENERALShowHistoryBrowser) ? 35 : 0;
+                }
+            }
+            catch
+            {
+
+            }
         }
 
         void refresh_form_timer_Tick(object sender, EventArgs e)
@@ -118,6 +141,8 @@ namespace ApexPresentation
             label2.Text = year + " " + month + " " +day + "  " + hours + ":" + minutes + ":" + seconds;
         }
 
+        
+
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -137,6 +162,11 @@ namespace ApexPresentation
             GlobalPresenter();
         }
 
+        /// <summary>
+        /// Get EStart shift time
+        /// </summary>
+        /// <param name="in_StartTime">date of shift</param>
+        /// <returns></returns>
         private DateTime get_T1(DateTime in_StartTime)
         {
             TimeSpan t1 = new TimeSpan(8, 0, 0);
@@ -155,6 +185,11 @@ namespace ApexPresentation
             return T1;
         }
 
+        /// <summary>
+        /// Get End shift time
+        /// </summary>
+        /// <param name="in_StartTime">date of shift</param>
+        /// <returns></returns>
         private DateTime get_T2(DateTime in_StartTime)
         {
             TimeSpan t1 = new TimeSpan(8, 0, 0);
@@ -320,24 +355,34 @@ namespace ApexPresentation
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);
 
-
-            label8.Text = (
-                            Math.Round(
-                                        (1-(sql_obj.GetBalastedTimes(get_T1(dateTimePicker1.Value), get_T2(dateTimePicker1.Value), get_CURR()).TotalSeconds / 43200))*100,2
-                                    )
-                        ).ToString()+"%";
+            //MessageBox.Show(sql_obj.GetBalastedTimes(get_T1(dateTimePicker1.Value), get_T2(dateTimePicker1.Value), get_CURR()).TotalMinutes.ToString()+"/"+ (get_CURR() - get_T1(dateTimePicker1.Value)).TotalMinutes.ToString());
+            //Eficiency
+            //1.real time
+            if (get_T1(dateTimePicker1.Value) <= get_CURR() && get_CURR() < get_T2(dateTimePicker1.Value))
+                label8.Text = (
+                                Math.Round(
+                                            (1 - (sql_obj.GetBalastedTimes(get_T1(dateTimePicker1.Value), get_T2(dateTimePicker1.Value), get_CURR()).TotalSeconds / (get_CURR() - get_T1(dateTimePicker1.Value)).TotalSeconds)) * 100, 2
+                                        )
+                            ).ToString()+"%";
+            //2.history
+            if (get_T2(dateTimePicker1.Value) <= get_CURR())
+                label8.Text = (
+                                Math.Round(
+                                            (1 - (sql_obj.GetBalastedTimes(get_T1(dateTimePicker1.Value), get_T2(dateTimePicker1.Value), get_CURR()).TotalSeconds / 43200)) * 100, 2
+                                        )
+                            ).ToString() + "%";
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
-
-            
-            
-
-
         }
 
         private void label4_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Main_form_Shown(object sender, EventArgs e)
+        {
+            
         }
        
 

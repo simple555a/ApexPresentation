@@ -35,10 +35,11 @@ namespace ApexPresentation
                 this.textBox3.Text = Settings1.OPCConnectionString;
                 this.textBox2.Text = Settings1.OPCGroupName;
                 this.textBox4.Text = Settings1.OPCRingsCounterName;
-                radioButton1.Checked = (Settings1.SQLWindowsAuthorization == true) ? true : false;
-                radioButton2.Checked = (Settings1.SQLWindowsAuthorization == true) ? false : true;
+                radioButton1.Checked = (Settings1.SQLWindowsAuthorization) ? true : false;
+                radioButton2.Checked = (Settings1.SQLWindowsAuthorization) ? false : true;
                 textBox5.Text = Settings1.SQLLogin;
                 textBox6.Text = Settings1.SQLPassword;
+                checkBox1.Checked = (Settings1.GENERALShowHistoryBrowser) ? true : false;
                  
             }
         }
@@ -54,6 +55,8 @@ namespace ApexPresentation
             Settings1.OPCConnectionString = this.textBox3.Text;
             Settings1.OPCGroupName = this.textBox2.Text;
             Settings1.OPCRingsCounterName = this.textBox4.Text;
+
+            Settings1.GENERALShowHistoryBrowser = checkBox1.Checked;
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
             TextWriter writer = new StreamWriter("settings.xml");
             serializer.Serialize(writer, Settings1);
@@ -109,6 +112,11 @@ namespace ApexPresentation
             label9.Enabled = false;
             textBox5.Enabled = false;
             textBox6.Enabled = false;
+        }
+
+        private void ConnectionsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+           
         }
     }
 }

@@ -12,7 +12,7 @@ using ApexPresentation.TYPES;
 
 namespace ApexPresentation
 {
-    class Sql_class
+    class Sql_class//: IDisposable
     {
         #region 1. Constructor
 
@@ -23,7 +23,7 @@ namespace ApexPresentation
         }
         public  Sql_class(String in_ConnectionString)
         {
-            MessageBox.Show("windows");
+            //MessageBox.Show("windows");
             this.Initialized = false;
             try
             {
@@ -59,11 +59,60 @@ namespace ApexPresentation
         }
 
         #endregion
-        
+
+        #region 2. Dispose
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        //}
+
+        #endregion
+
         #region 2. Properties
 
         private String ConnectionString;
         public bool Initialized;
+
+        public static String rulers = @"INSERT INTO 
+@excessed_times_table
+VALUES      
+(210,40);
+
+INSERT INTO 
+@excessed_times_table
+VALUES      
+(213,20);
+
+INSERT INTO 
+@excessed_times_table
+VALUES   
+(511,30);
+
+INSERT INTO 
+@excessed_times_table
+VALUES   
+(531,30);
+
+INSERT INTO 
+@excessed_times_table
+VALUES    
+(540,10);
+
+INSERT INTO 
+@excessed_times_table
+VALUES     
+(711,5);
+
+INSERT INTO 
+@excessed_times_table
+VALUES     
+(721,10);
+
+INSERT INTO 
+@excessed_times_table
+VALUES    
+(823,15);"; 
 
         #endregion
         
@@ -438,48 +487,8 @@ SELECT
 FROM @TB3
 GROUP BY [MachineState]
 
-DECLARE @excessed_times_table table (MachineState int, ApprovedTime int)
-INSERT INTO 
-@excessed_times_table
-VALUES      
-(210,40);
-
-INSERT INTO 
-@excessed_times_table
-VALUES      
-(213,20);
-
-INSERT INTO 
-@excessed_times_table
-VALUES   
-(511,30);
-
-INSERT INTO 
-@excessed_times_table
-VALUES   
-(531,30);
-
-INSERT INTO 
-@excessed_times_table
-VALUES    
-(540,10);
-
-INSERT INTO 
-@excessed_times_table
-VALUES     
-(711,5);
-
-INSERT INTO 
-@excessed_times_table
-VALUES     
-(721,10);
-
-INSERT INTO 
-@excessed_times_table
-VALUES    
-(823,15);   
-									 
-
+DECLARE @excessed_times_table table (MachineState int, ApprovedTime int)"+rulers+
+@"
 
 DECLARE @correct_tb1 table (MachineState int, StartTime datetime, EndTime Datetime)
 INSERT INTO @correct_tb1
@@ -586,8 +595,10 @@ ORDER BY [StartTime]";
 @Hour int;
 
 --SET @StartShiftDate = CAST(FLOOR(CAST(CAST('2015-04-23T00:00:00.000' AS DATETIME) AS FLOAT)) AS DATETIME)
-SET @StartShiftDate = CAST(FLOOR(CAST(GETDATE() AS FLOAT)) AS DATETIME)
+SET @StartShiftDate = GETDATE();
 SET @Hour = DATEPART(hour, @StartShiftDate)
+SET @StartShiftDate = CAST(FLOOR(CAST(GETDATE() AS FLOAT)) AS DATETIME)
+
 
 --day shift
 IF (@Hour >= 8) and (@Hour < 20)
@@ -607,6 +618,7 @@ IF (@Hour >= 20)
 BEGIN
 	SET @ShiftID = '02'
 END
+
 
 SELECT 
 ISNULL(SUM (CountsGood),0) as CommCounter
@@ -702,48 +714,8 @@ SELECT
 FROM @TB3
 GROUP BY [MachineState]
 
-DECLARE @excessed_times_table table (MachineState int, ApprovedTime int)
-INSERT INTO 
-@excessed_times_table
-VALUES      
-(210,40);
-
-INSERT INTO 
-@excessed_times_table
-VALUES      
-(213,20);
-
-INSERT INTO 
-@excessed_times_table
-VALUES   
-(511,30);
-
-INSERT INTO 
-@excessed_times_table
-VALUES   
-(531,30);
-
-INSERT INTO 
-@excessed_times_table
-VALUES    
-(540,10);
-
-INSERT INTO 
-@excessed_times_table
-VALUES     
-(711,5);
-
-INSERT INTO 
-@excessed_times_table
-VALUES     
-(721,10);
-
-INSERT INTO 
-@excessed_times_table
-VALUES    
-(823,15);   
-									 
-
+DECLARE @excessed_times_table table (MachineState int, ApprovedTime int)"+rulers+
+@"
 
 DECLARE @correct_tb1 table (MachineState int, StartTime datetime, EndTime Datetime)
 INSERT INTO @correct_tb1
@@ -817,6 +789,7 @@ ON [@TB4].[MachineState]=[@excessed_times].[MachineState]";
         #endregion
 
         #endregion
+
 
 
     }   
