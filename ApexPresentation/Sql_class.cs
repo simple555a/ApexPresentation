@@ -131,23 +131,31 @@ VALUES
                         reader1.Dispose();
 
                         String con_string="";
-                        if (Settings1.SQLWindowsAuthorization == true)
+                        if (Settings1.SQLInitialized == true)
                         {
-                            con_string = "Data Source=" + Settings1.SQLConnectionString + ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
-                            SqlConnection con = new SqlConnection(con_string);
-                            con.Open();
+                            if (Settings1.SQLWindowsAuthorization == true)
+                            {
+                                con_string = "Data Source=" + Settings1.SQLConnectionString + ";Initial Catalog=SFI_local_PC_SQL;Integrated Security=True";
+                                SqlConnection con = new SqlConnection(con_string);
+                                con.Open();
+                            }
+                            if (Settings1.SQLWindowsAuthorization == false)
+                            {
+                                con_string = "Data Source=" + Settings1.SQLConnectionString + ";User ID=" + Settings1.SQLLogin + ";Password=" + Settings1.SQLPassword;
+                                SqlConnection con = new SqlConnection(con_string);
+                                con.Open();
+                            }
+
+                            //if ok - fill connection string field
+                            this.ConnectionString = con_string;
+
+                            this.Initialized = true;
                         }
-                        if (Settings1.SQLWindowsAuthorization == false)
+                        if (Settings1.SQLInitialized != true)
                         {
-                            con_string = "Data Source=" + Settings1.SQLConnectionString + ";User ID=" + Settings1.SQLLogin + ";Password=" + Settings1.SQLPassword;
-                            SqlConnection con = new SqlConnection(con_string);
-                            con.Open();
+                            MessageBox.Show("SQL connection is not tested. See Settings - > Connection...");
+                            this.Initialized = false;
                         }
-
-                        //if ok - fill connection string field
-                        this.ConnectionString = con_string;
-
-                        this.Initialized = true;
                     }
                     else
                     {

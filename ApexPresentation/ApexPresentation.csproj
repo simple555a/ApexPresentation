@@ -53,11 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionsForm.cs">
+    <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConnectionsForm.Designer.cs">
-      <DependentUpon>ConnectionsForm.cs</DependentUpon>
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Crypto.cs" />
     <Compile Include="Main_form.cs">
@@ -78,8 +78,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Sql_class.cs" />
-    <EmbeddedResource Include="ConnectionsForm.resx">
-      <DependentUpon>ConnectionsForm.cs</DependentUpon>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main_form.resx">
       <DependentUpon>Main_form.cs</DependentUpon>

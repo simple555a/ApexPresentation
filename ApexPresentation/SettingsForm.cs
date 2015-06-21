@@ -11,9 +11,9 @@ using System.IO;
 
 namespace ApexPresentation
 {
-    public partial class ConnectionsForm : Form
+    public partial class SettingsForm : Form
     {
-        public ConnectionsForm()
+        public SettingsForm()
         {
             InitializeComponent();
         }
@@ -32,15 +32,16 @@ namespace ApexPresentation
                 reader1.Dispose();
 
                 this.textBox1.Text = Settings1.SQLConnectionString;
+                this.radioButton1.Checked = (Settings1.SQLWindowsAuthorization) ? true : false;
+                this.radioButton2.Checked = (Settings1.SQLWindowsAuthorization) ? false : true;
+                this.textBox5.Text = Settings1.SQLLogin;
+                this.textBox6.Text = Settings1.SQLPassword;
+
                 this.textBox3.Text = Settings1.OPCConnectionString;
                 this.textBox2.Text = Settings1.OPCGroupName;
                 this.textBox4.Text = Settings1.OPCRingsCounterName;
-                radioButton1.Checked = (Settings1.SQLWindowsAuthorization) ? true : false;
-                radioButton2.Checked = (Settings1.SQLWindowsAuthorization) ? false : true;
-                textBox5.Text = Settings1.SQLLogin;
-                textBox6.Text = Settings1.SQLPassword;
+
                 checkBox1.Checked = (Settings1.GENERALShowHistoryBrowser) ? true : false;
-                 
             }
         }
 
@@ -48,15 +49,17 @@ namespace ApexPresentation
         private void button1_Click(object sender, EventArgs e)
         {
             Settings1.SQLConnectionString = this.textBox1.Text;
-            Settings1.SQLWindowsAuthorization = (radioButton1.Checked == true && radioButton2.Checked == false) ? true : false;
-            Settings1.SQLLogin = textBox5.Text;
-            Settings1.SQLPassword = textBox6.Text;
+            Settings1.SQLWindowsAuthorization = (this.radioButton1.Checked == true && this.radioButton2.Checked == false) ? true : false;
+            Settings1.SQLLogin = this.textBox5.Text;
+            Settings1.SQLPassword = this.textBox6.Text;
 
             Settings1.OPCConnectionString = this.textBox3.Text;
             Settings1.OPCGroupName = this.textBox2.Text;
             Settings1.OPCRingsCounterName = this.textBox4.Text;
 
             Settings1.GENERALShowHistoryBrowser = checkBox1.Checked;
+
+            Settings1.SETTINGSFileVersion = "0000";
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
             TextWriter writer = new StreamWriter("settings.xml");
             serializer.Serialize(writer, Settings1);

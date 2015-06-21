@@ -89,26 +89,34 @@ namespace ApexPresentation
                             Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
                             reader1.Dispose();
 
-                            // 1st: Create a server object and connect to the RSLinx OPC Server
-                            url = new Opc.URL(Settings1.OPCConnectionString);
-                            server = new Opc.Da.Server(fact, null);
-                            //2nd: Connect to the created server
-                            server.Connect(url, new Opc.ConnectData(new System.Net.NetworkCredential()));
-                            //3rd Create a group if items            
-                            groupState = new Opc.Da.SubscriptionState();
-                            groupState.Name = Settings1.OPCGroupName;
-                            groupState.UpdateRate = 1000;// this isthe time between every reads from OPC server
-                            groupState.Active = true;//this must be true if you the group has to read value
-                            groupRead = (Opc.Da.Subscription)server.CreateSubscription(groupState);
-                            groupRead.DataChanged += groupRead_DataChanged;
+                            if (Settings1.OPCInitialized == true)
+                            {
+                                // 1st: Create a server object and connect to the RSLinx OPC Server
+                                url = new Opc.URL(Settings1.OPCConnectionString);
+                                server = new Opc.Da.Server(fact, null);
+                                //2nd: Connect to the created server
+                                server.Connect(url, new Opc.ConnectData(new System.Net.NetworkCredential()));
+                                //3rd Create a group if items            
+                                groupState = new Opc.Da.SubscriptionState();
+                                groupState.Name = Settings1.OPCGroupName;
+                                groupState.UpdateRate = 1000;// this isthe time between every reads from OPC server
+                                groupState.Active = true;//this must be true if you the group has to read value
+                                groupRead = (Opc.Da.Subscription)server.CreateSubscription(groupState);
+                                groupRead.DataChanged += groupRead_DataChanged;
 
-                            items[0] = new Opc.Da.Item();
-                            items[0].ItemName = Settings1.OPCRingsCounterName;
-                            items = groupRead.AddItems(items);
+                                items[0] = new Opc.Da.Item();
+                                items[0].ItemName = Settings1.OPCRingsCounterName;
+                                items = groupRead.AddItems(items);
 
-                            Opc.Da.ItemValueResult[] values = groupRead.Read(items);
-                            //MessageBox.Show("Readed value is " + values[0].Value.ToString());
-                            this.Initialized = true;
+                                Opc.Da.ItemValueResult[] values = groupRead.Read(items);
+                                //MessageBox.Show("Readed value is " + values[0].Value.ToString());
+                                this.Initialized = true;
+                            }
+                            if (Settings1.OPCInitialized != true)
+                            {
+                                MessageBox.Show("OPC connection is not tested. See Settings - > Connection...");
+                                this.Initialized = false;
+                            }
                         }
                         else
                         {

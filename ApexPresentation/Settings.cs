@@ -6,6 +6,8 @@ namespace ApexPresentation
 {
     public class Settings
     {
+        public String SETTINGSFileVersion;
+
         public String SQLConnectionString;
         public bool SQLInitialized;
         public bool SQLWindowsAuthorization;
@@ -19,6 +21,7 @@ namespace ApexPresentation
         public String OPCRingsCounterName;
 
         public bool GENERALShowHistoryBrowser;
+
 
     }
 }

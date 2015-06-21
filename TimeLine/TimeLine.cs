@@ -84,12 +84,12 @@ namespace TimeLine
                     this.TimeLineX1 + System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours),
                     this.TimeLineY2 + 1,
                     this.TimeLineX1 + System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours),
-                    this.TimeLineY2 + 7);
+                    this.TimeLineY2 + 5);
 
                 tempString = (((this.StartTime.Hour + i) % 24) < 10) ? "0" + ((this.StartTime.Hour + i) % 24).ToString() : ((this.StartTime.Hour + i) % 24).ToString();
                 tempString += ":00";
 
-                e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours) - 12, 55);
+                e.Graphics.DrawString(tempString, font_004, brush_004, System.Convert.ToInt16(((i) * this.TimeLineWidth) / total_hours) - 17, 55);
             }
             #endregion
 

@@ -81,7 +81,7 @@ namespace ApexPresentation
             previous_time = get_CURR();
 
             //history browser
-            //tableLayoutPanel2.RowStyles[2].Height = 0;
+            tableLayoutPanel2.RowStyles[2].Height = 0;
             try
             {
                 if (File.Exists("settings.xml"))
@@ -153,7 +153,7 @@ namespace ApexPresentation
 
         private void connectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionsForm ConnectionsForm1 = new ConnectionsForm();
+            SettingsForm ConnectionsForm1 = new SettingsForm();
             ConnectionsForm1.Show();
         }
 
