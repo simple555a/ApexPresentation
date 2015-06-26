@@ -15,7 +15,7 @@ namespace ApexPresentation
             this.Initialized = false;
             InitializeOPC();
         }
-        public OPC_class(String in_URL, String in_GroupName, String in_RingsCounterName)
+        public OPC_class(String in_URL,  String in_RingsCounterName)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace ApexPresentation
 
                 //3rd Create a group if items            
                 groupState = new Opc.Da.SubscriptionState();
-                groupState.Name = in_GroupName;
+                groupState.Name = "Group999";
                 groupState.UpdateRate = 1000;// this isthe time between every reads from OPC server
                 groupState.Active = true;//this must be true if you the group has to read value
                 groupRead = (Opc.Da.Subscription)server.CreateSubscription(groupState);
@@ -98,7 +98,7 @@ namespace ApexPresentation
                                 server.Connect(url, new Opc.ConnectData(new System.Net.NetworkCredential()));
                                 //3rd Create a group if items            
                                 groupState = new Opc.Da.SubscriptionState();
-                                groupState.Name = Settings1.OPCGroupName;
+                                groupState.Name = "Group999";
                                 groupState.UpdateRate = 1000;// this isthe time between every reads from OPC server
                                 groupState.Active = true;//this must be true if you the group has to read value
                                 groupRead = (Opc.Da.Subscription)server.CreateSubscription(groupState);

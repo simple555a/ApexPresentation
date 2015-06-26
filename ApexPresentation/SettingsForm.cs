@@ -38,7 +38,6 @@ namespace ApexPresentation
                 this.textBox6.Text = Settings1.SQLPassword;
 
                 this.textBox3.Text = Settings1.OPCConnectionString;
-                this.textBox2.Text = Settings1.OPCGroupName;
                 this.textBox4.Text = Settings1.OPCRingsCounterName;
 
                 checkBox1.Checked = (Settings1.GENERALShowHistoryBrowser) ? true : false;
@@ -54,7 +53,6 @@ namespace ApexPresentation
             Settings1.SQLPassword = this.textBox6.Text;
 
             Settings1.OPCConnectionString = this.textBox3.Text;
-            Settings1.OPCGroupName = this.textBox2.Text;
             Settings1.OPCRingsCounterName = this.textBox4.Text;
 
             Settings1.GENERALShowHistoryBrowser = checkBox1.Checked;
@@ -86,7 +84,7 @@ namespace ApexPresentation
         {
             this.button3.Enabled = false;
             this.button3.Text = "Testing...";
-            OPC_class opc_obj = new OPC_class(textBox3.Text,textBox2.Text,textBox4.Text);
+            OPC_class opc_obj = new OPC_class(textBox3.Text,textBox4.Text);
             Settings1.OPCInitialized = opc_obj.Initialized;
             label6.Text = (Settings1.OPCInitialized) ? "Ok" : "Not OK";
             this.button3.Enabled = true;
