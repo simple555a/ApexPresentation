@@ -203,24 +203,6 @@ VALUES
         {
             if (!this.Initialized) return "***************";
 
-                
-//                String SQLQuery = @"SELECT 
-//                                OPL.[user_name]
-//                                ,AU.[first_name]
-//                                ,AU.[last_name]
-//                                ,OPL.[wc_name]
-//                                ,OPL.[station_name]
-//                                ,OPL.[login_type]
-//                                ,OPL.[login_time]
-//                                ,OPL.[logout_time]
-//                                ,OPL.[message_type]
-//                                FROM 
-//                                [SFI_local_PC_SQL].[dbo].[sfi_SLCOperatorLogin] AS OPL 
-//                                INNER JOIN 
-//                                [SLC_rsActive].[dbo].[APP_USER] AS AU 
-//                                ON OPL.[user_name] = AU.[user_name]
-//                                WHERE OPL.login_time > (GETDATE() - '08:00:00.000') and OPL.wc_name = 'BAA21'";
-
             String SQLQuery = @"SELECT  
 [SFI_local_PC_SQL].[dbo].[tbl_slc_Station].[SLCName]
 ,[SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser].[CurrentUserName]
@@ -234,21 +216,62 @@ INNER JOIN
 [SLC_rsActive].[dbo].[APP_USER]
 ON [SLC_rsActive].[dbo].[APP_USER].[user_name]=[SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser].[CurrentUserName]";
 
+            String SQLQuery_alt = @"SELECT  
+[SFI_local_PC_SQL].[dbo].[tbl_slc_Station].[SLCName]
+,[SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser].[CurrentUserName]
+,[SLC_rsActive_alt].[dbo].[APP_USER].[first_name]
+,[SLC_rsActive_alt].[dbo].[APP_USER].[last_name]
+FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_Station]
+INNER JOIN 
+[SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser]
+ON [SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser].[ClientPC]=[SFI_local_PC_SQL].[dbo].[tbl_slc_Station].[SLCName]
+INNER JOIN
+[SLC_rsActive_alt].[dbo].[APP_USER]
+ON [SLC_rsActive_alt].[dbo].[APP_USER].[user_name]=[SFI_local_PC_SQL].[dbo].[tbl_slc_WCUser].[CurrentUserName]";
+
                 using (SqlConnection con = new SqlConnection(this.ConnectionString))
                 {
                     con.Open();
 
-                    using (SqlCommand cmd = new SqlCommand(SQLQuery,con))
+                    bool _alt_active = false;
+                    //try SQLQuery
+                    try
                     {
-                        using (SqlDataReader reader= cmd.ExecuteReader())
-                            
-                        while (reader.Read())
+                        using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
                         {
-                            return reader.GetString(2) + " " + reader.GetString(3);
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+
+                                while (reader.Read())
+                                {
+                                    return reader.GetString(2) + " " + reader.GetString(3);
+                                }
+                            return "Nobody";
                         }
-                        return "Nobody";
                     }
+                    catch 
+                    {
+                        _alt_active = true;
+                    }
+
+                    //try SQLQuery_alt
+                    if (_alt_active)
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(SQLQuery_alt, con))
+                        {
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+
+                                while (reader.Read())
+                                {
+                                    return reader.GetString(2) + " " + reader.GetString(3);
+                                }
+                            return "Nobody";
+                        }
+                    }
+                    catch { }
+                    
                 }
+                return "Nobody";
         }
         #endregion
         #region public Section[] GetTimeLineData(DateTime in_StartTime, DateTime in_EndTime, DateTime in_CURR)
