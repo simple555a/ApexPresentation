@@ -40,16 +40,22 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.timeLine1 = new TimeLine.TimeLine();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.label7 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -59,12 +65,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -75,6 +76,7 @@
             this.tableLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tableLayoutPanel7.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -240,19 +242,18 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(778, 29);
             this.tableLayoutPanel4.TabIndex = 6;
             // 
-            // button1
+            // label7
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button1.Location = new System.Drawing.Point(375, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Get";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label7.Location = new System.Drawing.Point(3, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(33, 29);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "From:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // dateTimePicker1
             // 
@@ -263,6 +264,19 @@
             this.dateTimePicker1.TabIndex = 7;
             this.dateTimePicker1.Value = new System.DateTime(2015, 5, 11, 12, 25, 35, 0);
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(216, 3);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(64, 23);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.Text = "day shift";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.radioButton1_MouseClick);
             // 
             // radioButton2
             // 
@@ -279,31 +293,19 @@
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.radioButton2_MouseClick);
             // 
-            // radioButton1
+            // button1
             // 
-            this.radioButton1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(216, 3);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(64, 23);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.Text = "day shift";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.radioButton1_MouseClick);
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label7.Location = new System.Drawing.Point(3, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(33, 29);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "From:";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.button1.Location = new System.Drawing.Point(375, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(94, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Get";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -390,6 +392,44 @@
             this.dataGridView1.Size = new System.Drawing.Size(772, 154);
             this.dataGridView1.TabIndex = 4;
             // 
+            // Column1
+            // 
+            this.Column1.FillWeight = 30F;
+            this.Column1.Frozen = true;
+            this.Column1.HeaderText = "№";
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 30;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Color";
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 40;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Summary time";
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 90;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Status";
+            this.Column4.Name = "Column4";
+            this.Column4.Width = 457;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "Count";
+            this.Column5.Name = "Column5";
+            this.Column5.Width = 40;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "Summary Exceeded Time";
+            this.Column6.Name = "Column6";
+            this.Column6.Width = 90;
+            // 
             // tableLayoutPanel7
             // 
             this.tableLayoutPanel7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -435,6 +475,8 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 539);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(784, 22);
@@ -482,43 +524,12 @@
             this.connectionToolStripMenuItem.Text = "Connection...";
             this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
             // 
-            // Column1
+            // toolStripStatusLabel1
             // 
-            this.Column1.FillWeight = 30F;
-            this.Column1.Frozen = true;
-            this.Column1.HeaderText = "№";
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 30;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Color";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 40;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Summary time";
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 90;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Status";
-            this.Column4.Name = "Column4";
-            this.Column4.Width = 457;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Count";
-            this.Column5.Name = "Column5";
-            this.Column5.Width = 40;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Summary Exceeded Time";
-            this.Column6.Name = "Column6";
-            this.Column6.Width = 90;
+            this.toolStripStatusLabel1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // Main_form
             // 
@@ -530,8 +541,6 @@
             this.Controls.Add(this.tableLayoutPanel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximumSize = new System.Drawing.Size(800, 600);
-            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "Main_form";
             this.Text = "ApexPresentation";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -552,6 +561,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -597,6 +608,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

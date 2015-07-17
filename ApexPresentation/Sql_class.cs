@@ -77,6 +77,11 @@ namespace ApexPresentation
         public static String rulers = @"INSERT INTO 
 @excessed_times_table
 VALUES      
+(12,0);
+
+INSERT INTO 
+@excessed_times_table
+VALUES      
 (210,40);
 
 INSERT INTO 
@@ -86,18 +91,33 @@ VALUES
 
 INSERT INTO 
 @excessed_times_table
-VALUES   
-(511,30);
+VALUES      
+(301,15);
 
 INSERT INTO 
 @excessed_times_table
 VALUES   
-(531,30);
+(511,20);
+
+INSERT INTO 
+@excessed_times_table
+VALUES      
+(522,10);
+
+INSERT INTO 
+@excessed_times_table
+VALUES   
+(531,15);
 
 INSERT INTO 
 @excessed_times_table
 VALUES    
 (540,10);
+
+INSERT INTO 
+@excessed_times_table
+VALUES    
+(541,5);
 
 INSERT INTO 
 @excessed_times_table
@@ -112,7 +132,14 @@ VALUES
 INSERT INTO 
 @excessed_times_table
 VALUES    
-(823,15);"; 
+(823,15);
+
+INSERT INTO 
+@excessed_times_table
+VALUES    
+(999,0);
+
+"; 
 
         #endregion
         

@@ -33,8 +33,13 @@ namespace ApexPresentation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-
+#if !real_time           
+            toolStripStatusLabel1.Text = "NOT REAL TIME!!!";
+            toolStripStatusLabel1.ForeColor = Color.Red;
+#endif
+#if real_time
+            toolStripStatusLabel1.Text = "";
+#endif
             DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             
             label9.Text += sql_obj.GetWCName();
