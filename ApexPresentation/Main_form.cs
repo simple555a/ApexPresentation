@@ -70,7 +70,7 @@ namespace ApexPresentation
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 
 
-            this.Text += " (serpikov.sergey@gmail.com)";
+            this.Text += " v1.0.0 (serpikov.sergey@gmail.com)";
 
             //OPC
             opc_obj.CounterOfRings = sql_obj.GetRingsCounter();
