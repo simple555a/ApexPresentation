@@ -74,71 +74,83 @@ namespace ApexPresentation
         private String ConnectionString;
         public bool Initialized;
 
-        public static String rulers = @"
+        #region public static String rules_limited_times
+        public static String rules_limited_times = @"
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES      
 (210,40);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES      
 (213,20);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES      
 (301,15);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES   
 (511,20);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES      
 (522,10);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES   
 (531,15);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES    
 (540,10);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES    
 (541,5);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES     
 (711,5);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES     
 (721,10);
 
 INSERT INTO 
-@rulers
+@rules_limited_times
 VALUES    
 (823,15);
 
-INSERT INTO 
-@rulers
-VALUES    
-(999,0);
 
-"; 
+";
+        #endregion
+        #region public static String rules_unlimited_times
+        public static String rules_unlimited_times = @"
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(0);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(413);
+
+";
+        #endregion
 
         #endregion
-        
+
         #region 3. Metods
 
         #region private void InitializeSQL()
@@ -541,7 +553,9 @@ SELECT
 FROM @TB3
 GROUP BY [MachineState]
 
-DECLARE @rulers table (MachineState int, ApprovedTime int)"+rulers+
+DECLARE @rules_limited_times table (MachineState int, ApprovedTime int)"+rules_limited_times+
+@"
+DECLARE @rules_unlimited_times table (MachineState int)" + rules_unlimited_times +
 @"
 
 DECLARE @correct_tb1 table (MachineState int, StartTime datetime, EndTime Datetime)
@@ -564,26 +578,40 @@ SELECT
 FROM @TB1
 									    
 DECLARE @excessed_times table (MachineState int, ExceededTimeSumValue int)
-INSERT INTO @excessed_times            
+INSERT INTO @excessed_times  
 select 
 [@correct_tb1].[MachineState]
 ,SUM(CAST(
---if rule dont exist - all time with this status is green
---	CASE
---		WHEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@rulers].[ApprovedTime],DATEDIFF(SECOND,[StartTime],[EndTime]))*60)>0
---		THEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@rulers].[ApprovedTime],DATEDIFF(SECOND,[StartTime],[EndTime]))*60)
---		ELSE 0
---	END AS INT))
---if rule dont exist - all time with this status is red
 	CASE
-		WHEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@rulers].[ApprovedTime],0)*60)>=0
-		THEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@rulers].[ApprovedTime],0)*60)
-		ELSE 0
+--if exist in LIMITED times	
+		WHEN  ([@rules_limited_times].[ApprovedTime] IS NOT NULL) 
+				AND ([@rules_unlimited_times].[MachineState] IS NULL)
+				AND (DATEDIFF(SECOND,[StartTime],[EndTime])-[@rules_limited_times].[ApprovedTime]*60)>=0
+		THEN (DATEDIFF(SECOND,[StartTime],[EndTime])-[@rules_limited_times].[ApprovedTime]*60)
+		
+		WHEN  ([@rules_limited_times].[ApprovedTime] IS NOT NULL) 
+				AND ([@rules_unlimited_times].[MachineState] IS NULL)
+				AND (DATEDIFF(SECOND,[StartTime],[EndTime])-[@rules_limited_times].[ApprovedTime]*60)<0
+		THEN 0
+
+--if exist in UNLIMITED times		
+		WHEN  ([@rules_limited_times].[ApprovedTime] IS NULL) 
+				AND ([@rules_unlimited_times].[MachineState] IS NOT NULL)
+		THEN 0
+		
+--if doesnt exist in LIMITED and UNLIMITED
+		WHEN  ([@rules_limited_times].[ApprovedTime] IS NULL) 
+				AND ([@rules_unlimited_times].[MachineState] IS NULL)
+		THEN (DATEDIFF(SECOND,[StartTime],[EndTime]))
+		
 	END AS INT))
 from @correct_tb1
 LEFT JOIN 
-@rulers
-ON [@correct_tb1].[MachineState]=[@rulers].[MachineState]
+@rules_limited_times
+ON [@correct_tb1].[MachineState]=[@rules_limited_times].[MachineState]
+LEFT JOIN 
+@rules_unlimited_times
+ON [@correct_tb1].[MachineState]=[@rules_unlimited_times].[MachineState]
 group by  [@correct_tb1].[MachineState]
 
 DECLARE @status_count table(MachineState int, _count int)
@@ -775,7 +803,9 @@ SELECT
 FROM @TB3
 GROUP BY [MachineState]
 
-DECLARE @rulers table (MachineState int, ApprovedTime int)"+rulers+
+DECLARE @rules_limited_times table (MachineState int, ApprovedTime int)"+rules_limited_times+
+@"
+DECLARE @rules_unlimited_times table (MachineState int)" + rules_unlimited_times +
 @"
 
 DECLARE @correct_tb1 table (MachineState int, StartTime datetime, EndTime Datetime)
@@ -802,22 +832,35 @@ INSERT INTO @excessed_times
 select 
 [@correct_tb1].[MachineState]
 ,SUM(CAST(
---if rule dont exist - all time with this status is green
---	CASE
---		WHEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@rulers].[ApprovedTime],DATEDIFF(SECOND,[StartTime],[EndTime]))*60)>0
---		THEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@rulers].[ApprovedTime],DATEDIFF(SECOND,[StartTime],[EndTime]))*60)
---		ELSE 0
---	END AS INT))
---if rule dont exist - all time with this status is red
 	CASE
-		WHEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@rulers].[ApprovedTime],0)*60)>=0
-		THEN (DATEDIFF(SECOND,[StartTime],[EndTime])-ISNULL([@rulers].[ApprovedTime],0)*60)
-		ELSE 0
+--if exist in LIMITED times	
+		WHEN  ([@rules_limited_times].[ApprovedTime] IS NOT NULL) 
+				AND ([@rules_unlimited_times].[MachineState] IS NULL)
+				AND (DATEDIFF(SECOND,[StartTime],[EndTime])-[@rules_limited_times].[ApprovedTime]*60)>=0
+		THEN (DATEDIFF(SECOND,[StartTime],[EndTime])-[@rules_limited_times].[ApprovedTime]*60)
+		
+		WHEN  ([@rules_limited_times].[ApprovedTime] IS NOT NULL) 
+				AND ([@rules_unlimited_times].[MachineState] IS NULL)
+				AND (DATEDIFF(SECOND,[StartTime],[EndTime])-[@rules_limited_times].[ApprovedTime]*60)<0
+		THEN 0
+--if exist in UNLIMITED times		
+		WHEN  ([@rules_limited_times].[ApprovedTime] IS NULL) 
+				AND ([@rules_unlimited_times].[MachineState] IS NOT NULL)
+		THEN 0
+		
+--if doesnt exist in LIMITED and UNLIMITED
+		WHEN  ([@rules_limited_times].[ApprovedTime] IS NULL) 
+				AND ([@rules_unlimited_times].[MachineState] IS NULL)
+		THEN (DATEDIFF(SECOND,[StartTime],[EndTime]))
+		
 	END AS INT))
 from @correct_tb1
 LEFT JOIN 
-@rulers
-ON [@correct_tb1].[MachineState]=[@rulers].[MachineState]
+@rules_limited_times
+ON [@correct_tb1].[MachineState]=[@rules_limited_times].[MachineState]
+LEFT JOIN 
+@rules_unlimited_times
+ON [@correct_tb1].[MachineState]=[@rules_unlimited_times].[MachineState]
 group by  [@correct_tb1].[MachineState]
 
 DECLARE @status_count table(MachineState int, _count int)

@@ -9,16 +9,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeLine", "TimeLine\TimeLi
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
+		DebugToHost|Any CPU = DebugToHost|Any CPU
+		DebugToVM|Any CPU = DebugToVM|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{22418041-8E7E-4353-A843-B3EB2B8616A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22418041-8E7E-4353-A843-B3EB2B8616A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22418041-8E7E-4353-A843-B3EB2B8616A8}.DebugToHost|Any CPU.ActiveCfg = DebugToHost|Any CPU
+		{22418041-8E7E-4353-A843-B3EB2B8616A8}.DebugToHost|Any CPU.Build.0 = DebugToHost|Any CPU
+		{22418041-8E7E-4353-A843-B3EB2B8616A8}.DebugToVM|Any CPU.ActiveCfg = Debug|Any CPU
+		{22418041-8E7E-4353-A843-B3EB2B8616A8}.DebugToVM|Any CPU.Build.0 = Debug|Any CPU
 		{22418041-8E7E-4353-A843-B3EB2B8616A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22418041-8E7E-4353-A843-B3EB2B8616A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FCD10B4-B36C-4A08-A32E-5A4302023A9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FCD10B4-B36C-4A08-A32E-5A4302023A9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FCD10B4-B36C-4A08-A32E-5A4302023A9F}.DebugToHost|Any CPU.ActiveCfg = DebugToHost|Any CPU
+		{1FCD10B4-B36C-4A08-A32E-5A4302023A9F}.DebugToHost|Any CPU.Build.0 = DebugToHost|Any CPU
+		{1FCD10B4-B36C-4A08-A32E-5A4302023A9F}.DebugToVM|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FCD10B4-B36C-4A08-A32E-5A4302023A9F}.DebugToVM|Any CPU.Build.0 = Debug|Any CPU
 		{1FCD10B4-B36C-4A08-A32E-5A4302023A9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FCD10B4-B36C-4A08-A32E-5A4302023A9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

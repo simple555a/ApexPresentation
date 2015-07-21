@@ -1,4 +1,5 @@
 ﻿#define real_time
+//#define bypass_opc_init
 
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,9 @@ namespace ApexPresentation
         }
 
         static Sql_class sql_obj = new Sql_class();
+#if !bypass_opc_init
         static OPC_class opc_obj = new OPC_class();
+#endif
         static Timer global_clock = new Timer();
         static Timer refresh_form_timer = new Timer();
         /// <summary>
@@ -70,13 +73,14 @@ namespace ApexPresentation
             label5.BackColor = sql_obj.GetCurrentStatusColor();
 
 
-            this.Text += " v1.0.0 (serpikov.sergey@gmail.com)";
+            this.Text += " v1.1.0 (serpikov.sergey@gmail.com)";
 
             //OPC
+#if !bypass_opc_init
             opc_obj.CounterOfRings = sql_obj.GetRingsCounter();
             label4.Text = opc_obj.CounterOfRings.ToString();
             opc_obj.SetActiveLabel(label4);
-
+#endif
             //crypto
             //String a1 = Crypto.EncryptString("fogfdsfgdssffffffffffffffffffffo");
             //MessageBox.Show(Crypto.DecryptString(a1));
@@ -123,12 +127,13 @@ namespace ApexPresentation
                 radioButton2.Checked = true;
             }
             //set average cycle time
+#if !bypass_opc_init
             label6.Text = GetAverageCycleTime(opc_obj.CounterOfRings).ToString();
             //reset "rings counter" and "average cycle time" each shift change
             if (previous_time.Hour == 7 && get_CURR().Hour == 8 || previous_time.Hour == 19 && get_CURR().Hour == 20)
                 opc_obj.CounterOfRings = 0;
             previous_time = get_CURR();
-
+#endif
             
             GlobalPresenter();
         }
