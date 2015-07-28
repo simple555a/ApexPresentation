@@ -22,11 +22,21 @@ namespace ApexPresentation
                 this.Initialized = false;
 
                 // 1st: Create a server object and connect
-                url = new Opc.URL(in_URL);
-                server = new Opc.Da.Server(fact, null);
+                Opc.URL url = new Opc.URL(in_URL);
+                Opc.Da.Server server = new Opc.Da.Server(fact, null);
+
 
                 //2nd: Connect to the created server
-                server.Connect(url, new Opc.ConnectData(new System.Net.NetworkCredential()));
+                //server.Connect(url, new Opc.ConnectData(new System.Net.NetworkCredential()));
+                try
+                {
+                    server.Connect(url, new Opc.ConnectData(new System.Net.NetworkCredential()));
+                }
+                catch (Exception Ex)
+                {
+                    MessageBox.Show(Ex.Message);
+                    //return false;
+                }
 
                 //3rd Create a group if items            
                 groupState = new Opc.Da.SubscriptionState();

@@ -29,6 +29,7 @@ namespace ApexPresentation
 #endif
         static Timer global_clock = new Timer();
         static Timer refresh_form_timer = new Timer();
+        private static Settings Settings1 = new Settings();
         /// <summary>
         /// for zeroing rings counter
         /// </summary>
@@ -70,10 +71,32 @@ namespace ApexPresentation
             refresh_form_timer.Start();
             GlobalPresenter();
             label5.Text = sql_obj.GetCurrentStatus();
-            label5.BackColor = sql_obj.GetCurrentStatusColor();
+            //label5.BackColor = sql_obj.GetCurrentStatusColor();
+            label5.ForeColor = Color.FromArgb((byte)~sql_obj.GetCurrentStatusColor().R, (byte)~sql_obj.GetCurrentStatusColor().G, (byte)~sql_obj.GetCurrentStatusColor().B);
+            label5.BackColor = Color.FromArgb(sql_obj.GetCurrentStatusColor().R, sql_obj.GetCurrentStatusColor().G, sql_obj.GetCurrentStatusColor().B);
 
+            //history browser
+            tableLayoutPanel2.RowStyles[2].Height = 0;
+            try
+            {
+                if (File.Exists("settings.xml"))
+                {
+                    XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
+                    TextReader reader1 = new StreamReader("settings.xml");
+                    Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
+                    reader1.Dispose();
 
-            this.Text += " v1.1.0 (serpikov.sergey@gmail.com)";
+                    showHistoryBrowserToolStripMenuItem.Checked = Settings1.GENERALShowHistoryBrowser;
+                    tableLayoutPanel2.RowStyles[2].Height = (Settings1.GENERALShowHistoryBrowser) ? 35 : 0;
+                }
+            }
+            catch
+            {
+
+            }
+            
+            
+            this.Text += " v1.2.0";
 
             //OPC
 #if !bypass_opc_init
@@ -89,24 +112,8 @@ namespace ApexPresentation
 
             previous_time = get_CURR();
 
-            //history browser
-            tableLayoutPanel2.RowStyles[2].Height = 0;
-            try
-            {
-                if (File.Exists("settings.xml"))
-                {
-                    XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
-                    TextReader reader1 = new StreamReader("settings.xml");
-                    Settings Settings1 = (Settings)XmlSerializer1.Deserialize(reader1);
-                    reader1.Dispose();
-
-                    tableLayoutPanel2.RowStyles[2].Height = (Settings1.GENERALShowHistoryBrowser) ? 35 : 0;
-                }
-            }
-            catch
-            {
-
-            }
+            
+            
         }
 
         void refresh_form_timer_Tick(object sender, EventArgs e)
@@ -163,7 +170,7 @@ namespace ApexPresentation
 
         private void connectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SettingsForm ConnectionsForm1 = new SettingsForm();
+            ConnectionForm ConnectionsForm1 = new ConnectionForm();
             ConnectionsForm1.Show();
         }
 
@@ -393,6 +400,31 @@ namespace ApexPresentation
         private void Main_form_Shown(object sender, EventArgs e)
         {
             
+        }
+
+        private void showHistoryBrowserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showHistoryBrowserToolStripMenuItem.Checked = !showHistoryBrowserToolStripMenuItem.Checked;
+
+            Settings1.GENERALShowHistoryBrowser = showHistoryBrowserToolStripMenuItem.Checked;
+            tableLayoutPanel2.RowStyles[2].Height = (Settings1.GENERALShowHistoryBrowser) ? 35 : 0;
+
+            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+            TextWriter writer = new StreamWriter("settings.xml");
+            serializer.Serialize(writer, Settings1);
+            writer.Dispose();
+
+        }
+
+        private void showHistoryBrowserToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm AboutForm1 = new AboutForm();
+            AboutForm1.Show();
         }
        
 

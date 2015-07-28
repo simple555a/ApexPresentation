@@ -11,9 +11,9 @@ using System.IO;
 
 namespace ApexPresentation
 {
-    public partial class SettingsForm : Form
+    public partial class ConnectionForm : Form
     {
-        public SettingsForm()
+        public ConnectionForm()
         {
             InitializeComponent();
         }
@@ -40,7 +40,6 @@ namespace ApexPresentation
                 this.textBox3.Text = Settings1.OPCConnectionString;
                 this.textBox4.Text = Settings1.OPCRingsCounterName;
 
-                checkBox1.Checked = (Settings1.GENERALShowHistoryBrowser) ? true : false;
             }
         }
 
@@ -55,7 +54,6 @@ namespace ApexPresentation
             Settings1.OPCConnectionString = this.textBox3.Text;
             Settings1.OPCRingsCounterName = this.textBox4.Text;
 
-            Settings1.GENERALShowHistoryBrowser = checkBox1.Checked;
 
             Settings1.SETTINGSFileVersion = "0000";
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
@@ -118,6 +116,11 @@ namespace ApexPresentation
         private void ConnectionsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
            
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

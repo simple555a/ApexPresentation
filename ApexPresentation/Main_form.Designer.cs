@@ -66,6 +66,9 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showHistoryBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -391,6 +394,7 @@
             this.Column6});
             this.dataGridView1.Location = new System.Drawing.Point(3, 38);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(772, 154);
             this.dataGridView1.TabIndex = 4;
@@ -401,36 +405,42 @@
             this.Column1.Frozen = true;
             this.Column1.HeaderText = "№";
             this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             this.Column1.Width = 30;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "Color";
             this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             this.Column2.Width = 40;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "Summary time";
             this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             this.Column3.Width = 90;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "Status";
             this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             this.Column4.Width = 457;
             // 
             // Column5
             // 
             this.Column5.HeaderText = "Count";
             this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
             this.Column5.Width = 40;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "Summary Exceeded Time";
             this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             this.Column6.Width = 90;
             // 
             // tableLayoutPanel7
@@ -497,7 +507,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(784, 24);
@@ -522,7 +533,8 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectionToolStripMenuItem});
+            this.connectionToolStripMenuItem,
+            this.showHistoryBrowserToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -530,9 +542,32 @@
             // connectionToolStripMenuItem
             // 
             this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
-            this.connectionToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.connectionToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.connectionToolStripMenuItem.Text = "Connection...";
             this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
+            // 
+            // showHistoryBrowserToolStripMenuItem
+            // 
+            this.showHistoryBrowserToolStripMenuItem.Name = "showHistoryBrowserToolStripMenuItem";
+            this.showHistoryBrowserToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.showHistoryBrowserToolStripMenuItem.Text = "Show history browser";
+            this.showHistoryBrowserToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showHistoryBrowserToolStripMenuItem_CheckedChanged);
+            this.showHistoryBrowserToolStripMenuItem.Click += new System.EventHandler(this.showHistoryBrowserToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Text = "About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // Main_form
             // 
@@ -612,6 +647,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripMenuItem showHistoryBrowserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 
