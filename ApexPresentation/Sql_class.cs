@@ -89,7 +89,17 @@ VALUES
 INSERT INTO 
 @rules_limited_times
 VALUES      
-(301,15);
+(301,10);
+
+INSERT INTO 
+@rules_limited_times
+VALUES      
+(330,60);
+
+INSERT INTO 
+@rules_limited_times
+VALUES      
+(420,15);
 
 INSERT INTO 
 @rules_limited_times
@@ -144,7 +154,48 @@ VALUES
 INSERT INTO 
 @rules_unlimited_times
 VALUES      
+(111);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
 (413);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(611);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(612);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(641);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(824);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(825);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(836);
+
+INSERT INTO 
+@rules_unlimited_times
+VALUES      
+(851);
+
 
 ";
         #endregion

@@ -71,9 +71,14 @@ namespace ApexPresentation
             refresh_form_timer.Start();
             GlobalPresenter();
             label5.Text = sql_obj.GetCurrentStatus();
-            //label5.BackColor = sql_obj.GetCurrentStatusColor();
-            label5.ForeColor = Color.FromArgb((byte)~sql_obj.GetCurrentStatusColor().R, (byte)~sql_obj.GetCurrentStatusColor().G, (byte)~sql_obj.GetCurrentStatusColor().B);
-            label5.BackColor = Color.FromArgb(sql_obj.GetCurrentStatusColor().R, sql_obj.GetCurrentStatusColor().G, sql_obj.GetCurrentStatusColor().B);
+
+            Color temp_color_000 = sql_obj.GetCurrentStatusColor();
+            label5.BackColor = temp_color_000;
+            if ((((int)temp_color_000.R + (int)temp_color_000.G + (int)temp_color_000.B))/3>=128)
+                label5.ForeColor = Color.Black;
+            else
+                label5.ForeColor = Color.White;
+
 
             //history browser
             tableLayoutPanel2.RowStyles[2].Height = 0;
@@ -96,7 +101,7 @@ namespace ApexPresentation
             }
             
             
-            this.Text += " v1.2.0";
+            this.Text += " v1.2.1";
 
             //OPC
 #if !bypass_opc_init
