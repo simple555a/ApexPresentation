@@ -46,7 +46,7 @@ namespace ApexPresentation
 #endif
             DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             
-            label9.Text += sql_obj.GetWCName();
+            label9.Text = sql_obj.GetWCName();
 #if !real_time
             dateTimePicker1.Value = BStartTime;
 #endif
@@ -74,7 +74,7 @@ namespace ApexPresentation
 
             Color temp_color_000 = sql_obj.GetCurrentStatusColor();
             label5.BackColor = temp_color_000;
-            if ((((int)temp_color_000.R + (int)temp_color_000.G + (int)temp_color_000.B))/3>=128)
+            if ((((int)temp_color_000.R + (int)temp_color_000.G + (int)temp_color_000.B))/3>=170)
                 label5.ForeColor = Color.Black;
             else
                 label5.ForeColor = Color.White;
@@ -99,9 +99,17 @@ namespace ApexPresentation
             {
 
             }
+
+            LabelsCenterPositioning(groupBox1);
+            LabelsCenterPositioning(groupBox2);
+            LabelsCenterPositioning(groupBox3);
+
+            //dataGridView1.Font
+
+
             
             
-            this.Text += " v1.2.1";
+            this.Text += " v1.2.2";
 
             //OPC
 #if !bypass_opc_init
@@ -109,16 +117,13 @@ namespace ApexPresentation
             label4.Text = opc_obj.CounterOfRings.ToString();
             opc_obj.SetActiveLabel(label4);
 #endif
-            //crypto
-            //String a1 = Crypto.EncryptString("fogfdsfgdssffffffffffffffffffffo");
-            //MessageBox.Show(Crypto.DecryptString(a1));
-            //System.Security.Cryptography.TripleDESCryptoServiceProvider a1 = new System.Security.Cryptography.TripleDESCryptoServiceProvider();
-            //MessageBox.Show(a1.Key.Length.ToString());
+
+
+
+
+
 
             previous_time = get_CURR();
-
-            
-            
         }
 
         void refresh_form_timer_Tick(object sender, EventArgs e)
@@ -308,6 +313,7 @@ namespace ApexPresentation
             for (int i = 0; i < a1.Count; i++)
             {
                 in_control.Rows.Add();
+                in_control.Rows[i].Height = 50;
                 in_control.Rows[i].Cells[0].Value = a1[i].MachineCode;
                 in_control.Rows[i].Cells[1].Style.BackColor = a1[i].Color;
 
@@ -372,7 +378,7 @@ namespace ApexPresentation
 
         private void GlobalPresenter()
         {
-            label1.Text = "Operator: " + sql_obj.GetOperatorName() ;
+            label1.Text =  sql_obj.GetOperatorName() ;
 
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);
@@ -431,8 +437,32 @@ namespace ApexPresentation
             AboutForm AboutForm1 = new AboutForm();
             AboutForm1.Show();
         }
-       
 
+        private void LabelsCenterPositioning(GroupBox in_GroupBox)
+        {
+
+            foreach (Control ctrlChild in in_GroupBox.Controls)
+            {
+                //MessageBox.Show(ctrlChild.GetType().ToString());
+                //if (ctrlChild.GetType() == typeof(Label))
+                {
+                    ctrlChild.Location = new Point(in_GroupBox.Size.Width / 2 - ctrlChild.Size.Width / 2, in_GroupBox.Size.Height / 2 - ctrlChild.Size.Height / 2 + 7);
+                }
+            }
+        }
+
+        private void Main_form_ResizeEnd(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Main_form_Paint(object sender, PaintEventArgs e)
+        {
+
+            LabelsCenterPositioning(groupBox1);
+            LabelsCenterPositioning(groupBox2);
+            LabelsCenterPositioning(groupBox3);
+        }
         
     }
 }
