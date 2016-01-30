@@ -113,6 +113,11 @@ VALUES
 
 INSERT INTO 
 @rules_limited_times
+VALUES      
+(525,20);
+
+INSERT INTO 
+@rules_limited_times
 VALUES   
 (531,15);
 

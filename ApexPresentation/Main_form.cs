@@ -109,7 +109,7 @@ namespace ApexPresentation
 
             
             
-            this.Text += " v1.2.2";
+            this.Text += " v1.2.3";
 
             //OPC
 #if !bypass_opc_init
