@@ -27,8 +27,8 @@ namespace ApexPresentation
 #if !bypass_opc_init
         static OPC_class opc_obj = new OPC_class();
 #endif
-        static Timer global_clock = new Timer();
-        static Timer refresh_form_timer = new Timer();
+        static Timer Tick1sec = new Timer();
+        static Timer Tick60sec = new Timer();
         private static Settings Settings1 = new Settings();
         /// <summary>
         /// for zeroing rings counter
@@ -62,13 +62,13 @@ namespace ApexPresentation
             else
                 radioButton2.Checked = true;
             
-            global_clock.Interval = 1000;
-            global_clock.Tick += global_clock_Tick;
-            global_clock.Start();
+            Tick1sec.Interval = 1000;
+            Tick1sec.Tick += Tick1sec_Tick;
+            Tick1sec.Start();
 
-            refresh_form_timer.Interval = 60000;
-            refresh_form_timer.Tick += refresh_form_timer_Tick;
-            refresh_form_timer.Start();
+            Tick60sec.Interval = 60000;
+            Tick60sec.Tick += Tick60sec_Tick;
+            Tick60sec.Start();
             GlobalPresenter();
             label5.Text = sql_obj.GetCurrentStatus();
 
@@ -109,7 +109,7 @@ namespace ApexPresentation
 
             
             
-            this.Text += " v1.2.3";
+            this.Text += " v1.3.0";
 
             //OPC
 #if !bypass_opc_init
@@ -117,16 +117,11 @@ namespace ApexPresentation
             label4.Text = opc_obj.CounterOfRings.ToString();
             opc_obj.SetActiveLabel(label4);
 #endif
-
-
-
-
-
-
+            
             previous_time = get_CURR();
         }
 
-        void refresh_form_timer_Tick(object sender, EventArgs e)
+        void Tick60sec_Tick(object sender, EventArgs e)
         {
             //set current data in controls
             if (System.DateTime.Now.Hour < 9)
@@ -155,7 +150,7 @@ namespace ApexPresentation
             GlobalPresenter();
         }
 
-        void global_clock_Tick(object sender, EventArgs e)
+        void Tick1sec_Tick(object sender, EventArgs e)
         {
             String year = System.DateTime.Now.Year.ToString();
             String month = System.DateTime.Now.ToString("MMMM");
@@ -166,6 +161,10 @@ namespace ApexPresentation
 
 
             label2.Text = year + " " + month + " " +day + "  " + hours + ":" + minutes + ":" + seconds;
+
+            opc_obj.AskAllValues();
+            label4.Text = opc_obj.CounterOfRings.ToString();
+
         }
 
         
