@@ -37,13 +37,26 @@ namespace ApexPresentation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-#if !real_time           
-            toolStripStatusLabel1.Text = "NOT REAL TIME!!!";
+            #region Indication
+
+            toolStripStatusLabel1.Text = "REAL TIME";
+#if !real_time
             toolStripStatusLabel1.ForeColor = Color.Red;
 #endif
 #if real_time
-            toolStripStatusLabel1.Text = "";
+            toolStripStatusLabel1.ForeColor = Color.Green;
 #endif
+
+            toolStripStatusLabel2.Text = "OPC Enagaged";
+#if bypass_opc_init
+            toolStripStatusLabel2.ForeColor = Color.Red;
+#endif
+#if !bypass_opc_init
+            toolStripStatusLabel2.ForeColor = Color.Green;
+#endif
+            #endregion
+
+
             DateTime BStartTime = new DateTime(2015, 04, 24, 00, 00, 00);
             
             label9.Text = sql_obj.GetWCName();
@@ -103,11 +116,6 @@ namespace ApexPresentation
             LabelsCenterPositioning(groupBox1);
             LabelsCenterPositioning(groupBox2);
             LabelsCenterPositioning(groupBox3);
-
-            //dataGridView1.Font
-
-
-            
             
             this.Text += " v1.3.0";
 
@@ -115,7 +123,7 @@ namespace ApexPresentation
 #if !bypass_opc_init
             opc_obj.CounterOfRings = sql_obj.GetRingsCounter();
             label4.Text = opc_obj.CounterOfRings.ToString();
-            opc_obj.SetActiveLabel(label4);
+            //opc_obj.SetActiveLabel(label4);
 #endif
             
             previous_time = get_CURR();
@@ -161,13 +169,13 @@ namespace ApexPresentation
 
 
             label2.Text = year + " " + month + " " +day + "  " + hours + ":" + minutes + ":" + seconds;
-
+#if !bypass_opc_init
             opc_obj.AskAllValues();
             label4.Text = opc_obj.CounterOfRings.ToString();
-
+#endif
         }
 
-        
+
 
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -379,6 +387,7 @@ namespace ApexPresentation
         {
             label1.Text =  sql_obj.GetOperatorName() ;
 
+            //MessageBox.Show("GLPR");
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);
 

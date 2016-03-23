@@ -65,21 +65,22 @@ namespace ApexPresentation
         #endregion
 
         #region Properties
-            public bool Initialized;
-            public Int32 CounterOfRings;
-            private String URL;
-            private Label ActiveLabel;
+        public bool Initialized;
+        public Int32 CounterOfRings;
+        private Int32 previous_value;
+        private String URL;
+        private Label ActiveLabel;
 
-            #region Variables for OPC client
+        #region Variables for OPC client
 
-            private Opc.URL url;
-            private Opc.Da.Server server;
-            private OpcCom.Factory fact = new OpcCom.Factory();
-            private Opc.Da.Subscription groupRead;
-            private Opc.Da.SubscriptionState groupState;
-            private Opc.Da.Item[] items = new Opc.Da.Item[1];
+        private Opc.URL url;
+        private Opc.Da.Server server;
+        private OpcCom.Factory fact = new OpcCom.Factory();
+        private Opc.Da.Subscription groupRead;
+        private Opc.Da.SubscriptionState groupState;
+        private Opc.Da.Item[] items = new Opc.Da.Item[1];
 
-            #endregion
+        #endregion
 
         #endregion
 
@@ -119,6 +120,7 @@ namespace ApexPresentation
                         items = groupRead.AddItems(items);
 
                         Opc.Da.ItemValueResult[] values = groupRead.Read(items);
+                        this.previous_value = Convert.ToInt32(values[0].Value);
                         //MessageBox.Show("Readed value is " + values[0].Value.ToString());
                         this.Initialized = true;
                     }
@@ -144,8 +146,14 @@ namespace ApexPresentation
         public void AskAllValues()
         {
             Opc.Da.ItemValueResult[] values = groupRead.Read(items);
-            this.CounterOfRings = (this.CounterOfRings != Convert.ToInt32(values[0].Value)) ? (this.CounterOfRings + 2) : this.CounterOfRings;
-            //this.CounterOfRings += 2;
+            //MessageBox.Show(Convert.ToInt32(values[0].Value).ToString() + " " + this.CounterOfRings.ToString());
+            //this.CounterOfRings = (this.CounterOfRings != Convert.ToInt32(values[0].Value)) ? (this.CounterOfRings + 1) : this.CounterOfRings;
+            
+            if (this.previous_value!= Convert.ToInt32(values[0].Value))
+            {
+                this.CounterOfRings += 2;
+                this.previous_value = Convert.ToInt32(values[0].Value);
+            }
 
         }
 
