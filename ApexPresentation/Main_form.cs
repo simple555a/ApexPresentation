@@ -117,7 +117,7 @@ namespace ApexPresentation
             LabelsCenterPositioning(groupBox2);
             LabelsCenterPositioning(groupBox3);
             
-            this.Text += " v1.3.0";
+            this.Text += " v1.3.1";
 
             //OPC
 #if !bypass_opc_init
@@ -294,8 +294,10 @@ namespace ApexPresentation
                 if (temp_is_last && T1 < CURR && CURR < T2 && a1[a1.Length - 1].StartTime >= T1)
                     in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, CURR, temp_is_last);
 
-                if (!temp_is_last)
+                if (!temp_is_last && a1[a1.Length - 1].StartTime >= T1)
                     in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, a1[a1.Length - 1].StartTime, T2, temp_is_last);
+                if (!temp_is_last && a1[a1.Length - 1].StartTime < T1)
+                    in_control.AddPeriod(a1[a1.Length - 1].colorRed, a1[a1.Length - 1].colorGreen, a1[a1.Length - 1].colorBlue, T1, T2, temp_is_last);
             }
             if (a1.Length == 0)
             {
