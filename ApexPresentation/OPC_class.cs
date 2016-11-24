@@ -145,14 +145,17 @@ namespace ApexPresentation
 
         public void AskAllValues()
         {
-            Opc.Da.ItemValueResult[] values = groupRead.Read(items);
-            //MessageBox.Show(Convert.ToInt32(values[0].Value).ToString() + " " + this.CounterOfRings.ToString());
-            //this.CounterOfRings = (this.CounterOfRings != Convert.ToInt32(values[0].Value)) ? (this.CounterOfRings + 1) : this.CounterOfRings;
-            
-            if (this.previous_value!= Convert.ToInt32(values[0].Value))
+            if (this.Initialized)
             {
-                this.CounterOfRings += 2;
-                this.previous_value = Convert.ToInt32(values[0].Value);
+                Opc.Da.ItemValueResult[] values = groupRead.Read(items);
+                //MessageBox.Show(Convert.ToInt32(values[0].Value).ToString() + " " + this.CounterOfRings.ToString());
+                //this.CounterOfRings = (this.CounterOfRings != Convert.ToInt32(values[0].Value)) ? (this.CounterOfRings + 1) : this.CounterOfRings;
+
+                if (this.previous_value != Convert.ToInt32(values[0].Value))
+                {
+                    this.CounterOfRings += 2;
+                    this.previous_value = Convert.ToInt32(values[0].Value);
+                }
             }
 
         }

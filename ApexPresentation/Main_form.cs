@@ -28,12 +28,21 @@ namespace ApexPresentation
         static OPC_class opc_obj = new OPC_class();
 #endif
         static Timer Tick1sec = new Timer();
+        static Timer Tick5sec = new Timer();
         static Timer Tick60sec = new Timer();
         private static Settings Settings1 = new Settings();
         /// <summary>
         /// for zeroing rings counter
         /// </summary>
         static DateTime previous_time = new DateTime();
+
+
+        static string actual_order_number = "";
+        static string previous_order_number = "";
+        static int ScheduledQty = 0;
+        static int ActualQty = 0;
+        static int StartOrderConter = 0;
+        static bool ShowLabel12 = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -77,6 +86,10 @@ namespace ApexPresentation
             
             Tick1sec.Interval = 1000;
             Tick1sec.Tick += Tick1sec_Tick;
+            Tick1sec.Start();
+
+            Tick1sec.Interval = 5000;
+            Tick1sec.Tick += Tick5sec_Tick;
             Tick1sec.Start();
 
             Tick60sec.Interval = 60000;
@@ -129,6 +142,67 @@ namespace ApexPresentation
             previous_time = get_CURR();
         }
 
+
+
+        void Tick1sec_Tick(object sender, EventArgs e)
+        {
+            String year = System.DateTime.Now.Year.ToString();
+            String month = System.DateTime.Now.ToString("MMMM");
+            String day = System.DateTime.Now.Day.ToString();
+            String hours = (System.DateTime.Now.TimeOfDay.Hours < 10) ? "0" + System.DateTime.Now.TimeOfDay.Hours.ToString() : System.DateTime.Now.TimeOfDay.Hours.ToString();
+            String minutes = (System.DateTime.Now.TimeOfDay.Minutes < 10) ? "0" + System.DateTime.Now.TimeOfDay.Minutes.ToString() : System.DateTime.Now.TimeOfDay.Minutes.ToString();
+            String seconds = (System.DateTime.Now.TimeOfDay.Seconds < 10) ? "0" + System.DateTime.Now.TimeOfDay.Seconds.ToString() : System.DateTime.Now.TimeOfDay.Seconds.ToString();
+
+
+            label2.Text = year + " " + month + " " +day + "  " + hours + ":" + minutes + ":" + seconds;
+#if !bypass_opc_init
+            opc_obj.AskAllValues();
+            label4.Text = opc_obj.CounterOfRings.ToString();
+#endif
+        }
+
+        private void Tick5sec_Tick(object sender, EventArgs e)
+        {
+#if !bypass_opc_init
+
+            actual_order_number = sql_obj.GetActualOrderNumber();
+            toolStripStatusLabel5.Text = "";
+
+            if (actual_order_number!="" && actual_order_number!=previous_order_number)
+            {
+                previous_order_number = actual_order_number;
+                ScheduledQty = sql_obj.GetScheduledQty();
+                ActualQty = sql_obj.GetActualQty();
+                StartOrderConter = opc_obj.CounterOfRings;
+            }
+
+            if (actual_order_number != "" && actual_order_number == previous_order_number)
+            {
+                ActualQty = opc_obj.CounterOfRings - StartOrderConter;
+                toolStripStatusLabel5.Text = "(" + ScheduledQty.ToString() + "/" + ActualQty +")";
+                if (ActualQty==10)
+                {
+                    //toolStripStatusLabel5.Text += "(====1====)";
+                    ShowLabel12 = true;
+                }
+                if (ActualQty == ScheduledQty/2)
+                {
+                    //toolStripStatusLabel5.Text += "(====2====)";
+                    ShowLabel12 = true;
+                }
+                if (ActualQty == ScheduledQty)
+                {
+                    //toolStripStatusLabel5.Text += "(====3====)";
+                    ShowLabel12 = true;
+                }
+            }
+
+
+
+
+#endif
+        }
+
         void Tick60sec_Tick(object sender, EventArgs e)
         {
             //set current data in controls
@@ -154,28 +228,19 @@ namespace ApexPresentation
                 opc_obj.CounterOfRings = 0;
             previous_time = get_CURR();
 #endif
+            if (ShowLabel12 == false)
+            {
+                label12.SendToBack();
+            }
+            if (ShowLabel12 == true)
+            {
+                label12.BringToFront();
+                ShowLabel12 = false;
+            }
             
+
             GlobalPresenter();
         }
-
-        void Tick1sec_Tick(object sender, EventArgs e)
-        {
-            String year = System.DateTime.Now.Year.ToString();
-            String month = System.DateTime.Now.ToString("MMMM");
-            String day = System.DateTime.Now.Day.ToString();
-            String hours = (System.DateTime.Now.TimeOfDay.Hours < 10) ? "0" + System.DateTime.Now.TimeOfDay.Hours.ToString() : System.DateTime.Now.TimeOfDay.Hours.ToString();
-            String minutes = (System.DateTime.Now.TimeOfDay.Minutes < 10) ? "0" + System.DateTime.Now.TimeOfDay.Minutes.ToString() : System.DateTime.Now.TimeOfDay.Minutes.ToString();
-            String seconds = (System.DateTime.Now.TimeOfDay.Seconds < 10) ? "0" + System.DateTime.Now.TimeOfDay.Seconds.ToString() : System.DateTime.Now.TimeOfDay.Seconds.ToString();
-
-
-            label2.Text = year + " " + month + " " +day + "  " + hours + ":" + minutes + ":" + seconds;
-#if !bypass_opc_init
-            opc_obj.AskAllValues();
-            label4.Text = opc_obj.CounterOfRings.ToString();
-#endif
-        }
-
-
 
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -388,7 +453,7 @@ namespace ApexPresentation
         private void GlobalPresenter()
         {
             label1.Text =  sql_obj.GetOperatorName() ;
-
+            //label12.au
             //MessageBox.Show("GLPR");
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);

@@ -954,11 +954,139 @@ ON [@TB4].[MachineState]=[@excessed_times].[MachineState]";
         }
 
         #endregion
+        #region public int GetScheduledQty()
+        public int GetScheduledQty()
+        {
+            //    int ScheduledQty = 0;
+            //    int ActualQty = 0;
 
+            if (!this.Initialized) return 0;
+
+            String SQLQuery = @"
+SELECT 
+      [StatusValue]
+      ,[ScheduledQty]
+      ,[ActualQty]
+FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_Order]
+where [StatusValue]='150'";
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(this.ConnectionString))
+                {
+                    con.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+
+                            while (reader.Read())
+                            {
+                                return Convert.ToInt32(reader.GetDecimal(1));
+                            }
+                    }
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+            return 0;
+            //if (ActualQty > 10 && ActualQty < (ScheduledQty / 2))
+            //    return 1;
+            //if (ActualQty > (ScheduledQty / 2) && ActualQty < (ScheduledQty))
+            //    return 2;
+
+
+
+            //return value
+
+        }
+        #endregion
+        #region public int GetActualQty()
+        public int GetActualQty()
+        {
+            //    int ScheduledQty = 0;
+            //    int ActualQty = 0;
+
+            if (!this.Initialized) return 0;
+
+            String SQLQuery = @"
+SELECT 
+      [StatusValue]
+      ,[ScheduledQty]
+      ,[ActualQty]
+FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_Order]
+where [StatusValue]='150'";
+            try
+            { 
+                using (SqlConnection con = new SqlConnection(this.ConnectionString))
+                {
+                    con.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+
+                            while (reader.Read())
+                            {
+                                return Convert.ToInt32(reader.GetDecimal(2));
+                            }
+                    }
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+            return 0;
+        }
+        #endregion
+
+        #region public string GetActualOrderNumber()
+        public string GetActualOrderNumber()
+        {
+            if (!this.Initialized) return "";
+
+            String SQLQuery = @"
+SELECT 
+    [OrderNumber]
+      ,[StatusValue]
+      ,[ScheduledQty]
+      ,[ActualQty]
+FROM [SFI_local_PC_SQL].[dbo].[tbl_slc_Order]
+where [StatusValue]='150'";
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(this.ConnectionString))
+                {
+                    con.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(SQLQuery, con))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+
+                            while (reader.Read())
+                            {
+                                return Convert.ToString(reader.GetString(0));
+                            }
+                    }
+                }
+            }
+            catch
+            {
+                return "";
+            }
+
+
+            return "";
+        }
+        #endregion
         #endregion
 
 
 
-    }   
+    }
 
 }
