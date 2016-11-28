@@ -130,7 +130,7 @@ namespace ApexPresentation
             LabelsCenterPositioning(groupBox2);
             LabelsCenterPositioning(groupBox3);
             
-            this.Text += " v1.3.1";
+            this.Text += " v1.3.2";
 
             //OPC
 #if !bypass_opc_init
@@ -182,17 +182,17 @@ namespace ApexPresentation
                 toolStripStatusLabel5.Text = "(" + ScheduledQty.ToString() + "/" + ActualQty +")";
                 if (ActualQty==10)
                 {
-                    //toolStripStatusLabel5.Text += "(====1====)";
+                    toolStripStatusLabel6.Text = "(=1)";
                     ShowLabel12 = true;
                 }
                 if (ActualQty == ScheduledQty/2)
                 {
-                    //toolStripStatusLabel5.Text += "(====2====)";
+                    toolStripStatusLabel6.Text = "(=2)";
                     ShowLabel12 = true;
                 }
                 if (ActualQty == ScheduledQty)
                 {
-                    //toolStripStatusLabel5.Text += "(====3====)";
+                    toolStripStatusLabel6.Text = "(=3)";
                     ShowLabel12 = true;
                 }
             }
