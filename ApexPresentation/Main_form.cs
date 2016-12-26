@@ -130,7 +130,7 @@ namespace ApexPresentation
             LabelsCenterPositioning(groupBox2);
             LabelsCenterPositioning(groupBox3);
             
-            this.Text += " v1.3.2";
+            this.Text += " v1.3.4";
 
             //OPC
 #if !bypass_opc_init
@@ -163,44 +163,38 @@ namespace ApexPresentation
 
         private void Tick5sec_Tick(object sender, EventArgs e)
         {
-#if !bypass_opc_init
-
-            actual_order_number = sql_obj.GetActualOrderNumber();
+            //actual_order_number = sql_obj.GetActualOrderNumber();
             toolStripStatusLabel5.Text = "";
 
-            if (actual_order_number!="" && actual_order_number!=previous_order_number)
+            //if (actual_order_number!="" && actual_order_number!=previous_order_number)
             {
                 previous_order_number = actual_order_number;
                 ScheduledQty = sql_obj.GetScheduledQty();
                 ActualQty = sql_obj.GetActualQty();
-                StartOrderConter = opc_obj.CounterOfRings;
+                //StartOrderConter = opc_obj.CounterOfRings;
             }
 
-            if (actual_order_number != "" && actual_order_number == previous_order_number)
+            //if (actual_order_number != "" && actual_order_number == previous_order_number)
             {
-                ActualQty = opc_obj.CounterOfRings - StartOrderConter;
-                toolStripStatusLabel5.Text = "(" + ScheduledQty.ToString() + "/" + ActualQty +")";
+                //ActualQty = opc_obj.CounterOfRings - StartOrderConter;
+                toolStripStatusLabel5.Text = "(" + ScheduledQty.ToString() + "/" + ActualQty.ToString() + ")";
                 if (ActualQty==10)
                 {
                     toolStripStatusLabel6.Text = "(=1)";
                     ShowLabel12 = true;
                 }
-                if (ActualQty == ScheduledQty/2)
+                if (ActualQty == ScheduledQty/ 2 && ActualQty != 0)
                 {
                     toolStripStatusLabel6.Text = "(=2)";
                     ShowLabel12 = true;
                 }
-                if (ActualQty == ScheduledQty)
+                if (ActualQty == ScheduledQty && ActualQty!=0)
                 {
                     toolStripStatusLabel6.Text = "(=3)";
                     ShowLabel12 = true;
                 }
             }
-
-
-
-
-#endif
+            
         }
 
         void Tick60sec_Tick(object sender, EventArgs e)
@@ -228,6 +222,7 @@ namespace ApexPresentation
                 opc_obj.CounterOfRings = 0;
             previous_time = get_CURR();
 #endif
+            //show QDA message 
             if (ShowLabel12 == false)
             {
                 label12.SendToBack();
@@ -453,7 +448,6 @@ namespace ApexPresentation
         private void GlobalPresenter()
         {
             label1.Text =  sql_obj.GetOperatorName() ;
-            //label12.au
             //MessageBox.Show("GLPR");
             TimeLinePresenter(timeLine1, dateTimePicker1.Value);
             DataGridPresenter(dataGridView1, dateTimePicker1.Value);
@@ -476,16 +470,6 @@ namespace ApexPresentation
                             ).ToString() + "%";
             label5.Text = sql_obj.GetCurrentStatus();
             label5.BackColor = sql_obj.GetCurrentStatusColor();
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Main_form_Shown(object sender, EventArgs e)
-        {
-            
         }
 
         private void showHistoryBrowserToolStripMenuItem_Click(object sender, EventArgs e)
