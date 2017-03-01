@@ -39,6 +39,7 @@ namespace ApexPresentation
 
                 this.textBox3.Text = Settings1.OPCConnectionString;
                 this.textBox4.Text = Settings1.OPCRingsCounterName;
+                this.textBox2.Text = Settings1.OPCRingsOnCarrierName;
 
             }
         }
@@ -53,7 +54,7 @@ namespace ApexPresentation
 
             Settings1.OPCConnectionString = this.textBox3.Text;
             Settings1.OPCRingsCounterName = this.textBox4.Text;
-
+            Settings1.OPCRingsOnCarrierName = this.textBox2.Text;
 
             Settings1.SETTINGSFileVersion = "0000";
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
@@ -82,8 +83,9 @@ namespace ApexPresentation
         {
             this.button3.Enabled = false;
             this.button3.Text = "Testing...";
-            OPC_class opc_obj = new OPC_class(textBox3.Text,textBox4.Text);
-            Settings1.OPCInitialized = opc_obj.Initialized;
+            OPC_class opc_obj = new OPC_class(textBox3.Text, textBox4.Text);
+            OPC_class opc_obj2 = new OPC_class(textBox3.Text, textBox2.Text);
+            Settings1.OPCInitialized = opc_obj.Initialized && opc_obj2.Initialized;
             label6.Text = (Settings1.OPCInitialized) ? "Ok" : "Not OK";
             this.button3.Enabled = true;
             this.button3.Text = "Test connection";

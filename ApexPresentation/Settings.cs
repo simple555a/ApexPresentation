@@ -18,6 +18,7 @@ namespace ApexPresentation
         public bool OPCInitialized;
         public String OPCConnectionString;
         public String OPCRingsCounterName;
+        public String OPCRingsOnCarrierName;
 
         public bool GENERALShowHistoryBrowser;
 

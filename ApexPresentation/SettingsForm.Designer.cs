@@ -51,6 +51,8 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.process1 = new System.Diagnostics.Process();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -74,7 +76,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(404, 182);
+            this.groupBox1.Size = new System.Drawing.Size(404, 183);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "SQL Server connect";
@@ -197,11 +199,11 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.1885F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.8115F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 49.09091F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.90909F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(410, 363);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(410, 420);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // button1
@@ -209,7 +211,7 @@
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(3, 331);
+            this.button1.Location = new System.Drawing.Point(3, 388);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(404, 29);
             this.button1.TabIndex = 2;
@@ -222,15 +224,17 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.textBox2);
+            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.textBox4);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.textBox3);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(3, 191);
+            this.groupBox2.Location = new System.Drawing.Point(3, 192);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(404, 134);
+            this.groupBox2.Size = new System.Drawing.Size(404, 190);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "OPC Server connect";
@@ -238,7 +242,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(237, 102);
+            this.label6.Location = new System.Drawing.Point(234, 141);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(28, 13);
             this.label6.TabIndex = 6;
@@ -262,7 +266,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(302, 97);
+            this.button3.Location = new System.Drawing.Point(302, 136);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(96, 23);
             this.button3.TabIndex = 10;
@@ -296,15 +300,31 @@
             this.process1.StartInfo.UserName = "";
             this.process1.SynchronizingObject = this;
             // 
-            // SettingsForm
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(8, 109);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(392, 20);
+            this.textBox2.TabIndex = 16;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(5, 93);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(116, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Rings on  carrier name:";
+            // 
+            // ConnectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 387);
+            this.ClientSize = new System.Drawing.Size(434, 444);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "SettingsForm";
+            this.Name = "ConnectionForm";
             this.Text = "Settings";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ConnectionsForm_FormClosed);
             this.Load += new System.EventHandler(this.Connections_form_Load);
@@ -341,6 +361,8 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Label label7;
         private System.Diagnostics.Process process1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label2;
 
     }
 }

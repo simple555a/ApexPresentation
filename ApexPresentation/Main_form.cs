@@ -25,7 +25,8 @@ namespace ApexPresentation
 
         static Sql_class sql_obj = new Sql_class();
 #if !bypass_opc_init
-        static OPC_class opc_obj = new OPC_class();
+        static OPC_class opc_obj_Counter = new OPC_class("OPCRingsCounterName", true);
+        static OPC_class opc_obj_Apex_OnCarrier = new OPC_class("OPCRingsOnCarrierName", false);
 #endif
         static Timer Tick1sec = new Timer();
         static Timer Tick5sec = new Timer();
@@ -130,12 +131,12 @@ namespace ApexPresentation
             LabelsCenterPositioning(groupBox2);
             LabelsCenterPositioning(groupBox3);
             
-            this.Text += " v1.3.5";
+            this.Text += " v1.3.7";
 
             //OPC
 #if !bypass_opc_init
-            opc_obj.CounterOfRings = sql_obj.GetRingsCounter();
-            label4.Text = opc_obj.CounterOfRings.ToString();
+            opc_obj_Counter.Value = sql_obj.GetRingsCounter();
+            label4.Text = "Per shift: " + opc_obj_Counter.Value.ToString();
             //opc_obj.SetActiveLabel(label4);
 #endif
             
@@ -154,10 +155,12 @@ namespace ApexPresentation
             String seconds = (System.DateTime.Now.TimeOfDay.Seconds < 10) ? "0" + System.DateTime.Now.TimeOfDay.Seconds.ToString() : System.DateTime.Now.TimeOfDay.Seconds.ToString();
 
 
-            label2.Text = year + " " + month + " " +day + "  " + hours + ":" + minutes + ":" + seconds;
+            label2.Text = year + " " + month + " " +day + " \n" + hours + ":" + minutes + ":" + seconds;
 #if !bypass_opc_init
-            opc_obj.AskAllValues();
-            label4.Text = opc_obj.CounterOfRings.ToString();
+            opc_obj_Counter.AskValue();
+            opc_obj_Apex_OnCarrier.AskValue();
+            label4.Text = "Per Shift: " + opc_obj_Counter.Value.ToString();
+            label14.Text = "On Carrier: " + opc_obj_Apex_OnCarrier.Value.ToString();
 #endif
         }
 
@@ -194,13 +197,15 @@ namespace ApexPresentation
                     ShowLabel12 = true;
                 }
             }
+
+            label13.Text = "Current Order: " + sql_obj.GetScheduledQty().ToString();
             
         }
 
         void Tick60sec_Tick(object sender, EventArgs e)
         {
             //set current data in controls
-            if (System.DateTime.Now.Hour < 9)
+            if (System.DateTime.Now.Hour < 8)
                 dateTimePicker1.Value = System.DateTime.Now.Date - TimeSpan.FromDays(1);
             if (System.DateTime.Now.Hour >= 8)
                 dateTimePicker1.Value = System.DateTime.Now.Date;
@@ -216,10 +221,10 @@ namespace ApexPresentation
             }
             //set average cycle time
 #if !bypass_opc_init
-            label6.Text = GetAverageCycleTime(opc_obj.CounterOfRings).ToString();
+            label6.Text = GetAverageCycleTime(opc_obj_Counter.Value).ToString();
             //reset "rings counter" and "average cycle time" each shift change
             if (previous_time.Hour == 7 && get_CURR().Hour == 8 || previous_time.Hour == 19 && get_CURR().Hour == 20)
-                opc_obj.CounterOfRings = 0;
+                opc_obj_Counter.Value = 0;
             previous_time = get_CURR();
 #endif
             //show QDA message 
@@ -499,14 +504,16 @@ namespace ApexPresentation
 
         private void LabelsCenterPositioning(GroupBox in_GroupBox)
         {
-
+            for (int i = 0; i < in_GroupBox.Controls.Count; i++)
+            {
+                
+            }
+             
+            int component_count = 0;
             foreach (Control ctrlChild in in_GroupBox.Controls)
             {
-                //MessageBox.Show(ctrlChild.GetType().ToString());
-                //if (ctrlChild.GetType() == typeof(Label))
-                {
-                    ctrlChild.Location = new Point(in_GroupBox.Size.Width / 2 - ctrlChild.Size.Width / 2, in_GroupBox.Size.Height / 2 - ctrlChild.Size.Height / 2 + 7);
-                }
+                ctrlChild.Location = new Point(in_GroupBox.Size.Width / 2 - ctrlChild.Size.Width / 2, in_GroupBox.Size.Height / 2 - (ctrlChild.Size.Height * in_GroupBox.Controls.Count) / 2 + ctrlChild.Size.Height * component_count + 7);
+                component_count++;
             }
         }
 

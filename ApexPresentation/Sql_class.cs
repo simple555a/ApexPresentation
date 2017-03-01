@@ -79,6 +79,11 @@ namespace ApexPresentation
 INSERT INTO 
 @rules_limited_times
 VALUES      
+(14,2);
+
+INSERT INTO 
+@rules_limited_times
+VALUES      
 (200,60);
 
 INSERT INTO 
@@ -125,6 +130,11 @@ INSERT INTO
 @rules_limited_times
 VALUES    
 (541,5);
+
+INSERT INTO 
+@rules_limited_times
+VALUES    
+(550,10);
 
 INSERT INTO 
 @rules_limited_times
@@ -1037,7 +1047,6 @@ where [StatusValue]='150'";
             return 0;
         }
         #endregion
-
         #region public string GetActualOrderNumber()
         public string GetActualOrderNumber()
         {
@@ -1078,6 +1087,7 @@ where [StatusValue]='150'";
             return "";
         }
         #endregion
+
         #endregion
 
 

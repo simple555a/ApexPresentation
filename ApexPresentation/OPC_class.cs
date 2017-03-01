@@ -4,18 +4,21 @@ using System.Text;
 using System.IO;
 using System.Xml.Serialization;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace ApexPresentation
 {
     class OPC_class
     {
         #region Constructors
-        public OPC_class()
+        public OPC_class(String in_VariableName, bool in_is_incremental)
         {
+            this.Incremental = in_is_incremental;
+            this.VariableName = in_VariableName;
             this.Initialized = false;
             InitializeOPC();
         }
-        public OPC_class(String in_URL,  String in_RingsCounterName)
+        public OPC_class(String in_URL,  String in_VariableName)
         {
             try
             {
@@ -47,7 +50,7 @@ namespace ApexPresentation
                 //groupRead.DataChanged += groupRead_DataChanged;
 
                 items[0] = new Opc.Da.Item();
-                items[0].ItemName = in_RingsCounterName;
+                items[0].ItemName = in_VariableName;
                 items = groupRead.AddItems(items);
 
                 Opc.Da.ItemValueResult[] values = groupRead.Read(items);
@@ -65,8 +68,10 @@ namespace ApexPresentation
         #endregion
 
         #region Properties
+        private bool Incremental;
         public bool Initialized;
-        public Int32 CounterOfRings;
+        public String VariableName;
+        public Int32 Value;
         private Int32 previous_value;
         private String URL;
         private Label ActiveLabel;
@@ -93,7 +98,7 @@ namespace ApexPresentation
             {
                 if (File.Exists("settings.xml"))
                 {
-                    this.CounterOfRings = 0;
+                    this.Value = 0;
 
                     XmlSerializer XmlSerializer1 = new XmlSerializer(typeof(Settings));
                     TextReader reader1 = new StreamReader("settings.xml");
@@ -116,7 +121,13 @@ namespace ApexPresentation
                         //groupRead.DataChanged += groupRead_DataChanged;
 
                         items[0] = new Opc.Da.Item();
-                        items[0].ItemName = Settings1.OPCRingsCounterName;
+
+                        //use reflection
+                        Type myTypeA = typeof(Settings);
+                        FieldInfo myFieldInfo = myTypeA.GetField(VariableName);
+                        items[0].ItemName = myFieldInfo.GetValue(Settings1).ToString();
+
+
                         items = groupRead.AddItems(items);
 
                         Opc.Da.ItemValueResult[] values = groupRead.Read(items);
@@ -143,7 +154,7 @@ namespace ApexPresentation
             }
         }
 
-        public void AskAllValues()
+        public void AskValue()
         {
             if (this.Initialized)
             {
@@ -151,10 +162,17 @@ namespace ApexPresentation
                 //MessageBox.Show(Convert.ToInt32(values[0].Value).ToString() + " " + this.CounterOfRings.ToString());
                 //this.CounterOfRings = (this.CounterOfRings != Convert.ToInt32(values[0].Value)) ? (this.CounterOfRings + 1) : this.CounterOfRings;
 
-                if (this.previous_value != Convert.ToInt32(values[0].Value))
+                if (this.Incremental)
                 {
-                    this.CounterOfRings += 2;
-                    this.previous_value = Convert.ToInt32(values[0].Value);
+                    if (this.previous_value != Convert.ToInt32(values[0].Value))
+                    {
+                        this.Value += 2;
+                        this.previous_value = Convert.ToInt32(values[0].Value);
+                    }
+                }
+                if (!this.Incremental)
+                {
+                    this.Value=Convert.ToInt32(values[0].Value);
                 }
             }
 
