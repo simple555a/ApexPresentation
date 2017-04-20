@@ -131,7 +131,7 @@ namespace ApexPresentation
             LabelsCenterPositioning(groupBox2);
             LabelsCenterPositioning(groupBox3);
             
-            this.Text += " v1.3.7";
+            this.Text += " v1.3.8";
 
             //OPC
 #if !bypass_opc_init
